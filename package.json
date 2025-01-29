@@ -1,0 +1,11 @@
+{
+  "name": "nodejs-typescript-contact-manager-api",
+  "version": "1.0.0",
+  "description": "Contains the backend implementation of a Contact Manager API",
+  "main": "src/app.ts",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "geozi",
+  "license": "ISC"
+}
