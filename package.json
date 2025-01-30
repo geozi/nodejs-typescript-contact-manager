@@ -23,12 +23,14 @@
     "@eslint/js": "^9.19.0",
     "@types/mocha": "^10.0.10",
     "@types/mongoose-unique-validator": "^1.0.9",
+    "@types/sinon": "^17.0.3",
     "eslint": "^9.19.0",
     "eslint-plugin-mocha": "^10.5.0",
     "globals": "^15.14.0",
     "mocha": "^11.1.0",
     "pino": "^9.6.0",
     "pino-pretty": "^13.0.0",
+    "sinon": "^19.0.2",
     "ts-node": "^10.9.2",
     "typescript-eslint": "^8.22.0"
   }
