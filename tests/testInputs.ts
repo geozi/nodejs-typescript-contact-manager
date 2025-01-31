@@ -35,3 +35,14 @@ export const validUserInput = {
   password: "5W]L8t1m4@PcTTO",
   role: Role.User,
 };
+
+export const validGroupInput = {
+  name: "Work group",
+  description: "Contact info of work colleagues",
+};
+
+export const invalidGroupCases = {
+  TOO_LONG_DESCRIPTION:
+    "This group includes all the contacts related to professional engagements and networking events.",
+  TOO_SHORT_DESCRIPTION: "VIP",
+};
