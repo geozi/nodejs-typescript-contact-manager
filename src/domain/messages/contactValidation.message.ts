@@ -14,4 +14,7 @@ export const contactFailedValidation = {
   STREET_ADDRESS_BELOW_MIN_LENGTH_MESSAGE: `Street address must be at least ${contactConstants.STREET_ADDRESS_MIN_LENGTH} characters long`,
   ZIP_CODE_INVALID_MESSAGE: "Zip code must only contain digits",
   ZIP_CODE_OUT_OF_LENGTH_MESSAGE: `Zip code must be ${contactConstants.ZIP_CODE_LENGTH} characters long`,
+  GROUP_ID_REQUIRED: "Group ID is a required field",
+  GROUP_ID_BELOW_LENGTH: `Group ID must be ${contactConstants.GROUP_ID_LENGTH} characters long`,
+  GROUP_ID_INVALID: "Group ID must be a string of hex characters",
 };

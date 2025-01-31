@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import { Document, Schema } from "mongoose";
 
 export interface IContact extends Document {
   firstName: string;
@@ -9,4 +9,5 @@ export interface IContact extends Document {
   city?: string;
   zipCode?: string;
   company?: string;
+  groupId: Schema.Types.ObjectId;
 }

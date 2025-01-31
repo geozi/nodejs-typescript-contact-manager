@@ -76,6 +76,10 @@ const contactSchema = new Schema<IContact>(
     company: {
       type: String,
     },
+    groupId: {
+      type: Schema.Types.ObjectId,
+      required: [true, contactFailedValidation.GROUP_ID_REQUIRED],
+    },
   },
   {
     collection: "contacts",
