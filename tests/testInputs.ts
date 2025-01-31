@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Role } from "../src/domain/enums/role.enum";
 
 export const invalidUserInputs = {
@@ -45,4 +46,27 @@ export const invalidGroupCases = {
   TOO_LONG_DESCRIPTION:
     "This group includes all the contacts related to professional engagements and networking events.",
   TOO_SHORT_DESCRIPTION: "VIP",
+};
+
+export const validContactInput = {
+  firstName: "Amanda",
+  lastName: "Harris",
+  email: "ajharris77@rocketmail.com",
+  phoneNumber: "601-766-3728",
+  streetAddress: "36947 Lincoln Avenue",
+  city: "Painted Post",
+  zipCode: "14870",
+  company: "Paper Products Corp.",
+  groupId: new mongoose.Types.ObjectId("679d0f628456f610eb27986a"),
+};
+
+export const invalidContactCases = {
+  INVALID_FIRST_NAME: "T1m0thy",
+  TOO_SHORT_FIRST_NAME: "T",
+  INVALID_LAST_NAME: "J3nk1ns*",
+  TOO_SHORT_LAST_NAME: "J",
+  INVALID_PHONE_NUMBER: "543*123*",
+  TOO_SHORT_STREET_ADDRESS: "A street",
+  INVALID_ZIP_CODE: "AA356",
+  ZIP_CODE_OUT_OF_LENGTH: "123",
 };
