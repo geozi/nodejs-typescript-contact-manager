@@ -6,26 +6,22 @@ import assert from "assert";
 import mongoose from "mongoose";
 import { userFailedValidation } from "../../src/domain/messages/userValidation.message";
 
-describe("User model unit test", () => {
+describe("User model unit tests", () => {
   let newUser: IUser;
-  before(() => {
-    newUser = new User(validUserInput);
-  });
 
   describe("Successful validation", () => {
     beforeEach(() => {
+      sinon.restore();
+      newUser = new User(validUserInput);
+    });
+
+    it("has valid inputs", () => {
       sinon.replace(
         User.prototype,
         "validateSync",
         sinon.stub().returns(undefined)
       );
-    });
 
-    afterEach(() => {
-      sinon.restore();
-    });
-
-    it("has valid inputs", () => {
       const mongooseErrors = newUser.validateSync();
 
       assert.strictEqual(mongooseErrors, undefined);
@@ -36,11 +32,9 @@ describe("User model unit test", () => {
     let validationError: mongoose.Error.ValidationError;
 
     beforeEach(() => {
-      validationError = new mongoose.Error.ValidationError();
-    });
-
-    afterEach(() => {
       sinon.restore();
+      newUser = new User();
+      validationError = new mongoose.Error.ValidationError();
     });
 
     it("username is empty", () => {

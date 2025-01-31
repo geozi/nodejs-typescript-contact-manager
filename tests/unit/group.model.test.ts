@@ -10,10 +10,9 @@ describe("Group model unit tests", () => {
   let newGroup: IGroup;
 
   describe("Successful validation", () => {
-    newGroup = new Group(validGroupInput);
-
     beforeEach(() => {
       sinon.restore();
+      newGroup = new Group(validGroupInput);
     });
 
     it("has valid inputs", () => {
@@ -31,10 +30,10 @@ describe("Group model unit tests", () => {
 
   describe("Failed validation", () => {
     let validationError: mongoose.Error.ValidationError;
-    newGroup = new Group();
 
     beforeEach(() => {
       sinon.restore();
+      newGroup = new Group();
       validationError = new mongoose.Error.ValidationError();
     });
 
