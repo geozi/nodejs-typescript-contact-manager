@@ -34,6 +34,7 @@ const contactSchema = new Schema<IContact>(
     },
     email: {
       type: String,
+      unique: true,
       required: [true, contactFailedValidation.EMAIL_REQUIRED_MESSAGE],
       match: [EMAIL_REGEX, contactFailedValidation.EMAIL_INVALID_MESSAGE],
       trim: true,
