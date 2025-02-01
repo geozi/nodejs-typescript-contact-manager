@@ -22,7 +22,7 @@ describe.only("User repository unit tests", () => {
       sinon.restore();
     });
 
-    it("Promise resolves to IUser object", async () => {
+    it("Promise resolves to User object", async () => {
       sinon.stub(User, "findOne").resolves(mockUser);
       const foundUser = await getUserByUsername(validUserInput.username);
       assert(foundUser instanceof User);
@@ -40,7 +40,7 @@ describe.only("User repository unit tests", () => {
       sinon.restore();
     });
 
-    it("Promise resolves to IUser object", async () => {
+    it("Promise resolves to User object", async () => {
       sinon.stub(User, "findOne").resolves(mockUser);
       const foundUser = await getUserByEmail(validUserInput.email);
       assert(foundUser instanceof User);
@@ -71,7 +71,7 @@ describe.only("User repository unit tests", () => {
       sinon.restore();
     });
 
-    it("Promise resolves to IUser object", async () => {
+    it("Promise resolves to User object", async () => {
       sinon.stub(User.prototype, "save").resolves(mockUser);
       const newUser = new User(validUserInput);
       const savedUser = await addUser(newUser);
@@ -84,7 +84,7 @@ describe.only("User repository unit tests", () => {
       sinon.restore();
     });
 
-    it("Promise resolves to IUser object", async () => {
+    it("Promise resolves to User object", async () => {
       sinon.stub(User, "findByIdAndUpdate").resolves(mockUser);
       const updatedUser = await updateUser(mockId, validUserInput);
       assert(updatedUser instanceof User);
@@ -102,7 +102,7 @@ describe.only("User repository unit tests", () => {
       sinon.restore();
     });
 
-    it("Promise resolves to IUser object", async () => {
+    it("Promise resolves to User object", async () => {
       sinon.stub(User, "findByIdAndDelete").resolves(mockUser);
       const deletedUser = await deleteUser(mockId);
       assert(deletedUser instanceof User);
