@@ -4,9 +4,13 @@ import sinon from "sinon";
 import assert from "assert";
 import mongoose from "mongoose";
 import { contactFailedValidation } from "../../src/domain/messages/contactValidation.message";
-import { invalidContactCases, validContactInput } from "../testInputs";
+import {
+  invalidContactCases,
+  invalidUserInputs,
+  validContactInput,
+} from "../testInputs";
 
-describe.only("Contact model unit tests", () => {
+describe("Contact model unit tests", () => {
   let newContact: IContact;
 
   describe("Successful validation", () => {
@@ -178,6 +182,196 @@ describe.only("Contact model unit tests", () => {
       assert.strictEqual(
         mongooseErrors?.errors.lastName.message,
         contactFailedValidation.LAST_NAME_BELOW_MIN_LENGTH_MESSAGE
+      );
+    });
+
+    it("email is empty", () => {
+      validationError.errors = {
+        email: new mongoose.Error.ValidatorError({
+          message: contactFailedValidation.EMAIL_REQUIRED_MESSAGE,
+          path: "email",
+          value: "",
+        }),
+      };
+
+      sinon.replace(
+        Contact.prototype,
+        "validateSync",
+        sinon.stub().returns(validationError)
+      );
+
+      const mongooseErrors = newContact.validateSync();
+
+      assert.notStrictEqual(mongooseErrors, undefined);
+      assert.strictEqual(
+        mongooseErrors?.errors.email.message,
+        contactFailedValidation.EMAIL_REQUIRED_MESSAGE
+      );
+    });
+
+    it("email is invalid", () => {
+      validationError.errors = {
+        email: new mongoose.Error.ValidatorError({
+          message: contactFailedValidation.EMAIL_INVALID_MESSAGE,
+          path: "email",
+          value: invalidUserInputs.EMAIL_INVALID_CASES[0][1],
+        }),
+      };
+
+      sinon.replace(
+        Contact.prototype,
+        "validateSync",
+        sinon.stub().returns(validationError)
+      );
+
+      const mongooseErrors = newContact.validateSync();
+
+      assert.notStrictEqual(mongooseErrors, undefined);
+      assert.strictEqual(
+        mongooseErrors?.errors.email.message,
+        contactFailedValidation.EMAIL_INVALID_MESSAGE
+      );
+    });
+
+    it("phone number is empty", () => {
+      validationError.errors = {
+        phoneNumber: new mongoose.Error.ValidatorError({
+          message: contactFailedValidation.PHONE_NUMBER_REQUIRED_MESSAGE,
+          path: "phoneNumber",
+          value: "",
+        }),
+      };
+
+      sinon.replace(
+        Contact.prototype,
+        "validateSync",
+        sinon.stub().returns(validationError)
+      );
+
+      const mongooseErrors = newContact.validateSync();
+
+      assert.notStrictEqual(mongooseErrors, undefined);
+      assert.strictEqual(
+        mongooseErrors?.errors.phoneNumber.message,
+        contactFailedValidation.PHONE_NUMBER_REQUIRED_MESSAGE
+      );
+    });
+
+    it("phone number is invalid", () => {
+      validationError.errors = {
+        phoneNumber: new mongoose.Error.ValidatorError({
+          message: contactFailedValidation.PHONE_NUMBER_INVALID_MESSAGE,
+          path: "phoneNumber",
+          value: invalidContactCases.INVALID_PHONE_NUMBER,
+        }),
+      };
+
+      sinon.replace(
+        Contact.prototype,
+        "validateSync",
+        sinon.stub().returns(validationError)
+      );
+
+      const mongooseErrors = newContact.validateSync();
+
+      assert.notStrictEqual(mongooseErrors, undefined);
+      assert.strictEqual(
+        mongooseErrors?.errors.phoneNumber.message,
+        contactFailedValidation.PHONE_NUMBER_INVALID_MESSAGE
+      );
+    });
+
+    it("streetAddress is too short", () => {
+      validationError.errors = {
+        streetAddress: new mongoose.Error.ValidatorError({
+          message:
+            contactFailedValidation.STREET_ADDRESS_BELOW_MIN_LENGTH_MESSAGE,
+          path: "streetAddress",
+          value: invalidContactCases.TOO_SHORT_STREET_ADDRESS,
+        }),
+      };
+
+      sinon.replace(
+        Contact.prototype,
+        "validateSync",
+        sinon.stub().returns(validationError)
+      );
+
+      const mongooseErrors = newContact.validateSync();
+
+      assert.notStrictEqual(mongooseErrors, undefined);
+      assert.strictEqual(
+        mongooseErrors?.errors.streetAddress.message,
+        contactFailedValidation.STREET_ADDRESS_BELOW_MIN_LENGTH_MESSAGE
+      );
+    });
+
+    it("zipCode is invalid", () => {
+      validationError.errors = {
+        zipCode: new mongoose.Error.ValidatorError({
+          message: contactFailedValidation.ZIP_CODE_INVALID_MESSAGE,
+          path: "zipCode",
+          value: invalidContactCases.INVALID_ZIP_CODE,
+        }),
+      };
+
+      sinon.replace(
+        Contact.prototype,
+        "validateSync",
+        sinon.stub().returns(validationError)
+      );
+
+      const mongooseErrors = newContact.validateSync();
+      assert.notStrictEqual(mongooseErrors, undefined);
+      assert.strictEqual(
+        mongooseErrors?.errors.zipCode.message,
+        contactFailedValidation.ZIP_CODE_INVALID_MESSAGE
+      );
+    });
+
+    it("zipCode is out of length", () => {
+      validationError.errors = {
+        zipCode: new mongoose.Error.ValidatorError({
+          message: contactFailedValidation.ZIP_CODE_OUT_OF_LENGTH_MESSAGE,
+          path: "zipCode",
+          value: invalidContactCases.ZIP_CODE_OUT_OF_LENGTH,
+        }),
+      };
+
+      sinon.replace(
+        Contact.prototype,
+        "validateSync",
+        sinon.stub().returns(validationError)
+      );
+
+      const mongooseErrors = newContact.validateSync();
+      assert.notStrictEqual(mongooseErrors, undefined);
+      assert.strictEqual(
+        mongooseErrors?.errors.zipCode.message,
+        contactFailedValidation.ZIP_CODE_OUT_OF_LENGTH_MESSAGE
+      );
+    });
+
+    it("groupId is empty", () => {
+      validationError.errors = {
+        groupId: new mongoose.Error.ValidatorError({
+          message: contactFailedValidation.GROUP_ID_REQUIRED,
+          path: "groupId",
+          value: "",
+        }),
+      };
+
+      sinon.replace(
+        Contact.prototype,
+        "validateSync",
+        sinon.stub().returns(validationError)
+      );
+
+      const mongooseErrors = newContact.validateSync();
+      assert.notStrictEqual(mongooseErrors, undefined);
+      assert.strictEqual(
+        mongooseErrors?.errors.groupId.message,
+        contactFailedValidation.GROUP_ID_REQUIRED
       );
     });
   });
