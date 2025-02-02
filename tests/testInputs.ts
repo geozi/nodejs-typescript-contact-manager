@@ -56,7 +56,7 @@ export const validContactInput = {
   streetAddress: "36947 Lincoln Avenue",
   city: "Painted Post",
   zipCode: "14870",
-  company: "Paper Products Corp.",
+  companyName: "Paper Products Corp.",
   groupId: new mongoose.Types.ObjectId("679d0f628456f610eb27986a"),
 };
 

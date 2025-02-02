@@ -74,7 +74,7 @@ const contactSchema = new Schema<IContact>(
       ],
       trim: true,
     },
-    company: {
+    companyName: {
       type: String,
     },
     groupId: {
