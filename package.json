@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha",
     "build": "tsc",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "generatedDocs": "npx typedoc"
   },
   "keywords": [
     "RESTful API",
