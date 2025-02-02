@@ -11,7 +11,7 @@ import {
 import { validGroupInput } from "../testInputs";
 import { IGroup } from "../../src/domain/interfaces/iGroup.interface";
 
-describe.only("Group repository unit tests", () => {
+describe("Group repository unit tests", () => {
   const mockGroup = new Group();
   const mockId = new Types.ObjectId("679e4f0a998f625554eda7f3");
 

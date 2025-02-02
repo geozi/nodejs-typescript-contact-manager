@@ -12,7 +12,7 @@ import {
 } from "../../src/persistence/user.repository";
 import { validUserInput } from "../testInputs";
 
-describe.only("User repository unit tests", () => {
+describe("User repository unit tests", () => {
   const mockUser = new User();
   const mockUsers = [new User(), new User(), new User()];
   const mockId = new Types.ObjectId("679e4772482d583ec4e5e08e");
