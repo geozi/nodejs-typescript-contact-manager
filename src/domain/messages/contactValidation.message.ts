@@ -24,9 +24,6 @@ import { contactConstants } from "../constants/contact.constant";
  * @property {string} GROUP_ID_REQUIRED - Message sent when the group ID is not provided.
  * @property {string} GROUP_ID_OUT_OF_LENGTH - Message sent when the group ID is longer or shorter than the accepted length.
  * @property {string} GROUP_ID_INVALID - Message sent when the group ID does not match the standard regex pattern.
- *
- * The standard regex patterns mentioned above can be found in:
- * [src/domain/resources/validationRegExp.ts]
  */
 export const contactFailedValidation = {
   /**

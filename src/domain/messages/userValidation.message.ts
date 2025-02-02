@@ -19,9 +19,6 @@ import { userConstants } from "../constants/user.constant";
  * @property {string} PASSWORD_MUST_HAVE_CHARACTERS_MESSAGE - Message sent when the provided password does not match the standard regex pattern.
  * @property {string} ROLE_REQUIRED_MESSAGE - Message sent when no role is provided.
  * @property {string} ROLE_INVALID_MESSAGE - Message sent when the provided role does not match the standard regex pattern.
- *
- * The standard regex patterns mentioned above can be found in:
- * [src/domain/resources/validationRegExp.ts]
  */
 export const userFailedValidation = {
   /**
