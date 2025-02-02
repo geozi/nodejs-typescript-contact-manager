@@ -29,9 +29,7 @@ export const updateGroup = async (
     context: "query",
   });
 
-  logger.info(
-    `Group repository: ${Group.findByIdAndUpdate.name} called successfully`
-  );
+  logger.info(`Group repository: findByIdAndUpdate called successfully`);
 
   return updatedGroup;
 };
@@ -41,9 +39,7 @@ export const deleteGroup = async (
 ): Promise<IGroup | null> => {
   const deletedGroup = await Group.findByIdAndDelete(id);
 
-  logger.info(
-    `Group repository: ${Group.findByIdAndDelete.name} called successfully`
-  );
+  logger.info(`Group repository: findByIdAndDelete called successfully`);
 
   return deletedGroup;
 };

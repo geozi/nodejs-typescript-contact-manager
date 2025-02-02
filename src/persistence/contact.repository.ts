@@ -35,9 +35,7 @@ export const updateContact = async (
     context: "query",
   });
 
-  logger.info(
-    `Contact repository: ${Contact.findByIdAndUpdate.name} called successfully`
-  );
+  logger.info(`Contact repository: findByIdAndUpdate called successfully`);
 
   return updatedContact;
 };
@@ -47,9 +45,7 @@ export const deleteContact = async (
 ): Promise<IContact | null> => {
   const deletedContact = await Contact.findByIdAndDelete(id);
 
-  logger.info(
-    `Contact repository: ${Contact.findByIdAndDelete.name} called successfully`
-  );
+  logger.info(`Contact repository: findByIdAndDelete called successfully`);
 
   return deletedContact;
 };

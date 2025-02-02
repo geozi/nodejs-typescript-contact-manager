@@ -48,9 +48,7 @@ export const updateUser = async (
     context: "query",
   });
 
-  logger.info(
-    `User repository: ${User.findByIdAndUpdate.name} called successfully`
-  );
+  logger.info(`User repository: findByIdAndUpdate called successfully`);
 
   return updatedUser;
 };
@@ -58,9 +56,7 @@ export const updateUser = async (
 export const deleteUser = async (id: Types.ObjectId): Promise<IUser | null> => {
   const deletedUser = await User.findByIdAndDelete(id);
 
-  logger.info(
-    `User repository: ${User.findByIdAndDelete.name} called successfully`
-  );
+  logger.info(`User repository: findByIdAndDelete called successfully`);
 
   return deletedUser;
 };
