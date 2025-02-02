@@ -1,8 +1,18 @@
+/**
+ * Group repository.
+ * @module src/persistence/group.repository
+ */
 import { Types } from "mongoose";
 import logger from "../../logs/logger.config";
 import { IGroup } from "../domain/interfaces/iGroup.interface";
 import Group from "../domain/models/group.model";
 
+/**
+ * Returns a contact group with the specified name.
+ *
+ * @param {string} name The name of a contact group.
+ * @returns {Promise<IGroup | null>} A promise that resolves to a Group object or null.
+ */
 export const getGroupByName = async (name: string): Promise<IGroup | null> => {
   const requestedGroup = await Group.findOne({ name: name });
 
@@ -11,6 +21,12 @@ export const getGroupByName = async (name: string): Promise<IGroup | null> => {
   return requestedGroup;
 };
 
+/**
+ * Adds a new contact group to the 'groups' collection.
+ *
+ * @param {IGroup} newGroup The new group to be added.
+ * @returns {Promise<IGroup>} A promise that resolves to a Group object representing the saved document.
+ */
 export const addGroup = async (newGroup: IGroup): Promise<IGroup> => {
   const savedGroup = await newGroup.save();
 
@@ -19,6 +35,13 @@ export const addGroup = async (newGroup: IGroup): Promise<IGroup> => {
   return savedGroup;
 };
 
+/**
+ * Updates the fields of an existing contact group.
+ *
+ * @param {Types.ObjectId} id The ID of a contact group document.
+ * @param updateDataObject The new information to be persisted.
+ * @returns {Promise<IGroup | null>} A promise that resolves to a Group object representing the updated document or null.
+ */
 export const updateGroup = async (
   id: Types.ObjectId,
   updateDataObject: object
@@ -34,6 +57,12 @@ export const updateGroup = async (
   return updatedGroup;
 };
 
+/**
+ * Deletes a contact group.
+ *
+ * @param {Types.ObjectId} id The ID of a contact group document.
+ * @returns {Promise<IGroup | null>} A promise that resolves to a Group object representing the deleted document or null.
+ */
 export const deleteGroup = async (
   id: Types.ObjectId
 ): Promise<IGroup | null> => {
