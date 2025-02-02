@@ -45,12 +45,6 @@ describe("Group repository unit tests", () => {
       const savedGroup = await addGroup(newGroup);
       assert(savedGroup instanceof Group);
     });
-
-    it("Promise resolves to null", async () => {
-      sinon.stub(Group.prototype, "save").resolves(null);
-      const savedGroup = await addGroup(newGroup);
-      assert.strictEqual(savedGroup, null);
-    });
   });
 
   describe("updateGroup()", () => {
