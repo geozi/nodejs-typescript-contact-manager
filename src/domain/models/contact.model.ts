@@ -1,3 +1,8 @@
+/**
+ * Contact model schema.
+ * @module src/domain/models/contact.model
+ */
+
 import { Schema, model } from "mongoose";
 import { IContact } from "../interfaces/iContact.interface";
 import mongooseUniqueValidator from "mongoose-unique-validator";
@@ -10,6 +15,20 @@ import {
   ZIP_CODE_REGEX,
 } from "../resources/validationRegExp";
 
+/**
+ * Contact schema for persistence in MongoDB.
+ *
+ * @type {Schema<IContact>}
+ * @property {string} firstName - The first name of the contact person.
+ * @property {string} lastName - The last name of the contact person.
+ * @property {string} email - The email of the contact person.
+ * @property {string} phoneNumber - The phone number of the contact person.
+ * @property {string} streetAddress - The street address of the contact person.
+ * @property {string} city - The city where the contact person resides.
+ * @property {string} zipCode - The zip code for the contact person's address.
+ * @property {string} companyName - The company name where the contact person works.
+ * @property {Schema.Types.ObjectId} groupId - The ID of the group in which the contact person is categorized.
+ */
 const contactSchema = new Schema<IContact>(
   {
     firstName: {
