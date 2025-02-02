@@ -8,7 +8,9 @@ export const getContactByEmail = async (
 ): Promise<IContact | null> => {
   const foundContact = await Contact.findOne({ email: email });
 
-  logger.info(`Contact.findOne({email: email}) called successfully`);
+  logger.info(
+    `Contact repository: ${Contact.findOne.name} called successfully`
+  );
 
   return foundContact;
 };
@@ -16,7 +18,9 @@ export const getContactByEmail = async (
 export const addContact = async (newContact: IContact): Promise<IContact> => {
   const savedContact = await newContact.save();
 
-  logger.info(`Contact.prototype.save() called successfully`);
+  logger.info(
+    `Contact repository: ${newContact.save.name} called successfully`
+  );
 
   return savedContact;
 };
@@ -32,7 +36,7 @@ export const updateContact = async (
   });
 
   logger.info(
-    `Contact.findByIdAndUpdate(id, updateDataObject) called successfully`
+    `Contact repository: ${Contact.findByIdAndUpdate.name} called successfully`
   );
 
   return updatedContact;
@@ -43,7 +47,9 @@ export const deleteContact = async (
 ): Promise<IContact | null> => {
   const deletedContact = await Contact.findByIdAndDelete(id);
 
-  logger.info(`Contact.findByIdAndDelete(id) called successfully`);
+  logger.info(
+    `Contact repository: ${Contact.findByIdAndDelete.name} called successfully`
+  );
 
   return deletedContact;
 };

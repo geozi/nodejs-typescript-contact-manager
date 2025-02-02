@@ -9,7 +9,7 @@ export const getUserByUsername = async (
 ): Promise<IUser | null> => {
   const requestedUser = await User.findOne({ username: username });
 
-  logger.info(`User.findOne({username: username}) called successfully`);
+  logger.info(`User repository: ${User.findOne.name} called successfully`);
 
   return requestedUser;
 };
@@ -17,7 +17,7 @@ export const getUserByUsername = async (
 export const getUserByEmail = async (email: string): Promise<IUser | null> => {
   const requestedUser = await User.findOne({ email: email });
 
-  logger.info(`User.findOne({email: email}) called successfully`);
+  logger.info(`User repository: ${User.findOne.name} called successfully`);
 
   return requestedUser;
 };
@@ -25,7 +25,7 @@ export const getUserByEmail = async (email: string): Promise<IUser | null> => {
 export const getUsersByRole = async (role: Role): Promise<Array<IUser>> => {
   const requestedUsers = await User.find({ role: role });
 
-  logger.info(`User.find({role:role}) called successfully`);
+  logger.info(`User repository: ${User.find.name} called successfully`);
 
   return requestedUsers;
 };
@@ -33,7 +33,7 @@ export const getUsersByRole = async (role: Role): Promise<Array<IUser>> => {
 export const addUser = async (newUser: IUser): Promise<IUser> => {
   const savedUser = await newUser.save();
 
-  logger.info(`User.prototype.save() called successfully`);
+  logger.info(`User repository: ${newUser.save.name} called successfully`);
 
   return savedUser;
 };
@@ -49,7 +49,7 @@ export const updateUser = async (
   });
 
   logger.info(
-    `User.findByIdAndUpdate(id, updateDataObject) called successfully`
+    `User repository: ${User.findByIdAndUpdate.name} called successfully`
   );
 
   return updatedUser;
@@ -58,7 +58,9 @@ export const updateUser = async (
 export const deleteUser = async (id: Types.ObjectId): Promise<IUser | null> => {
   const deletedUser = await User.findByIdAndDelete(id);
 
-  logger.info(`User.findByIdAndDelete(id) called successfully`);
+  logger.info(
+    `User repository: ${User.findByIdAndDelete.name} called successfully`
+  );
 
   return deletedUser;
 };
