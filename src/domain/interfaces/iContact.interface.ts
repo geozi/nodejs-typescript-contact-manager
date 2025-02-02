@@ -14,7 +14,7 @@ import { Document, Schema } from "mongoose";
  * @property {string} lastName - The last name of the contact person.
  * @property {string} email - The email of the contact person.
  * @property {string} phoneNumber - The phone number of the contact person.
- * @property {string} streetAddress - The street address of the contact person.
+ * @property {string} streetAddress - (Optional) The street address of the contact person.
  * @property {string} city - (Optional) The city where the contact person resides.
  * @property {string} zipCode - (Optional) The zip code for the contact person's address.
  * @property {string} companyName - (Optional) The company name where the contact person works.
@@ -47,7 +47,7 @@ export interface IContact extends Document {
   phoneNumber: string;
 
   /**
-   * The street address of the contact person.
+   * (Optional) The street address of the contact person.
    * @type {string}
    */
   streetAddress?: string;
