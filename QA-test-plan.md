@@ -1,6 +1,6 @@
 # Contact Manager API test plan
 
-Document version 1.0.0
+Document version 1.0.1
 
 ## Introduction
 
@@ -49,6 +49,31 @@ The domain layer unit tests contain simulated scenarios, in which a stub of `val
         │   └── user.model.ts
         └── resources
             └── validationRegExp.ts
+```
+
+### Promise-oriented
+
+#### Persistence layer
+
+Persistence layer unit test suites:
+
+- User repository [✔],
+- Group repository [✔],
+- Contact repository [✔].
+
+Depending on its particular return type, each repository function is tested against 2 scenarios:
+
+1. **Positive scenario**: Promise resolves to an object (IUser, IGroup, or IContact),
+2. **Negative scenario**: Promise resolves to null or an empty array.
+
+The main directories and files tested are:
+
+```text
+└── src
+    └── persistence
+        ├── contact.repository.ts
+        ├── group.repository.ts
+        └── user.repository.ts
 ```
 
 ## Out of scope
