@@ -8,18 +8,18 @@ import User from "../../src/domain/models/user.model";
 import * as userRepository from "../../src/persistence/user.repository";
 import {
   createUserProfile,
+  deleteUserProfile,
   retrieveUserByEmail,
   retrieveUserByUsername,
   retrieveUsersByRole,
   updateUserProfile,
 } from "../../src/service/user.service";
+import { Types } from "mongoose";
 
 describe.only("User service unit tests", () => {
   const validUser = new User(validUserInput);
-  const mockUser = new User();
-  const mockUpdateDateObj: IUserUpdate = {
-    id: "67a1d59cc3311a606aca661e",
-  };
+  const mockId = new Types.ObjectId("67a1d59cc3311a606aca661e");
+  const mockUpdateDateObj: IUserUpdate = {};
   let methodStub: sinon.SinonStub;
 
   describe("retrieveUserByUsername()", () => {
@@ -114,6 +114,54 @@ describe.only("User service unit tests", () => {
       methodStub.resolves(null);
       assert.rejects(async () => {
         await createUserProfile(validUser);
+      }, NotFoundError);
+    });
+  });
+
+  describe("updateUserProfile()", () => {
+    beforeEach(() => {
+      methodStub = sinon.stub(userRepository, "updateUser");
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it("server error", () => {
+      methodStub.rejects();
+      assert.rejects(async () => {
+        await updateUserProfile(mockId, mockUpdateDateObj);
+      }, ServerError);
+    });
+
+    it("not found", () => {
+      methodStub.resolves(null);
+      assert.rejects(async () => {
+        await updateUserProfile(mockId, mockUpdateDateObj);
+      }, NotFoundError);
+    });
+  });
+
+  describe("deleteUserProfile()", () => {
+    beforeEach(() => {
+      methodStub = sinon.stub(userRepository, "deleteUser");
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it("server error", () => {
+      methodStub.rejects();
+      assert.rejects(async () => {
+        await deleteUserProfile(mockId);
+      }, ServerError);
+    });
+
+    it("not found", () => {
+      methodStub.resolves(null);
+      assert.rejects(async () => {
+        await deleteUserProfile(mockId);
       }, NotFoundError);
     });
   });
