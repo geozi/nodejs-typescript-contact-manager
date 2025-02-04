@@ -1,5 +1,4 @@
 import sinon from "sinon";
-import assert from "assert";
 import { validUserInput } from "../testInputs";
 import { NotFoundError } from "../../src/errors/notFoundError.class";
 import { ServerError } from "../../src/errors/serverError.class";
@@ -16,11 +15,16 @@ import {
 } from "../../src/service/user.service";
 import { Types } from "mongoose";
 import { testLogger } from "../../logs/logger.config";
+import * as chai from "chai";
+import chaiAsPromised from "chai-as-promised";
+import { IUser } from "../../src/domain/interfaces/iUser.interface";
+chai.use(chaiAsPromised);
 
-describe.only("User service unit tests", () => {
+describe("User service unit tests", () => {
   const validUser = new User(validUserInput);
   const mockId = new Types.ObjectId("67a1d59cc3311a606aca661e");
   const mockUpdateDateObj: IUserUpdate = {};
+  const mockUsers: Array<IUser> = [];
   let methodStub: sinon.SinonStub;
 
   describe("retrieveUserByUsername()", () => {
@@ -32,20 +36,24 @@ describe.only("User service unit tests", () => {
       methodStub.restore();
     });
 
-    it("server error", () => {
+    it("server error", async () => {
       methodStub.rejects();
-      assert.rejects(async () => {
-        await retrieveUserByUsername(validUser.username);
-      }, ServerError);
-      testLogger.info(`retrieveUserByUsername() -> server error OK`);
+
+      await chai
+        .expect(retrieveUserByUsername(validUser.username))
+        .to.be.rejectedWith(ServerError);
+
+      testLogger.info(`retrieveUserByUsername() -> server error test OK`);
     });
 
-    it("not found", () => {
+    it("not found", async () => {
       methodStub.resolves(null);
-      assert.rejects(async () => {
-        await retrieveUserByUsername(validUser.username);
-      }, NotFoundError);
-      testLogger.info(`retrieveUserByUsername() -> not found OK`);
+
+      await chai
+        .expect(retrieveUserByUsername(validUser.username))
+        .to.be.rejectedWith(NotFoundError);
+
+      testLogger.info(`retrieveUserByUsername() -> not found test OK`);
     });
   });
 
@@ -58,20 +66,23 @@ describe.only("User service unit tests", () => {
       methodStub.restore();
     });
 
-    it("server error", () => {
+    it("server error", async () => {
       methodStub.rejects();
-      assert.rejects(async () => {
-        await retrieveUserByEmail(validUser.email);
-      }, ServerError);
-      testLogger.info(`retrieveUserByEmail() -> server error OK`);
+      await chai
+        .expect(retrieveUserByEmail(validUser.email))
+        .to.be.rejectedWith(ServerError);
+
+      testLogger.info(`retrieveUserByEmail() -> server error test OK`);
     });
 
-    it("not found", () => {
+    it("not found", async () => {
       methodStub.resolves(null);
-      assert.rejects(async () => {
-        await retrieveUserByEmail(validUser.email);
-      }, NotFoundError);
-      testLogger.info(`retrieveUserByEmail() -> not found OK`);
+
+      await chai
+        .expect(retrieveUserByEmail(validUser.email))
+        .to.be.rejectedWith(NotFoundError);
+
+      testLogger.info(`retrieveUserByEmail() -> not found test OK`);
     });
   });
 
@@ -84,20 +95,24 @@ describe.only("User service unit tests", () => {
       methodStub.restore();
     });
 
-    it("server error", () => {
+    it("server error", async () => {
       methodStub.rejects();
-      assert.rejects(async () => {
-        await retrieveUsersByRole(validUser.role);
-      }, ServerError);
-      testLogger.info(`retrieveUsersByRole() -> server error OK`);
+
+      await chai
+        .expect(retrieveUsersByRole(validUser.role))
+        .to.be.rejectedWith(ServerError);
+
+      testLogger.info(`retrieveUsersByRole() -> server error test OK`);
     });
 
-    it("not found", () => {
-      methodStub.resolves(null);
-      assert.rejects(async () => {
-        await retrieveUsersByRole(validUser.role);
-      }, NotFoundError);
-      testLogger.info(`retrieveUsersByRole() -> not found OK`);
+    it("not found", async () => {
+      methodStub.resolves(mockUsers);
+
+      await chai
+        .expect(retrieveUsersByRole(validUser.role))
+        .to.be.rejectedWith(NotFoundError);
+
+      testLogger.info(`retrieveUsersByRole() -> not found test OK`);
     });
   });
 
@@ -110,12 +125,13 @@ describe.only("User service unit tests", () => {
       methodStub.restore();
     });
 
-    it("server error", () => {
+    it("server error", async () => {
       methodStub.rejects();
-      assert.rejects(async () => {
-        await createUserProfile(validUser);
-      }, ServerError);
-      testLogger.info(`createUserProfile() -> server error OK`);
+      await chai
+        .expect(createUserProfile(validUser))
+        .to.be.rejectedWith(ServerError);
+
+      testLogger.info(`createUserProfile() -> server error test OK`);
     });
   });
 
@@ -128,20 +144,22 @@ describe.only("User service unit tests", () => {
       sinon.restore();
     });
 
-    it("server error", () => {
+    it("server error", async () => {
       methodStub.rejects();
-      assert.rejects(async () => {
-        await updateUserProfile(mockId, mockUpdateDateObj);
-      }, ServerError);
-      testLogger.info(`updateUserProfile() -> server error OK`);
+      await chai
+        .expect(updateUserProfile(mockId, mockUpdateDateObj))
+        .to.be.rejectedWith(ServerError);
+
+      testLogger.info(`updateUserProfile() -> server error test OK`);
     });
 
-    it("not found", () => {
+    it("not found", async () => {
       methodStub.resolves(null);
-      assert.rejects(async () => {
-        await updateUserProfile(mockId, mockUpdateDateObj);
-      }, NotFoundError);
-      testLogger.info(`updateUserProfile() -> not found OK`);
+      await chai
+        .expect(updateUserProfile(mockId, mockUpdateDateObj))
+        .to.be.rejectedWith(NotFoundError);
+
+      testLogger.info(`updateUserProfile() -> not found test OK`);
     });
   });
 
@@ -154,20 +172,23 @@ describe.only("User service unit tests", () => {
       sinon.restore();
     });
 
-    it("server error", () => {
+    it("server error", async () => {
       methodStub.rejects();
-      assert.rejects(async () => {
-        await deleteUserProfile(mockId);
-      }, ServerError);
-      testLogger.info(`deleteUserProfile() -> server error OK`);
+      await chai
+        .expect(deleteUserProfile(mockId))
+        .to.be.rejectedWith(ServerError);
+
+      testLogger.info(`deleteUserProfile() -> server error test OK`);
     });
 
-    it("not found", () => {
+    it("not found", async () => {
       methodStub.resolves(null);
-      assert.rejects(async () => {
-        await deleteUserProfile(mockId);
-      }, NotFoundError);
-      testLogger.info(`deleteUserProfile() -> not found OK`);
+
+      await chai
+        .expect(deleteUserProfile(mockId))
+        .to.be.rejectedWith(NotFoundError);
+
+      testLogger.info(`deleteUserProfile() -> not found test OK`);
     });
   });
 });

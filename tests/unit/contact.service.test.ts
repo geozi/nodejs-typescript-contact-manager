@@ -1,5 +1,4 @@
 import sinon from "sinon";
-import assert from "assert";
 import { validContactInput } from "../testInputs";
 import { NotFoundError } from "../../src/errors/notFoundError.class";
 import { ServerError } from "../../src/errors/serverError.class";
@@ -8,15 +7,17 @@ import Contact from "../../src/domain/models/contact.model";
 import * as contactRepository from "../../src/persistence/contact.repository";
 import {
   createContactRecord,
+  deleteContactRecord,
   retrieveContactByEmail,
   updateContactRecord,
 } from "../../src/service/contact.service";
 import { Types } from "mongoose";
 import { testLogger } from "../../logs/logger.config";
-import { IContact } from "../../src/domain/interfaces/iContact.interface";
-import { commonServiceMessages } from "../../src/service/messages/commonService.message";
+import * as chai from "chai";
+import chaiAsPromised from "chai-as-promised";
+chai.use(chaiAsPromised);
 
-describe.only("Contact service unit tests", () => {
+describe("Contact service unit tests", () => {
   const validContact = new Contact(validContactInput);
   const mockId = new Types.ObjectId("67a2392828834335f628374f");
   const mockUpdateDateObj: IContactUpdate = {};
@@ -31,21 +32,24 @@ describe.only("Contact service unit tests", () => {
       methodStub.restore();
     });
 
-    it("server error", () => {
+    it("server error", async () => {
       methodStub.rejects();
 
-      assert.rejects(async () => {
-        await retrieveContactByEmail(validContact.email);
-      }, ServerError);
-      testLogger.info(`retrieveContactByEmail() -> server error OK`);
+      await chai
+        .expect(retrieveContactByEmail(validContact.email))
+        .to.be.rejectedWith(ServerError);
+
+      testLogger.info(`retrieveContactByEmail() -> server error test OK`);
     });
 
-    it("not found", () => {
+    it("not found", async () => {
       methodStub.resolves(null);
-      assert.rejects(async () => {
-        await retrieveContactByEmail(validContact.email);
-      }, NotFoundError);
-      testLogger.info(`retrieveContactByEmail() -> not found OK`);
+
+      await chai
+        .expect(retrieveContactByEmail(validContact.email))
+        .to.be.rejectedWith(NotFoundError);
+
+      testLogger.info(`retrieveContactByEmail() -> not found test OK`);
     });
   });
 
@@ -58,13 +62,14 @@ describe.only("Contact service unit tests", () => {
       methodStub.restore();
     });
 
-    it("server error", () => {
+    it("server error", async () => {
       methodStub.rejects();
-      assert.rejects(async () => {
-        await createContactRecord(validContact);
-      }, ServerError);
 
-      testLogger.info(`createContactRecord() -> server error OK`);
+      await chai
+        .expect(createContactRecord(validContact))
+        .to.be.rejectedWith(ServerError);
+
+      testLogger.info(`createContactRecord() -> server error test OK`);
     });
   });
 
@@ -77,13 +82,54 @@ describe.only("Contact service unit tests", () => {
       methodStub.restore();
     });
 
-    it("server error", () => {
+    it("server error", async () => {
       methodStub.rejects();
-      assert.rejects(async () => {
-        await updateContactRecord(mockId, mockUpdateDateObj);
-      }, ServerError);
 
-      testLogger.info(`updateContactRecord() -> server error OK`);
+      await chai
+        .expect(updateContactRecord(mockId, mockUpdateDateObj))
+        .to.be.rejectedWith(ServerError);
+
+      testLogger.info(`updateContactRecord() -> server error test OK`);
+    });
+
+    it("not found", async () => {
+      methodStub.resolves(null);
+
+      await chai
+        .expect(updateContactRecord(mockId, mockUpdateDateObj))
+        .to.be.rejectedWith(NotFoundError);
+
+      testLogger.info(`updateContactRecord() -> not found test OK`);
+    });
+  });
+
+  describe("deleteContactRecord()", async () => {
+    beforeEach(() => {
+      methodStub = sinon.stub(contactRepository, "deleteContact");
+    });
+
+    afterEach(() => {
+      methodStub.restore();
+    });
+
+    it("server error", async () => {
+      methodStub.rejects();
+
+      await chai
+        .expect(deleteContactRecord(mockId))
+        .to.be.rejectedWith(ServerError);
+
+      testLogger.info(`deleteContactRecord() -> server error test OK`);
+    });
+
+    it("not found", async () => {
+      methodStub.resolves(null);
+
+      await chai
+        .expect(deleteContactRecord(mockId))
+        .to.be.rejectedWith(NotFoundError);
+
+      testLogger.info(`deleteContactRecord() -> not found test OK`);
     });
   });
 });
