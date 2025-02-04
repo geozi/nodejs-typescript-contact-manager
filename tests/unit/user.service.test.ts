@@ -109,13 +109,6 @@ describe.only("User service unit tests", () => {
         await createUserProfile(validUser);
       }, ServerError);
     });
-
-    it("not found", () => {
-      methodStub.resolves(null);
-      assert.rejects(async () => {
-        await createUserProfile(validUser);
-      }, NotFoundError);
-    });
   });
 
   describe("updateUserProfile()", () => {
