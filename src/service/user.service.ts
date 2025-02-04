@@ -75,8 +75,7 @@ export const retrieveUsersByRole = async (
 
 export const createUserProfile = async (newUser: IUser): Promise<IUser> => {
   try {
-    const savedUser = await addUser(newUser);
-    return savedUser;
+    return await addUser(newUser);
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error: ServerError | unknown) {
