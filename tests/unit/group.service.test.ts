@@ -9,6 +9,7 @@ import * as groupRepository from "../../src/persistence/group.repository";
 import {
   createContactGroup,
   retrieveContactGroupByName,
+  updateContactGroup,
 } from "../../src/service/group.service";
 import { Types } from "mongoose";
 
@@ -56,6 +57,30 @@ describe.only("Group service unit tests", () => {
       assert.rejects(async () => {
         await createContactGroup(validGroup);
       }, ServerError);
+    });
+  });
+
+  describe("updateContactGroup()", () => {
+    beforeEach(() => {
+      methodStub = sinon.stub(groupRepository, "updateGroup");
+    });
+
+    afterEach(() => {
+      methodStub.restore();
+    });
+
+    it("server error", () => {
+      methodStub.rejects();
+      assert.rejects(async () => {
+        await updateContactGroup(mockId, mockUpdateDateObj);
+      }, ServerError);
+    });
+
+    it("not found", () => {
+      methodStub.resolves(null);
+      assert.rejects(async () => {
+        await updateContactGroup(mockId, mockUpdateDateObj);
+      }, NotFoundError);
     });
   });
 });
