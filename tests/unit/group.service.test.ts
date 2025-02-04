@@ -8,10 +8,12 @@ import Group from "../../src/domain/models/group.model";
 import * as groupRepository from "../../src/persistence/group.repository";
 import {
   createContactGroup,
+  deleteContactGroup,
   retrieveContactGroupByName,
   updateContactGroup,
 } from "../../src/service/group.service";
 import { Types } from "mongoose";
+import { testLogger } from "../../logs/logger.config";
 
 describe.only("Group service unit tests", () => {
   const validGroup = new Group(validGroupInput);
@@ -33,6 +35,7 @@ describe.only("Group service unit tests", () => {
       assert.rejects(async () => {
         await retrieveContactGroupByName(validGroup.name);
       }, ServerError);
+      testLogger.info(`retrieveContactGroupByName() -> server error OK`);
     });
 
     it("not found", () => {
@@ -40,6 +43,7 @@ describe.only("Group service unit tests", () => {
       assert.rejects(async () => {
         await retrieveContactGroupByName(validGroup.name);
       }, NotFoundError);
+      testLogger.info(`retrieveContactGroupByName() -> not found OK`);
     });
   });
 
@@ -57,6 +61,7 @@ describe.only("Group service unit tests", () => {
       assert.rejects(async () => {
         await createContactGroup(validGroup);
       }, ServerError);
+      testLogger.info(`createContactGroup() -> server error OK`);
     });
   });
 
@@ -74,6 +79,7 @@ describe.only("Group service unit tests", () => {
       assert.rejects(async () => {
         await updateContactGroup(mockId, mockUpdateDateObj);
       }, ServerError);
+      testLogger.info(`updateContactGroup() -> server error OK`);
     });
 
     it("not found", () => {
@@ -81,6 +87,33 @@ describe.only("Group service unit tests", () => {
       assert.rejects(async () => {
         await updateContactGroup(mockId, mockUpdateDateObj);
       }, NotFoundError);
+      testLogger.info(`updateContactGroup() -> not found OK`);
+    });
+  });
+
+  describe("deleteContactGroup()", () => {
+    beforeEach(() => {
+      methodStub = sinon.stub(groupRepository, "deleteGroup");
+    });
+
+    afterEach(() => {
+      methodStub.restore();
+    });
+
+    it("server error", () => {
+      methodStub.rejects();
+      assert.rejects(async () => {
+        await deleteContactGroup(mockId);
+      }, ServerError);
+      testLogger.info(`deleteContactGroup() -> server error OK`);
+    });
+
+    it("not found", () => {
+      methodStub.resolves(null);
+      assert.rejects(async () => {
+        await deleteContactGroup(mockId);
+      }, NotFoundError);
+      testLogger.info(`deleteContactGroup() -> not found OK`);
     });
   });
 });

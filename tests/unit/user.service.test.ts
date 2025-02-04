@@ -15,6 +15,7 @@ import {
   updateUserProfile,
 } from "../../src/service/user.service";
 import { Types } from "mongoose";
+import { testLogger } from "../../logs/logger.config";
 
 describe.only("User service unit tests", () => {
   const validUser = new User(validUserInput);
@@ -36,6 +37,7 @@ describe.only("User service unit tests", () => {
       assert.rejects(async () => {
         await retrieveUserByUsername(validUser.username);
       }, ServerError);
+      testLogger.info(`retrieveUserByUsername() -> server error OK`);
     });
 
     it("not found", () => {
@@ -43,6 +45,7 @@ describe.only("User service unit tests", () => {
       assert.rejects(async () => {
         await retrieveUserByUsername(validUser.username);
       }, NotFoundError);
+      testLogger.info(`retrieveUserByUsername() -> not found OK`);
     });
   });
 
@@ -60,6 +63,7 @@ describe.only("User service unit tests", () => {
       assert.rejects(async () => {
         await retrieveUserByEmail(validUser.email);
       }, ServerError);
+      testLogger.info(`retrieveUserByEmail() -> server error OK`);
     });
 
     it("not found", () => {
@@ -67,6 +71,7 @@ describe.only("User service unit tests", () => {
       assert.rejects(async () => {
         await retrieveUserByEmail(validUser.email);
       }, NotFoundError);
+      testLogger.info(`retrieveUserByEmail() -> not found OK`);
     });
   });
 
@@ -84,6 +89,7 @@ describe.only("User service unit tests", () => {
       assert.rejects(async () => {
         await retrieveUsersByRole(validUser.role);
       }, ServerError);
+      testLogger.info(`retrieveUsersByRole() -> server error OK`);
     });
 
     it("not found", () => {
@@ -91,6 +97,7 @@ describe.only("User service unit tests", () => {
       assert.rejects(async () => {
         await retrieveUsersByRole(validUser.role);
       }, NotFoundError);
+      testLogger.info(`retrieveUsersByRole() -> not found OK`);
     });
   });
 
@@ -108,6 +115,7 @@ describe.only("User service unit tests", () => {
       assert.rejects(async () => {
         await createUserProfile(validUser);
       }, ServerError);
+      testLogger.info(`createUserProfile() -> server error OK`);
     });
   });
 
@@ -125,6 +133,7 @@ describe.only("User service unit tests", () => {
       assert.rejects(async () => {
         await updateUserProfile(mockId, mockUpdateDateObj);
       }, ServerError);
+      testLogger.info(`updateUserProfile() -> server error OK`);
     });
 
     it("not found", () => {
@@ -132,6 +141,7 @@ describe.only("User service unit tests", () => {
       assert.rejects(async () => {
         await updateUserProfile(mockId, mockUpdateDateObj);
       }, NotFoundError);
+      testLogger.info(`updateUserProfile() -> not found OK`);
     });
   });
 
@@ -149,6 +159,7 @@ describe.only("User service unit tests", () => {
       assert.rejects(async () => {
         await deleteUserProfile(mockId);
       }, ServerError);
+      testLogger.info(`deleteUserProfile() -> server error OK`);
     });
 
     it("not found", () => {
@@ -156,6 +167,7 @@ describe.only("User service unit tests", () => {
       assert.rejects(async () => {
         await deleteUserProfile(mockId);
       }, NotFoundError);
+      testLogger.info(`deleteUserProfile() -> not found OK`);
     });
   });
 });
