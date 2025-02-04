@@ -4,7 +4,7 @@
  */
 
 import { Types } from "mongoose";
-import logger from "../../logs/logger.config";
+import { appLogger } from "../../logs/logger.config";
 import { IContact } from "../domain/interfaces/iContact.interface";
 import Contact from "../domain/models/contact.model";
 
@@ -19,7 +19,7 @@ export const getContactByEmail = async (
 ): Promise<IContact | null> => {
   const foundContact = await Contact.findOne({ email: email });
 
-  logger.info(
+  appLogger.info(
     `Contact repository: ${Contact.findOne.name} called successfully`
   );
 
@@ -35,7 +35,7 @@ export const getContactByEmail = async (
 export const addContact = async (newContact: IContact): Promise<IContact> => {
   const savedContact = await newContact.save();
 
-  logger.info(
+  appLogger.info(
     `Contact repository: ${newContact.save.name} called successfully`
   );
 
@@ -59,7 +59,7 @@ export const updateContact = async (
     context: "query",
   });
 
-  logger.info(`Contact repository: findByIdAndUpdate called successfully`);
+  appLogger.info(`Contact repository: findByIdAndUpdate called successfully`);
 
   return updatedContact;
 };
@@ -75,7 +75,7 @@ export const deleteContact = async (
 ): Promise<IContact | null> => {
   const deletedContact = await Contact.findByIdAndDelete(id);
 
-  logger.info(`Contact repository: findByIdAndDelete called successfully`);
+  appLogger.info(`Contact repository: findByIdAndDelete called successfully`);
 
   return deletedContact;
 };
