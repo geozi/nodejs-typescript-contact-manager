@@ -14,6 +14,7 @@ import {
 import { IUserUpdate } from "../presentation/interfaces/iUserUpdate.interface";
 import { commonServiceMessages } from "./messages/commonService.message";
 import { userServiceMessages } from "./messages/userService.message";
+import { appLogger } from "../../logs/logger.config";
 
 export const retrieveUserByUsername = async (
   username: string
@@ -27,9 +28,15 @@ export const retrieveUserByUsername = async (
     return user;
   } catch (error: NotFoundError | ServerError | unknown) {
     if (error instanceof NotFoundError) {
+      appLogger.error(
+        `User service: retrieveUserByUsername() -> NotFoundError generated and caught`
+      );
       throw error;
     }
 
+    appLogger.error(
+      `User service: retrieveUserByUsername() -> ServerError generated and caught`
+    );
     throw new ServerError(commonServiceMessages.SERVER_ERROR);
   }
 };
@@ -46,9 +53,15 @@ export const retrieveUserByEmail = async (
     return user;
   } catch (error: NotFoundError | ServerError | unknown) {
     if (error instanceof NotFoundError) {
+      appLogger.error(
+        `User service: retrieveUserByEmail() -> NotFoundError generated and caught`
+      );
       throw error;
     }
 
+    appLogger.error(
+      `User service: retrieveUserByEmail() -> ServerError generated and caught`
+    );
     throw new ServerError(commonServiceMessages.SERVER_ERROR);
   }
 };
@@ -66,9 +79,15 @@ export const retrieveUsersByRole = async (
     return users;
   } catch (error: NotFoundError | ServerError | unknown) {
     if (error instanceof NotFoundError) {
+      appLogger.error(
+        `User service: retrieveUsersByRole() -> NotFoundError generated and caught`
+      );
       throw error;
     }
 
+    appLogger.error(
+      `User service: retrieveUsersByRole() -> ServerError generated and caught`
+    );
     throw new ServerError(commonServiceMessages.SERVER_ERROR);
   }
 };
@@ -79,6 +98,9 @@ export const createUserProfile = async (newUser: IUser): Promise<IUser> => {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error: ServerError | unknown) {
+    appLogger.error(
+      `User service: createUserProfile() -> ServerError generated and caught`
+    );
     throw new ServerError(commonServiceMessages.SERVER_ERROR);
   }
 };
@@ -95,9 +117,15 @@ export const updateUserProfile = async (
     return updatedUser;
   } catch (error: NotFoundError | ServerError | unknown) {
     if (error instanceof NotFoundError) {
+      appLogger.error(
+        `User service: updateUserProfile() -> NotFoundError generated and caught`
+      );
       throw error;
     }
 
+    appLogger.error(
+      `User service: updateUserProfile() -> ServerError generated and caught`
+    );
     throw new ServerError(commonServiceMessages.SERVER_ERROR);
   }
 };
@@ -110,9 +138,15 @@ export const deleteUserProfile = async (id: Types.ObjectId) => {
     }
   } catch (error: NotFoundError | ServerError | unknown) {
     if (error instanceof NotFoundError) {
+      appLogger.error(
+        `User service: deleteUserProfile() -> NotFoundError generated and caught`
+      );
       throw error;
     }
 
+    appLogger.error(
+      `User service: deleteUserProfile() -> ServerError generated and caught`
+    );
     throw new ServerError(commonServiceMessages.SERVER_ERROR);
   }
 };

@@ -11,6 +11,7 @@ import {
 import { commonServiceMessages } from "./messages/commonService.message";
 import { contactServiceMessages } from "./messages/contactService.message";
 import { IContactUpdate } from "../presentation/interfaces/iContactUpdate.interface";
+import { appLogger } from "../../logs/logger.config";
 
 export const retrieveContactByEmail = async (
   email: string
@@ -23,9 +24,15 @@ export const retrieveContactByEmail = async (
     return contact;
   } catch (error: NotFoundError | ServerError | unknown) {
     if (error instanceof NotFoundError) {
+      appLogger.error(
+        `Contact service: retrieveContactByEmail() -> NotFoundError generated and caught`
+      );
       throw error;
     }
 
+    appLogger.error(
+      `Contact service: retrieveContactByEmail() -> ServerError generated and caught`
+    );
     throw new ServerError(commonServiceMessages.SERVER_ERROR);
   }
 };
@@ -37,6 +44,9 @@ export const createContactRecord = async (
     return await addContact(newContact);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error: ServerError | unknown) {
+    appLogger.error(
+      `Contact service: createContactRecord() -> ServerError generated and caught`
+    );
     throw new ServerError(commonServiceMessages.SERVER_ERROR);
   }
 };
@@ -54,9 +64,15 @@ export const updateContactRecord = async (
     return updatedContact;
   } catch (error: NotFoundError | ServerError | unknown) {
     if (error instanceof NotFoundError) {
+      appLogger.error(
+        `Contact service: updateContactRecord() -> NotFoundError generated and caught`
+      );
       throw error;
     }
 
+    appLogger.error(
+      `Contact service: updateContactRecord() -> ServerError generated and caught`
+    );
     throw new ServerError(commonServiceMessages.SERVER_ERROR);
   }
 };
@@ -71,9 +87,15 @@ export const deleteContactRecord = async (id: Types.ObjectId) => {
     return deletedContact;
   } catch (error: NotFoundError | ServerError | unknown) {
     if (error instanceof NotFoundError) {
+      appLogger.error(
+        `Contact service: deleteContactRecord() -> NotFoundError generated and caught`
+      );
       throw error;
     }
 
+    appLogger.error(
+      `Contact service: deleteContactRecord() -> ServerError generated and caught`
+    );
     throw new ServerError(commonServiceMessages.SERVER_ERROR);
   }
 };
