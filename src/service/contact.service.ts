@@ -1,3 +1,7 @@
+/**
+ * Contact service.
+ * @module src/service/contact.service
+ */
 import { Types } from "mongoose";
 import { IContact } from "../domain/interfaces/iContact.interface";
 import { NotFoundError } from "../errors/notFoundError.class";
@@ -13,9 +17,16 @@ import { contactServiceMessages } from "./messages/contactService.message";
 import { IContactUpdate } from "../presentation/interfaces/iContactUpdate.interface";
 import { appLogger } from "../../logs/logger.config";
 
+/**
+ * Calls on the persistence layer to retrieve a contact with the specified email.
+ *
+ * @param {string} email The email of the contact person.
+ * @returns {Promise<IContact>} An IContact object to which a Promise resolves.
+ * @throws {NotFoundError | ServerError}
+ */
 export const retrieveContactByEmail = async (
   email: string
-): Promise<IContact | null> => {
+): Promise<IContact> => {
   try {
     const contact = await getContactByEmail(email);
     if (contact === null) {
@@ -37,6 +48,13 @@ export const retrieveContactByEmail = async (
   }
 };
 
+/**
+ * Calls on the persistence layer to add a new contact to the database.
+ *
+ * @param {IContact} newContact The new contact to be persisted.
+ * @returns {Promise<IContact>} The IContact representation of the saved contact to which a Promise resolves.
+ * @throws {ServerError}
+ */
 export const createContactRecord = async (
   newContact: IContact
 ): Promise<IContact> => {
@@ -51,10 +69,18 @@ export const createContactRecord = async (
   }
 };
 
+/**
+ * Calls on the persistence layer to update a contact.
+ *
+ * @param {Types.ObjectId} id The ID of the contact document to be updated.
+ * @param {IContactUpdate} updateDataObject The new information to be persisted in an existing contact.
+ * @returns {Promise<IContact>} An IContact representation of the updated contact to which a Promise resolves.
+ * @throws { NotFoundError | ServerError }
+ */
 export const updateContactRecord = async (
   id: Types.ObjectId,
   updateDataObject: IContactUpdate
-): Promise<IContact | null> => {
+): Promise<IContact> => {
   try {
     const updatedContact = await updateContact(id, updateDataObject);
     if (updatedContact === null) {
@@ -77,7 +103,16 @@ export const updateContactRecord = async (
   }
 };
 
-export const deleteContactRecord = async (id: Types.ObjectId) => {
+/**
+ * Calls on the persistence layer to delete a contact.
+ *
+ * @param {Types.ObjectId} id The ID of the contact document to be deleted.
+ * @returns {Promise<IContact>} An IContact representation of the deleted contact to which a Promise resolves.
+ * @throws { NotFoundError | ServerError }
+ */
+export const deleteContactRecord = async (
+  id: Types.ObjectId
+): Promise<IContact> => {
   try {
     const deletedContact = await deleteContact(id);
     if (deletedContact === null) {

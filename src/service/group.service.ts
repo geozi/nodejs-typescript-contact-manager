@@ -1,3 +1,7 @@
+/**
+ * Group service.
+ * @module src/service/group.service
+ */
 import { Types } from "mongoose";
 import { IGroup } from "../domain/interfaces/iGroup.interface";
 import { NotFoundError } from "../errors/notFoundError.class";
@@ -13,9 +17,16 @@ import { commonServiceMessages } from "./messages/commonService.message";
 import { groupServiceMessages } from "./messages/groupService.message";
 import { appLogger } from "../../logs/logger.config";
 
+/**
+ * Calls on the persistence layer to retrieve a contact group with the specified name.
+ *
+ * @param {string} name The name of a contact group.
+ * @returns {Promise<IGroup>} An IGroup object to which a Promise resolves.
+ * @throws  {NotFoundError | ServerError}
+ */
 export const retrieveContactGroupByName = async (
   name: string
-): Promise<IGroup | null> => {
+): Promise<IGroup> => {
   try {
     const group = await getGroupByName(name);
     if (group === null) {
@@ -37,6 +48,13 @@ export const retrieveContactGroupByName = async (
   }
 };
 
+/**
+ * Calls on the persistence layer to add a new contact group to the database.
+ *
+ * @param {IGroup} newGroup The new contact group to be persisted.
+ * @returns {Promise<IGroup>} An IGroup representation of the saved contact group to which a Promise resolves.
+ * @throws {ServerError}
+ */
 export const createContactGroup = async (newGroup: IGroup): Promise<IGroup> => {
   try {
     return await addGroup(newGroup);
@@ -49,10 +67,18 @@ export const createContactGroup = async (newGroup: IGroup): Promise<IGroup> => {
   }
 };
 
+/**
+ * Calls on the persistence layer to update the fields of an existing contact group.
+ *
+ * @param {Types.ObjectId} id The ID of the contact group document to be updated.
+ * @param {IGroupUpdate} updateDataObject The new information to be persisted in an existing contact group.
+ * @returns {Promise<IGroup>} An IGroup representation of the updated contact group to which a Promise resolves.
+ * @throws {NotFoundError | ServerError}
+ */
 export const updateContactGroup = async (
   id: Types.ObjectId,
   updateDataObject: IGroupUpdate
-): Promise<IGroup | null> => {
+): Promise<IGroup> => {
   try {
     const updatedGroup = await updateGroup(id, updateDataObject);
     if (updatedGroup === null) {
@@ -75,9 +101,16 @@ export const updateContactGroup = async (
   }
 };
 
+/**
+ * Calls on the persistence layer to delete a contact group.
+ *
+ * @param {Types.ObjectId} id The ID of the contact group document to be deleted.
+ * @returns {Promise<IGroup>} An IGroup representation of the deleted document to which a Promise resolves.
+ * @throws {NotFoundError | ServerError}
+ */
 export const deleteContactGroup = async (
   id: Types.ObjectId
-): Promise<IGroup | null> => {
+): Promise<IGroup> => {
   try {
     const deletedGroup = await deleteGroup(id);
     if (deletedGroup === null) {
