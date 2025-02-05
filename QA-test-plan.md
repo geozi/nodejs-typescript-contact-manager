@@ -1,6 +1,6 @@
 # Contact Manager API test plan
 
-Document version 1.0.1
+Document version 1.0.2
 
 ## Introduction
 
@@ -76,6 +76,33 @@ The main directories and files tested are:
         └── user.repository.ts
 ```
 
+#### Service layer
+
+Service layer unit test suites:
+
+- User service [✔]
+- Group service [✔],
+- Contact service [✔].
+
+Given that one of the main roles of the service layer is to catch promise-based errors generated in the persistence layer and/or logical errors triggered by unexpected promise-based outcomes, the scenarios used in the service layer unit tests focus on function behavior in conditions were errors are expected. They primarily involve the following directories:
+
+```text
+└── src
+    ├── errors
+    │   ├── abstractError.class.ts
+    │   ├── notFoundError.class.ts
+    │   └── serverError.class.ts
+    └── service
+        ├── contact.service.ts
+        ├── group.service.ts
+        ├── messages
+        │   ├── commonService.message.ts
+        │   ├── contactService.message.ts
+        │   ├── groupService.message.ts
+        │   └── userService.message.ts
+        └── user.service.ts
+```
+
 ## Out of scope
 
 The Contact Manager API is a backend project, therefore any tests involving the frontend are excluded.
@@ -88,6 +115,7 @@ The current implementation is for demonstration purposes and might be subject to
 
 - Mongoose,
 - Mocha,
-- Sinon
+- Sinon,
+- Chai
 
 [^1]: Documentation for `validateSync()` can be found in: [https://mongoosejs.com/docs/api/document.html](https://mongoosejs.com/docs/api/document.html)
