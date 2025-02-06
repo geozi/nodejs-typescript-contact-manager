@@ -4,7 +4,7 @@
 import assert from "assert";
 import sinon, { SinonSpy, SinonStub } from "sinon";
 import { Request, Response } from "express";
-import { controllerResponseMessages } from "../../src/presentation/messages/controllerResponse.message";
+import { commonResponseMessages } from "../../src/presentation/messages/commonResponse.message";
 import { userFailedValidation } from "../../src/domain/messages/userValidation.message";
 import { invalidUserInputs, validUserInput } from "../testInputs";
 import { registerUser } from "../../src/presentation/apis/v1/controllers/user.controller";
@@ -51,7 +51,7 @@ describe.only("User registration integration tests", () => {
         assert.strictEqual(statusStub.calledWith(httpCodes.BAD_REQUEST), true);
         assert.strictEqual(
           jsonSpy.calledWith({
-            message: controllerResponseMessages.BAD_REQUEST,
+            message: commonResponseMessages.BAD_REQUEST,
             errors: [
               { message: userFailedValidation.USERNAME_REQUIRED_MESSAGE },
               {
@@ -79,7 +79,7 @@ describe.only("User registration integration tests", () => {
         assert.strictEqual(statusStub.calledWith(httpCodes.BAD_REQUEST), true);
         assert.strictEqual(
           jsonSpy.calledWith({
-            message: controllerResponseMessages.BAD_REQUEST,
+            message: commonResponseMessages.BAD_REQUEST,
             errors: [
               {
                 message: userFailedValidation.USERNAME_BELOW_MIN_LENGTH_MESSAGE,
@@ -106,7 +106,7 @@ describe.only("User registration integration tests", () => {
         assert.strictEqual(statusStub.calledWith(httpCodes.BAD_REQUEST), true);
         assert.strictEqual(
           jsonSpy.calledWith({
-            message: controllerResponseMessages.BAD_REQUEST,
+            message: commonResponseMessages.BAD_REQUEST,
             errors: [
               {
                 message: userFailedValidation.USERNAME_ABOVE_MAX_LENGTH_MESSAGE,
@@ -133,7 +133,7 @@ describe.only("User registration integration tests", () => {
         assert.strictEqual(statusStub.calledWith(httpCodes.BAD_REQUEST), true);
         assert.strictEqual(
           jsonSpy.calledWith({
-            message: controllerResponseMessages.BAD_REQUEST,
+            message: commonResponseMessages.BAD_REQUEST,
             errors: [
               { message: userFailedValidation.EMAIL_REQUIRED_MESSAGE },
               { message: userFailedValidation.EMAIL_INVALID_MESSAGE },
@@ -164,7 +164,7 @@ describe.only("User registration integration tests", () => {
             );
             assert.strictEqual(
               jsonSpy.calledWith({
-                message: controllerResponseMessages.BAD_REQUEST,
+                message: commonResponseMessages.BAD_REQUEST,
                 errors: [
                   { message: userFailedValidation.EMAIL_INVALID_MESSAGE },
                 ],
@@ -191,7 +191,7 @@ describe.only("User registration integration tests", () => {
         assert.strictEqual(statusStub.calledWith(httpCodes.BAD_REQUEST), true);
         assert.strictEqual(
           jsonSpy.calledWith({
-            message: controllerResponseMessages.BAD_REQUEST,
+            message: commonResponseMessages.BAD_REQUEST,
             errors: [
               { message: userFailedValidation.PASSWORD_REQUIRED_MESSAGE },
               {
@@ -223,7 +223,7 @@ describe.only("User registration integration tests", () => {
         assert.strictEqual(statusStub.calledWith(httpCodes.BAD_REQUEST), true);
         assert.strictEqual(
           jsonSpy.calledWith({
-            message: controllerResponseMessages.BAD_REQUEST,
+            message: commonResponseMessages.BAD_REQUEST,
             errors: [
               {
                 message: userFailedValidation.PASSWORD_BELOW_MIN_LENGTH_MESSAGE,
@@ -255,7 +255,7 @@ describe.only("User registration integration tests", () => {
             );
             assert.strictEqual(
               jsonSpy.calledWith({
-                message: controllerResponseMessages.BAD_REQUEST,
+                message: commonResponseMessages.BAD_REQUEST,
                 errors: [
                   {
                     message:

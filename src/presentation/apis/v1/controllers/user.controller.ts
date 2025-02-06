@@ -8,7 +8,7 @@ import {
   userRetrievalByUsernameRules,
 } from "../middleware/user.rules";
 import { Request, Response } from "express";
-import { controllerResponseMessages } from "../../../messages/controllerResponse.message";
+import { userControllerResponseMessages } from "../../../messages/userControllerResponse.message";
 import User from "../../../../domain/models/user.model";
 import {
   createUserProfile,
@@ -24,6 +24,7 @@ import { UniqueConstraintError } from "../../../../errors/uniqueConstraint.error
 import { NotFoundError } from "../../../../errors/notFoundError.class";
 import { IUserUpdate } from "../../../interfaces/iUserUpdate.interface";
 import { Types } from "mongoose";
+import { commonResponseMessages } from "../../../messages/commonResponse.message";
 
 export const registerUser = [
   ...userRegistrationRules(),
@@ -35,7 +36,7 @@ export const registerUser = [
       }));
 
       res.status(httpCodes.BAD_REQUEST).json({
-        message: controllerResponseMessages.BAD_REQUEST,
+        message: commonResponseMessages.BAD_REQUEST,
         errors: errorMessage,
       });
       return;
@@ -52,7 +53,7 @@ export const registerUser = [
       await createUserProfile(newUser);
       res
         .status(httpCodes.CREATED)
-        .json({ message: controllerResponseMessages.USER_REGISTERED });
+        .json({ message: userControllerResponseMessages.USER_REGISTERED });
     } catch (error: ServerError | UniqueConstraintError | unknown) {
       if (
         error instanceof ServerError ||
@@ -75,7 +76,7 @@ export const updateUserInfo = [
       }));
 
       res.status(httpCodes.BAD_REQUEST).json({
-        message: controllerResponseMessages.BAD_REQUEST,
+        message: commonResponseMessages.BAD_REQUEST,
         errors: errorMessage,
       });
       return;
@@ -92,7 +93,7 @@ export const updateUserInfo = [
 
       const updatedUser = await updateUserProfile(idAsObjectId, userUpdateInfo);
       res.status(httpCodes.OK).json({
-        message: controllerResponseMessages.USER_UPDATED,
+        message: userControllerResponseMessages.USER_UPDATED,
         data: updatedUser,
       });
     } catch (error: NotFoundError | ServerError | unknown) {
@@ -114,7 +115,7 @@ export const deleteUserInfo = [
       }));
 
       res.status(httpCodes.BAD_REQUEST).json({
-        message: controllerResponseMessages.BAD_REQUEST,
+        message: commonResponseMessages.BAD_REQUEST,
         errors: errorMessage,
       });
       return;
@@ -144,7 +145,7 @@ export const fetchUserByUsername = [
       }));
 
       res.status(httpCodes.BAD_REQUEST).json({
-        message: controllerResponseMessages.BAD_REQUEST,
+        message: commonResponseMessages.BAD_REQUEST,
         errors: errorMessage,
       });
       return;
@@ -154,7 +155,7 @@ export const fetchUserByUsername = [
       const { username } = req.body;
       const user = await retrieveUserByUsername(username);
       res.status(httpCodes.OK).json({
-        message: controllerResponseMessages.USER_RETRIEVED,
+        message: userControllerResponseMessages.USER_RETRIEVED,
         data: user,
       });
     } catch (error: NotFoundError | ServerError | unknown) {
@@ -176,7 +177,7 @@ export const fetchUserByEmail = [
       }));
 
       res.status(httpCodes.BAD_REQUEST).json({
-        message: controllerResponseMessages.BAD_REQUEST,
+        message: commonResponseMessages.BAD_REQUEST,
         errors: errorMessage,
       });
       return;
@@ -186,7 +187,7 @@ export const fetchUserByEmail = [
       const { email } = req.body;
       const user = await retrieveUserByEmail(email);
       res.status(httpCodes.OK).json({
-        message: controllerResponseMessages.USER_RETRIEVED,
+        message: userControllerResponseMessages.USER_RETRIEVED,
         data: user,
       });
     } catch (error: NotFoundError | ServerError | unknown) {
@@ -208,7 +209,7 @@ export const fetchUsersByRole = [
       }));
 
       res.status(httpCodes.BAD_REQUEST).json({
-        message: controllerResponseMessages.BAD_REQUEST,
+        message: commonResponseMessages.BAD_REQUEST,
         errors: errorMessage,
       });
       return;
@@ -218,7 +219,7 @@ export const fetchUsersByRole = [
       const { role } = req.body;
       const users = await retrieveUsersByRole(role);
       res.status(httpCodes.OK).json({
-        message: controllerResponseMessages.USER_S_RETRIEVED,
+        message: userControllerResponseMessages.USER_S_RETRIEVED,
         data: users,
       });
     } catch (error: NotFoundError | ServerError | unknown) {
