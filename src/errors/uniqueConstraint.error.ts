@@ -3,19 +3,20 @@
  * @module src/domain/errors/uniqueConstraint.error
  */
 
+import { httpCodes } from "../presentation/codes/responseStatusCodes";
+import { AbstractError } from "./abstractError.class";
+
 /**
  * Custom error class for violation of uniqueness.
- * @extends {Error}
+ * @extends {AbstractError}
  */
-export class UniqueConstraintError extends Error {
-  public static httpCode = 409;
-
+export class UniqueConstraintError extends AbstractError {
   /**
    * Creates an instance of UniqueConstraintError.
    * @param {string} message The error message.
    */
   constructor(message: string) {
-    super(message);
+    super(httpCodes.CONFLICT, message);
     this.name = "UniqueConstraintError";
     this.message = message;
   }
