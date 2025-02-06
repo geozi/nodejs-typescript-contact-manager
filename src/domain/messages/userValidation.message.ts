@@ -19,6 +19,9 @@ import { userConstants } from "../constants/user.constant";
  * @property {string} PASSWORD_MUST_HAVE_CHARACTERS_MESSAGE - Message sent when the provided password does not match the standard regex pattern.
  * @property {string} ROLE_REQUIRED_MESSAGE - Message sent when no role is provided.
  * @property {string} ROLE_INVALID_MESSAGE - Message sent when the provided role does not match the standard regex pattern.
+ * @property {string} USER_ID_REQUIRED - Message sent when the user ID is not provided.
+ * @property {string} USER_ID_INVALID - Message sent when the provided user ID does not match the standard regex pattern.
+ * @property {string} USER_ID_OUT_OF_LENGTH - Message sent when the provided user ID is either longer or shorter than the accepted length.
  */
 export const userFailedValidation = {
   /**
@@ -80,4 +83,22 @@ export const userFailedValidation = {
    * @type {string}
    */
   ROLE_INVALID_MESSAGE: "Role must be either Admin or user",
+
+  /**
+   * Message sent when the user ID is not provided.
+   * @type {string}
+   */
+  USER_ID_REQUIRED: "User ID is a required field",
+
+  /**
+   * Message sent when the provided user ID does not match the standard regex pattern.
+   * @type {string}
+   */
+  USER_ID_INVALID: "User ID must be must be a string of hex characters",
+
+  /**
+   * Message sent when the provided user ID is either longer or shorter than the accepted length.
+   * @type {string}
+   */
+  USER_ID_OUT_OF_LENGTH: "User ID must be 24 characters long",
 };
