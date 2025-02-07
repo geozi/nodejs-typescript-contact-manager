@@ -14,7 +14,7 @@ import * as userRepository from "../../src/persistence/user.repository";
 import { invalidUserInputs } from "../testInputs";
 import { commonServiceMessages } from "../../src/service/messages/commonService.message";
 
-describe.only("User deletion integration tests", () => {
+describe("User deletion integration tests", () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: SinonSpy;

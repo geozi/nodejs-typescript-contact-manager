@@ -25,6 +25,7 @@ import { NotFoundError } from "../../../../errors/notFoundError.class";
 import { IUserUpdate } from "../../../interfaces/iUserUpdate.interface";
 import { Types } from "mongoose";
 import { commonResponseMessages } from "../../../messages/commonResponse.message";
+import { appLogger } from "../../../../../logs/logger.config";
 
 export const registerUser = [
   ...userRegistrationRules(),
@@ -34,6 +35,8 @@ export const registerUser = [
       const errorMessage = expressErrors.array().map((err) => ({
         message: err.msg,
       }));
+
+      appLogger.error(`User controller: Express validator errors caught`);
 
       res.status(httpCodes.BAD_REQUEST).json({
         message: commonResponseMessages.BAD_REQUEST,
