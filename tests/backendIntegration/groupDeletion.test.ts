@@ -1,12 +1,12 @@
 /**
- * Contact group update integration tests.
+ * Contact group deletion integration tests.
  */
 import assert from "assert";
 import sinon, { SinonSpy, SinonStub } from "sinon";
 import { Request, Response } from "express";
 import { commonResponseMessages } from "../../src/presentation/messages/commonResponse.message";
 import { groupFailedValidation } from "../../src/domain/messages/groupValidation.message";
-import { updateContactGroup } from "../../src/presentation/apis/v1/controllers/group.controller";
+import { deleteContactGroup } from "../../src/presentation/apis/v1/controllers/group.controller";
 import * as groupRepository from "../../src/persistence/group.repository";
 import { httpCodes } from "../../src/presentation/codes/responseStatusCodes";
 import { testLogger } from "../../logs/logger.config";
@@ -14,7 +14,7 @@ import { commonServiceMessages } from "../../src/service/messages/commonService.
 import { invalidGroupCases, validGroupInput } from "../testInputs";
 import { groupServiceMessages } from "../../src/service/messages/groupService.message";
 
-describe("Contact group update integration tests", () => {
+describe("Contact group deletion integration tests", () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: SinonSpy;
@@ -38,7 +38,7 @@ describe("Contact group update integration tests", () => {
     it("Group ID is undefined", async () => {
       req = { body: { id: undefined } };
 
-      for (const middleware of updateContactGroup) {
+      for (const middleware of deleteContactGroup) {
         await middleware(req as Request, res as Response, next);
       }
 
@@ -58,7 +58,7 @@ describe("Contact group update integration tests", () => {
         true
       );
 
-      testLogger.info(`groupUpdate -> 'group ID is undefined' test OK`);
+      testLogger.info(`groupDeletion -> 'Group ID is undefined' test OK`);
     });
 
     invalidGroupCases.GROUP_ID_LENGTH_CASES.forEach(
@@ -66,7 +66,7 @@ describe("Contact group update integration tests", () => {
         it(testName, async () => {
           req = { body: { id: invalidGroupId } };
 
-          for (const middleware of updateContactGroup) {
+          for (const middleware of deleteContactGroup) {
             await middleware(req as Request, res as Response, next);
           }
 
@@ -87,7 +87,7 @@ describe("Contact group update integration tests", () => {
             true
           );
 
-          testLogger.info(`groupUpdate -> '${testName}' test OK`);
+          testLogger.info(`groupDeletion -> '${testName}' test OK`);
         });
       }
     );
@@ -97,7 +97,7 @@ describe("Contact group update integration tests", () => {
         it(testName, async () => {
           req = { body: { id: invalidGroupId } };
 
-          for (const middleware of updateContactGroup) {
+          for (const middleware of deleteContactGroup) {
             await middleware(req as Request, res as Response, next);
           }
 
@@ -116,7 +116,7 @@ describe("Contact group update integration tests", () => {
             true
           );
 
-          testLogger.info(`groupUpdate -> '${testName}' test OK`);
+          testLogger.info(`groupDeletion -> '${testName}' test OK`);
         });
       }
     );
@@ -133,7 +133,7 @@ describe("Contact group update integration tests", () => {
         json: sinon.spy(),
       };
       next = sinon.spy();
-      methodStub = sinon.stub(groupRepository, "updateGroup");
+      methodStub = sinon.stub(groupRepository, "deleteGroup");
     });
 
     afterEach(() => {
@@ -144,7 +144,7 @@ describe("Contact group update integration tests", () => {
       req = { body: { id: "67a5d79966dcfebc19277f4f", ...validGroupInput } };
       methodStub.rejects();
 
-      for (const middleware of updateContactGroup) {
+      for (const middleware of deleteContactGroup) {
         await middleware(req as Request, res as Response, next);
       }
 
@@ -160,14 +160,14 @@ describe("Contact group update integration tests", () => {
         true
       );
 
-      testLogger.info(`groupUpdate -> 'server error (500)' test OK`);
+      testLogger.info(`groupDeletion -> 'server error (500)' test OK`);
     });
 
     it("not found (404)", async () => {
       req = { body: { id: "67a5d79966dcfebc19277f4f", ...validGroupInput } };
       methodStub.resolves(null);
 
-      for (const middleware of updateContactGroup) {
+      for (const middleware of deleteContactGroup) {
         await middleware(req as Request, res as Response, next);
       }
 
@@ -180,7 +180,7 @@ describe("Contact group update integration tests", () => {
         true
       );
 
-      testLogger.info(`groupUpdate -> 'not found (404)' test OK`);
+      testLogger.info(`groupDeletion -> 'not found (404)' test OK`);
     });
   });
 });
