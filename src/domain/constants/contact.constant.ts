@@ -10,7 +10,7 @@
  * @property {number} NAME_MIN_LENGTH - The minimum length required for the firstName and lastName fields of the Contact model.
  * @property {number} STREET_ADDRESS_MIN_LENGTH - The minimum length required for the streetAddress field of the Contact model.
  * @property {number} ZIP_CODE_LENGTH - The required length for the zipCode field of the Contact model.
- * @property {number} GROUP_ID_LENGTH - The required length for the groupId field of the Contact model.
+
  */
 export const contactConstants = {
   /**
@@ -30,10 +30,4 @@ export const contactConstants = {
    * @type {number}
    */
   ZIP_CODE_LENGTH: 5,
-
-  /**
-   * The required length for the groupId field of the Contact model.
-   * @type {number}
-   */
-  GROUP_ID_LENGTH: 24,
 };

@@ -1,5 +1,4 @@
 import { check } from "express-validator";
-import { contactFailedValidation } from "../../../../domain/messages/contactValidation.message";
 import { groupFailedValidation } from "../../../../domain/messages/groupValidation.message";
 import { groupConstants } from "../../../../domain/constants/group.constant";
 import { ID_REGEX } from "../../../../domain/resources/validationRegExp";
@@ -23,11 +22,11 @@ export const contactGroupUpdateRules = () => {
   return [
     check("id")
       .notEmpty()
-      .withMessage(contactFailedValidation.GROUP_ID_REQUIRED)
+      .withMessage(groupFailedValidation.GROUP_ID_REQUIRED)
       .matches(ID_REGEX)
-      .withMessage(contactFailedValidation.GROUP_ID_INVALID)
+      .withMessage(groupFailedValidation.GROUP_ID_INVALID)
       .isLength({ min: 24, max: 24 })
-      .withMessage(contactFailedValidation.GROUP_ID_OUT_OF_LENGTH),
+      .withMessage(groupFailedValidation.GROUP_ID_OUT_OF_LENGTH),
     check("name").optional(),
     check("description")
       .optional()
@@ -42,11 +41,11 @@ export const contactGroupDeleteRules = () => {
   return [
     check("id")
       .notEmpty()
-      .withMessage(contactFailedValidation.GROUP_ID_REQUIRED)
+      .withMessage(groupFailedValidation.GROUP_ID_REQUIRED)
       .matches(ID_REGEX)
-      .withMessage(contactFailedValidation.GROUP_ID_INVALID)
+      .withMessage(groupFailedValidation.GROUP_ID_INVALID)
       .isLength({ min: 24, max: 24 })
-      .withMessage(contactFailedValidation.GROUP_ID_OUT_OF_LENGTH),
+      .withMessage(groupFailedValidation.GROUP_ID_OUT_OF_LENGTH),
   ];
 };
 
