@@ -41,4 +41,4 @@ export const PHONE_REGEX = new RegExp(/^\d+(-\d+)*$/);
  * Regular expression used in checking id validity.
  * @type {RegExp}
  */
-export const ID_REGEX = new RegExp(/^[a-fA-F0-9]+$/);
+export const ID_REGEX = new RegExp(/^[a-f0-9]+$/);
