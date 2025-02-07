@@ -43,6 +43,11 @@ export const validGroupInput = {
 };
 
 export const invalidGroupCases = {
+  GROUP_ID_INVALID_CASES: [
+    ["Contact group ID contains special symbols", "67*db12ed*29a1*ed143e37e"],
+    ["Contact group ID contains white spaces", "6771 722 13928977aa04ea0"],
+    ["Contact group ID contains capital letters", "67710722913928977AA04ea0"],
+  ] as [string, string][],
   TOO_LONG_DESCRIPTION:
     "This group includes all the contacts related to professional engagements and networking events.",
   TOO_SHORT_DESCRIPTION: "VIP",
