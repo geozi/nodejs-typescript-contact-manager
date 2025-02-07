@@ -9,6 +9,7 @@ import {
   invalidUserInputs,
   validContactInput,
 } from "../testInputs";
+import { groupFailedValidation } from "../../src/domain/messages/groupValidation.message";
 
 describe("Contact model unit tests", () => {
   let newContact: IContact;
@@ -355,7 +356,7 @@ describe("Contact model unit tests", () => {
     it("groupId is empty", () => {
       validationError.errors = {
         groupId: new mongoose.Error.ValidatorError({
-          message: contactFailedValidation.GROUP_ID_REQUIRED,
+          message: groupFailedValidation.GROUP_ID_REQUIRED,
           path: "groupId",
           value: "",
         }),
@@ -371,7 +372,7 @@ describe("Contact model unit tests", () => {
       assert.notStrictEqual(mongooseErrors, undefined);
       assert.strictEqual(
         mongooseErrors?.errors.groupId.message,
-        contactFailedValidation.GROUP_ID_REQUIRED
+        groupFailedValidation.GROUP_ID_REQUIRED
       );
     });
   });

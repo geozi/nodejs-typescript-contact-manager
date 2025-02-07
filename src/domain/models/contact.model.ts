@@ -14,6 +14,7 @@ import {
   PHONE_REGEX,
   ZIP_CODE_REGEX,
 } from "../resources/validationRegExp";
+import { groupFailedValidation } from "../messages/groupValidation.message";
 
 /**
  * Contact schema for persistence in MongoDB.
@@ -98,7 +99,7 @@ const contactSchema = new Schema<IContact>(
     },
     groupId: {
       type: Schema.Types.ObjectId,
-      required: [true, contactFailedValidation.GROUP_ID_REQUIRED],
+      required: [true, groupFailedValidation.GROUP_ID_REQUIRED],
     },
   },
   {
