@@ -1,20 +1,20 @@
 /**
- * User update integration tests.
+ * User deletion integration tests.
  */
 import assert from "assert";
 import sinon, { SinonSpy, SinonStub } from "sinon";
 import { Request, Response } from "express";
-import { commonResponseMessages } from "../../src/presentation/messages/commonResponse.message";
 import { userFailedValidation } from "../../src/domain/messages/userValidation.message";
 import { httpCodes } from "../../src/presentation/codes/responseStatusCodes";
 import { testLogger } from "../../logs/logger.config";
-import { commonServiceMessages } from "../../src/service/messages/commonService.message";
+import { commonResponseMessages } from "../../src/presentation/messages/commonResponse.message";
 import { userServiceMessages } from "../../src/service/messages/userService.message";
-import { invalidUserInputs, validUserInput } from "../testInputs";
-import { updateUserInfo } from "../../src/presentation/apis/v1/controllers/user.controller";
+import { deleteUserInfo } from "../../src/presentation/apis/v1/controllers/user.controller";
 import * as userRepository from "../../src/persistence/user.repository";
+import { invalidUserInputs } from "../testInputs";
+import { commonServiceMessages } from "../../src/service/messages/commonService.message";
 
-describe("User update integration tests", () => {
+describe.only("User deletion integration tests", () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: SinonSpy;
@@ -39,7 +39,7 @@ describe("User update integration tests", () => {
       it("user ID is undefined", async () => {
         req = { body: { id: undefined } };
 
-        for (const middleware of updateUserInfo) {
+        for (const middleware of deleteUserInfo) {
           await middleware(req as Request, res as Response, next);
         }
 
@@ -59,7 +59,7 @@ describe("User update integration tests", () => {
           true
         );
 
-        testLogger.info(`userUpdate -> 'user ID is undefined' test OK`);
+        testLogger.info(`userDeletion -> 'user ID is undefined' test OK`);
       });
 
       invalidUserInputs.USER_ID_LENGTH_CASES.forEach(
@@ -67,7 +67,7 @@ describe("User update integration tests", () => {
           it(testName, async () => {
             req = { body: { id: invalidUserId } };
 
-            for (const middleware of updateUserInfo) {
+            for (const middleware of deleteUserInfo) {
               await middleware(req as Request, res as Response, next);
             }
 
@@ -88,7 +88,7 @@ describe("User update integration tests", () => {
               true
             );
 
-            testLogger.info(`userUpdate -> '${testName}' test OK`);
+            testLogger.info(`userDeletion -> '${testName}' test OK`);
           });
         }
       );
@@ -98,7 +98,7 @@ describe("User update integration tests", () => {
           it(testName, async () => {
             req = { body: { id: invalidUserId } };
 
-            for (const middleware of updateUserInfo) {
+            for (const middleware of deleteUserInfo) {
               await middleware(req as Request, res as Response, next);
             }
 
@@ -117,7 +117,7 @@ describe("User update integration tests", () => {
               true
             );
 
-            testLogger.info(`userUpdate -> '${testName}' test OK`);
+            testLogger.info(`userDeletion -> '${testName}' test OK`);
           });
         }
       );
@@ -134,8 +134,9 @@ describe("User update integration tests", () => {
         }) as unknown as SinonStub,
         json: sinon.spy(),
       };
+
       next = sinon.spy();
-      methodStub = sinon.stub(userRepository, "updateUser");
+      methodStub = sinon.stub(userRepository, "deleteUser");
     });
 
     afterEach(() => {
@@ -143,10 +144,10 @@ describe("User update integration tests", () => {
     });
 
     it("server error (500)", async () => {
-      req = { body: { id: "67a5d79966dcfebc19277f4f", ...validUserInput } };
+      req = { body: { id: "67a5d79966dcfebc19277f4f" } };
       methodStub.rejects();
 
-      for (const middleware of updateUserInfo) {
+      for (const middleware of deleteUserInfo) {
         await middleware(req as Request, res as Response, next);
       }
 
@@ -162,14 +163,14 @@ describe("User update integration tests", () => {
         true
       );
 
-      testLogger.info(`userUpdate -> 'server error(500)' test OK`);
+      testLogger.info(`userDeletion -> 'server error (500)' test OK`);
     });
 
     it("not found (404)", async () => {
-      req = { body: { id: "67a5d79966dcfebc19277f4f", ...validUserInput } };
+      req = { body: { id: "67a5d79966dcfebc19277f4f" } };
       methodStub.resolves(null);
 
-      for (const middleware of updateUserInfo) {
+      for (const middleware of deleteUserInfo) {
         await middleware(req as Request, res as Response, next);
       }
 
@@ -182,7 +183,7 @@ describe("User update integration tests", () => {
         true
       );
 
-      testLogger.info(`userUpdate -> 'not found (404)' test OK`);
+      testLogger.info(`userDeletion -> 'not found (404)' test OK`);
     });
   });
 });
