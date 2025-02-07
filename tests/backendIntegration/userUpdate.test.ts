@@ -13,6 +13,7 @@ import { userServiceMessages } from "../../src/service/messages/userService.mess
 import { createUserProfile } from "../../src/service/user.service";
 import { invalidUserInputs, validUserInput } from "../testInputs";
 import { updateUserInfo } from "../../src/presentation/apis/v1/controllers/user.controller";
+import * as userRepository from "../../src/persistence/user.repository";
 
 describe.only("User update integration tests", () => {
   let req: Partial<Request>;
@@ -59,6 +60,8 @@ describe.only("User update integration tests", () => {
           }),
           true
         );
+
+        testLogger.info(`userUpdate -> 'user ID is undefined' test OK`);
       });
 
       invalidUserInputs.USER_ID_LENGTH_CASES.forEach(
@@ -86,6 +89,8 @@ describe.only("User update integration tests", () => {
               }),
               true
             );
+
+            testLogger.info(`userUpdate -> '${testName}' test OK`);
           });
         }
       );
@@ -113,9 +118,73 @@ describe.only("User update integration tests", () => {
               }),
               true
             );
+
+            testLogger.info(`userUpdate -> '${testName}' test OK`);
           });
         }
       );
+    });
+  });
+
+  describe("promise-oriented", () => {
+    let methodStub: SinonStub;
+
+    beforeEach(() => {
+      res = {
+        status: sinon.stub().callsFake(() => {
+          return res;
+        }) as unknown as SinonStub,
+        json: sinon.spy(),
+      };
+      next = sinon.spy();
+      methodStub = sinon.stub(userRepository, "updateUser");
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it("server error (500)", async () => {
+      req = { body: { id: "67a5d79966dcfebc19277f4f", ...validUserInput } };
+      methodStub.rejects();
+
+      for (const middleware of updateUserInfo) {
+        await middleware(req as Request, res as Response, next);
+      }
+
+      const statusStub = res.status as SinonStub;
+      const jsonSpy = res.json as SinonSpy;
+
+      assert.strictEqual(
+        statusStub.calledWith(httpCodes.INTERNAL_SERVER_ERROR),
+        true
+      );
+      assert.strictEqual(
+        jsonSpy.calledWith({ message: commonServiceMessages.SERVER_ERROR }),
+        true
+      );
+
+      testLogger.info(`userUpdate -> 'server error(500)' test OK`);
+    });
+
+    it("not found (404)", async () => {
+      req = { body: { id: "67a5d79966dcfebc19277f4f", ...validUserInput } };
+      methodStub.resolves(null);
+
+      for (const middleware of updateUserInfo) {
+        await middleware(req as Request, res as Response, next);
+      }
+
+      const statusStub = res.status as SinonStub;
+      const jsonSpy = res.json as SinonSpy;
+
+      assert.strictEqual(statusStub.calledWith(httpCodes.NOT_FOUND), true);
+      assert.strictEqual(
+        jsonSpy.calledWith({ message: userServiceMessages.USER_NOT_FOUND }),
+        true
+      );
+
+      testLogger.info(`userUpdate -> 'not found (404)' test OK`);
     });
   });
 });
