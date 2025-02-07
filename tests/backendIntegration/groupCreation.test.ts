@@ -14,7 +14,7 @@ import { testLogger } from "../../logs/logger.config";
 import { commonServiceMessages } from "../../src/service/messages/commonService.message";
 import { invalidGroupCases, validGroupInput } from "../testInputs";
 
-describe.only("Group creation integration tests", () => {
+describe("Group creation integration tests", () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: SinonSpy;
