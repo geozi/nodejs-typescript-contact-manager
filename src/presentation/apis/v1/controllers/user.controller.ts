@@ -36,7 +36,9 @@ export const registerUser = [
         message: err.msg,
       }));
 
-      appLogger.error(`User controller: Express validator errors caught`);
+      appLogger.error(
+        `User controller: registerUser() -> Express validator errors detected and caught`
+      );
 
       res.status(httpCodes.BAD_REQUEST).json({
         message: commonResponseMessages.BAD_REQUEST,
@@ -62,6 +64,10 @@ export const registerUser = [
         error instanceof ServerError ||
         error instanceof UniqueConstraintError
       ) {
+        appLogger.error(
+          `User controller: registerUser() -> ${error.name} detected and caught`
+        );
+
         res.status(error.httpCode).json({ message: error.message });
         return;
       }
@@ -77,6 +83,10 @@ export const updateUserInfo = [
       const errorMessage = expressErrors.array().map((err) => ({
         message: err.msg,
       }));
+
+      appLogger.error(
+        `User controller: updateUserInfo() -> Express validator errors detected and caught`
+      );
 
       res.status(httpCodes.BAD_REQUEST).json({
         message: commonResponseMessages.BAD_REQUEST,
@@ -101,6 +111,10 @@ export const updateUserInfo = [
       });
     } catch (error: NotFoundError | ServerError | unknown) {
       if (error instanceof NotFoundError || error instanceof ServerError) {
+        appLogger.error(
+          `User controller: updateUserInfo() -> ${error.name} detected and caught`
+        );
+
         res.status(error.httpCode).json({ message: error.message });
         return;
       }
@@ -117,6 +131,10 @@ export const deleteUserInfo = [
         message: err.msg,
       }));
 
+      appLogger.error(
+        `User controller: deleteUserInfo() -> Express validator errors detected and caught`
+      );
+
       res.status(httpCodes.BAD_REQUEST).json({
         message: commonResponseMessages.BAD_REQUEST,
         errors: errorMessage,
@@ -131,6 +149,10 @@ export const deleteUserInfo = [
       res.status(httpCodes.NO_CONTENT).json({});
     } catch (error: NotFoundError | ServerError | unknown) {
       if (error instanceof NotFoundError || error instanceof ServerError) {
+        appLogger.error(
+          `User controller: deleteUserInfo() -> ${error.name} detected and caught`
+        );
+
         res.status(error.httpCode).json({ message: error.message });
         return;
       }
@@ -146,6 +168,10 @@ export const fetchUserByUsername = [
       const errorMessage = expressErrors.array().map((err) => ({
         message: err.msg,
       }));
+
+      appLogger.error(
+        `User controller: fetchUserByUsername() -> Express validator errors detected and caught`
+      );
 
       res.status(httpCodes.BAD_REQUEST).json({
         message: commonResponseMessages.BAD_REQUEST,
@@ -163,6 +189,10 @@ export const fetchUserByUsername = [
       });
     } catch (error: NotFoundError | ServerError | unknown) {
       if (error instanceof NotFoundError || error instanceof ServerError) {
+        appLogger.error(
+          `User controller: fetchUserByUsername() -> ${error.name} detected and caught`
+        );
+
         res.status(error.httpCode).json({ message: error.message });
         return;
       }
@@ -178,6 +208,10 @@ export const fetchUserByEmail = [
       const errorMessage = expressErrors.array().map((err) => ({
         message: err.msg,
       }));
+
+      appLogger.error(
+        `User controller: fetchUserByEmail() -> Express validator errors detected and caught`
+      );
 
       res.status(httpCodes.BAD_REQUEST).json({
         message: commonResponseMessages.BAD_REQUEST,
@@ -195,6 +229,10 @@ export const fetchUserByEmail = [
       });
     } catch (error: NotFoundError | ServerError | unknown) {
       if (error instanceof NotFoundError || error instanceof ServerError) {
+        appLogger.error(
+          `User controller: fetchUserByEmail() -> ${error.name} detected and caught`
+        );
+
         res.status(error.httpCode).json({ message: error.message });
         return;
       }
@@ -210,6 +248,10 @@ export const fetchUsersByRole = [
       const errorMessage = expressErrors.array().map((err) => ({
         message: err.msg,
       }));
+
+      appLogger.error(
+        `User controller: fetchUsersByRole() -> Express validator errors detected and caught`
+      );
 
       res.status(httpCodes.BAD_REQUEST).json({
         message: commonResponseMessages.BAD_REQUEST,
@@ -227,6 +269,10 @@ export const fetchUsersByRole = [
       });
     } catch (error: NotFoundError | ServerError | unknown) {
       if (error instanceof NotFoundError || error instanceof ServerError) {
+        appLogger.error(
+          `User controller: fetchUsersByRole() -> ${error.name} detected and caught`
+        );
+
         res.status(error.httpCode).json({ message: error.message });
         return;
       }

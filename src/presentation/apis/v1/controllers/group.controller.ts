@@ -16,6 +16,7 @@ import { Types } from "mongoose";
 import { commonResponseMessages } from "../../../messages/commonResponse.message";
 import Group from "../../../../domain/models/group.model";
 import * as groupService from "../../../../service/group.service";
+import { appLogger } from "../../../../../logs/logger.config";
 
 export const createContactGroup = [
   ...contactGroupCreationRules(),
@@ -25,6 +26,10 @@ export const createContactGroup = [
       const errorMessage = expressErrors.array().map((err) => ({
         message: err.msg,
       }));
+
+      appLogger.error(
+        `User controller: createContactGroup() -> Express validator errors detected and caught`
+      );
 
       res.status(httpCodes.BAD_REQUEST).json({
         message: commonResponseMessages.BAD_REQUEST,
@@ -49,6 +54,10 @@ export const createContactGroup = [
         error instanceof ServerError ||
         error instanceof UniqueConstraintError
       ) {
+        appLogger.error(
+          `User controller: createContactGroup() -> ${error.name} detected and caught`
+        );
+
         res.status(error.httpCode).json({ message: error.message });
         return;
       }
@@ -64,6 +73,10 @@ export const updateContactGroup = [
       const errorMessage = expressErrors.array().map((err) => ({
         message: err.msg,
       }));
+
+      appLogger.error(
+        `User controller: updateContactGroup() -> Express validator errors detected and caught`
+      );
 
       res.status(httpCodes.BAD_REQUEST).json({
         message: commonResponseMessages.BAD_REQUEST,
@@ -90,6 +103,10 @@ export const updateContactGroup = [
       });
     } catch (error: NotFoundError | ServerError | unknown) {
       if (error instanceof NotFoundError || error instanceof ServerError) {
+        appLogger.error(
+          `User controller: updateContactGroup() -> ${error.name} detected and caught`
+        );
+
         res.status(error.httpCode).json({ message: error.message });
         return;
       }
@@ -106,6 +123,10 @@ export const deleteContactGroup = [
         message: err.msg,
       }));
 
+      appLogger.error(
+        `User controller: deleteContactGroup() -> Express validator errors detected and caught`
+      );
+
       res.status(httpCodes.BAD_REQUEST).json({
         message: commonResponseMessages.BAD_REQUEST,
         errors: errorMessage,
@@ -120,6 +141,10 @@ export const deleteContactGroup = [
       res.status(httpCodes.NO_CONTENT).json({});
     } catch (error: NotFoundError | ServerError | unknown) {
       if (error instanceof NotFoundError || error instanceof ServerError) {
+        appLogger.error(
+          `User controller: deleteContactGroup() -> ${error.name} detected and caught`
+        );
+
         res.status(error.httpCode).json({ message: error.message });
         return;
       }
@@ -135,6 +160,10 @@ export const fetchContactGroupByName = [
       const errorMessage = expressErrors.array().map((err) => ({
         message: err.msg,
       }));
+
+      appLogger.error(
+        `User controller: fetchContactGroupByName() -> Express validator errors detected and caught`
+      );
 
       res.status(httpCodes.BAD_REQUEST).json({
         message: commonResponseMessages.BAD_REQUEST,
@@ -152,6 +181,10 @@ export const fetchContactGroupByName = [
       });
     } catch (error: NotFoundError | ServerError | unknown) {
       if (error instanceof NotFoundError || error instanceof ServerError) {
+        appLogger.error(
+          `User controller: fetchContactGroupByName() -> ${error.name} detected and caught`
+        );
+
         res.status(error.httpCode).json({ message: error.message });
         return;
       }
