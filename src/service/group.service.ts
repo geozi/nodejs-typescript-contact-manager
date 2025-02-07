@@ -36,13 +36,13 @@ export const retrieveContactGroupByName = async (
   } catch (error: NotFoundError | ServerError | unknown) {
     if (error instanceof NotFoundError) {
       appLogger.error(
-        `Group service: retrieveContactGroupByName() -> NotFoundError generated and caught`
+        `Group service: retrieveContactGroupByName() -> ${error.name} detected and caught`
       );
       throw error;
     }
 
     appLogger.error(
-      `Group service: retrieveContactGroupByName() -> ServerError generated and caught`
+      `Group service: retrieveContactGroupByName() -> ServerError detected and caught`
     );
     throw new ServerError(commonServiceMessages.SERVER_ERROR);
   }
@@ -61,7 +61,7 @@ export const createContactGroup = async (newGroup: IGroup): Promise<IGroup> => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error: ServerError | unknown) {
     appLogger.error(
-      `Group service: createContactGroup() -> ServerError generated and caught`
+      `Group service: createContactGroup() -> ServerError detected and caught`
     );
     throw new ServerError(commonServiceMessages.SERVER_ERROR);
   }
@@ -89,13 +89,13 @@ export const updateContactGroup = async (
   } catch (error: NotFoundError | ServerError | unknown) {
     if (error instanceof NotFoundError) {
       appLogger.error(
-        `Group service: updateContactGroup() -> NotFoundError generated and caught`
+        `Group service: updateContactGroup() -> ${error.name} detected and caught`
       );
       throw error;
     }
 
     appLogger.error(
-      `Group service: updateContactGroup() -> ServerError generated and caught`
+      `Group service: updateContactGroup() -> ServerError detected and caught`
     );
     throw new ServerError(commonServiceMessages.SERVER_ERROR);
   }
@@ -121,13 +121,13 @@ export const deleteContactGroup = async (
   } catch (error: NotFoundError | ServerError | unknown) {
     if (error instanceof NotFoundError) {
       appLogger.error(
-        `Group service: deleteContactGroup() -> NotFoundError generated and caught`
+        `Group service: deleteContactGroup() -> ${error.name} detected and caught`
       );
       throw error;
     }
 
     appLogger.error(
-      `Group service: deleteContactGroup() -> ServerError generated and caught`
+      `Group service: deleteContactGroup() -> ServerError detected and caught`
     );
     throw new ServerError(commonServiceMessages.SERVER_ERROR);
   }
