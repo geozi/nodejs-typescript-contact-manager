@@ -19,6 +19,7 @@ Compared to the [Task Manager API](https://github.com/geozi/nodejs-typescript-ta
   `<type>[optional scope]: <description>`
 
 - uses a logger to generate and save log messages, both for src and test files.
+- uses constants for storing HTTP codes to avoid the repetitive use of magic numbers across project files.
 - places all custom error classes under the same directory to take advantage of inheritance.
 
   ![Custom error class inheritance](img/custom_error_classes.png)
