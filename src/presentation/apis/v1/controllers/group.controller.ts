@@ -28,7 +28,7 @@ export const createContactGroup = [
       }));
 
       appLogger.error(
-        `User controller: createContactGroup() -> Express validator errors detected and caught`
+        `Group controller: createContactGroup() -> Express validator errors detected and caught`
       );
 
       res.status(httpCodes.BAD_REQUEST).json({
@@ -55,7 +55,7 @@ export const createContactGroup = [
         error instanceof UniqueConstraintError
       ) {
         appLogger.error(
-          `User controller: createContactGroup() -> ${error.name} detected and caught`
+          `Group controller: createContactGroup() -> ${error.name} detected and caught`
         );
 
         res.status(error.httpCode).json({ message: error.message });
@@ -75,7 +75,7 @@ export const updateContactGroup = [
       }));
 
       appLogger.error(
-        `User controller: updateContactGroup() -> Express validator errors detected and caught`
+        `Group controller: updateContactGroup() -> Express validator errors detected and caught`
       );
 
       res.status(httpCodes.BAD_REQUEST).json({
@@ -104,7 +104,7 @@ export const updateContactGroup = [
     } catch (error: NotFoundError | ServerError | unknown) {
       if (error instanceof NotFoundError || error instanceof ServerError) {
         appLogger.error(
-          `User controller: updateContactGroup() -> ${error.name} detected and caught`
+          `Group controller: updateContactGroup() -> ${error.name} detected and caught`
         );
 
         res.status(error.httpCode).json({ message: error.message });
@@ -124,7 +124,7 @@ export const deleteContactGroup = [
       }));
 
       appLogger.error(
-        `User controller: deleteContactGroup() -> Express validator errors detected and caught`
+        `Group controller: deleteContactGroup() -> Express validator errors detected and caught`
       );
 
       res.status(httpCodes.BAD_REQUEST).json({
@@ -142,7 +142,7 @@ export const deleteContactGroup = [
     } catch (error: NotFoundError | ServerError | unknown) {
       if (error instanceof NotFoundError || error instanceof ServerError) {
         appLogger.error(
-          `User controller: deleteContactGroup() -> ${error.name} detected and caught`
+          `Group controller: deleteContactGroup() -> ${error.name} detected and caught`
         );
 
         res.status(error.httpCode).json({ message: error.message });
@@ -162,7 +162,7 @@ export const fetchContactGroupByName = [
       }));
 
       appLogger.error(
-        `User controller: fetchContactGroupByName() -> Express validator errors detected and caught`
+        `Group controller: fetchContactGroupByName() -> Express validator errors detected and caught`
       );
 
       res.status(httpCodes.BAD_REQUEST).json({
@@ -182,7 +182,7 @@ export const fetchContactGroupByName = [
     } catch (error: NotFoundError | ServerError | unknown) {
       if (error instanceof NotFoundError || error instanceof ServerError) {
         appLogger.error(
-          `User controller: fetchContactGroupByName() -> ${error.name} detected and caught`
+          `Group controller: fetchContactGroupByName() -> ${error.name} detected and caught`
         );
 
         res.status(error.httpCode).json({ message: error.message });
