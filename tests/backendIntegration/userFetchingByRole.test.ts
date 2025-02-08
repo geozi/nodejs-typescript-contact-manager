@@ -1,5 +1,5 @@
 /**
- * User fetching by email integration tests.
+ * User fetching by role integration tests.
  */
 import assert from "assert";
 import sinon, { SinonSpy, SinonStub } from "sinon";
@@ -7,15 +7,16 @@ import { Request, Response } from "express";
 import { commonResponseMessages } from "../../src/presentation/messages/commonResponse.message";
 import { userFailedValidation } from "../../src/domain/messages/userValidation.message";
 import { invalidUserInputs, validUserInput } from "../testInputs";
-import { fetchUserByEmail } from "../../src/presentation/apis/v1/controllers/user.controller";
-import { retrieveUserByEmail } from "../../src/service/user.service";
+import { fetchUsersByRole } from "../../src/presentation/apis/v1/controllers/user.controller";
+import { retrieveUsersByRole } from "../../src/service/user.service";
 import * as userRepository from "../../src/persistence/user.repository";
 import { httpCodes } from "../../src/presentation/codes/responseStatusCodes";
 import { testLogger } from "../../logs/logger.config";
 import { commonServiceMessages } from "../../src/service/messages/commonService.message";
 import { userServiceMessages } from "../../src/service/messages/userService.message";
+import { IUser } from "../../src/domain/interfaces/iUser.interface";
 
-describe("Email-based user fetching integration tests", () => {
+describe("Role-based user fetching integration tests", () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: SinonSpy;
@@ -24,8 +25,8 @@ describe("Email-based user fetching integration tests", () => {
     describe("bad requests (400)", () => {
       beforeEach(() => {
         sinon.replace(
-          { retrieveUserByEmail },
-          "retrieveUserByEmail",
+          { retrieveUsersByRole },
+          "retrieveUsersByRole",
           sinon.fake()
         );
         res = {
@@ -42,10 +43,10 @@ describe("Email-based user fetching integration tests", () => {
         sinon.restore();
       });
 
-      it("email is undefined", async () => {
-        req = { body: { email: undefined } };
+      it("role is undefined", async () => {
+        req = { body: { role: undefined } };
 
-        for (const middleware of fetchUserByEmail) {
+        for (const middleware of fetchUsersByRole) {
           await middleware(req as Request, res as Response, next);
         }
 
@@ -57,9 +58,9 @@ describe("Email-based user fetching integration tests", () => {
           jsonSpy.calledWith({
             message: commonResponseMessages.BAD_REQUEST,
             errors: [
-              { message: userFailedValidation.EMAIL_REQUIRED_MESSAGE },
+              { message: userFailedValidation.ROLE_REQUIRED_MESSAGE },
               {
-                message: userFailedValidation.EMAIL_INVALID_MESSAGE,
+                message: userFailedValidation.ROLE_INVALID_MESSAGE,
               },
             ],
           }),
@@ -67,44 +68,37 @@ describe("Email-based user fetching integration tests", () => {
         );
 
         testLogger.info(
-          `Email-based user fetching -> 'email is undefined' test OK`
+          `Role-based user fetching -> 'role is undefined' test OK`
         );
       });
 
-      invalidUserInputs.EMAIL_INVALID_CASES.forEach(
-        ([testName, invalidEmail]) => {
-          it(testName, async () => {
-            req = { body: { email: invalidEmail } };
+      it("role is invalid", async () => {
+        req = { body: { role: invalidUserInputs.ROLE_INVALID } };
 
-            for (const middleware of fetchUserByEmail) {
-              await middleware(req as Request, res as Response, next);
-            }
-
-            const statusStub = res.status as SinonStub;
-            const jsonSpy = res.json as SinonSpy;
-
-            assert.strictEqual(
-              statusStub.calledWith(httpCodes.BAD_REQUEST),
-              true
-            );
-            assert.strictEqual(
-              jsonSpy.calledWith({
-                message: commonResponseMessages.BAD_REQUEST,
-                errors: [
-                  {
-                    message: userFailedValidation.EMAIL_INVALID_MESSAGE,
-                  },
-                ],
-              }),
-              true
-            );
-
-            testLogger.info(
-              `Email-based user fetching -> '${testName}' test OK`
-            );
-          });
+        for (const middleware of fetchUsersByRole) {
+          await middleware(req as Request, res as Response, next);
         }
-      );
+
+        const statusStub = res.status as SinonStub;
+        const jsonSpy = res.json as SinonSpy;
+
+        assert.strictEqual(statusStub.calledWith(httpCodes.BAD_REQUEST), true);
+        assert.strictEqual(
+          jsonSpy.calledWith({
+            message: commonResponseMessages.BAD_REQUEST,
+            errors: [
+              {
+                message: userFailedValidation.ROLE_INVALID_MESSAGE,
+              },
+            ],
+          }),
+          true
+        );
+
+        testLogger.info(
+          `Role-based user fetching -> 'role is invalid' test OK`
+        );
+      });
     });
   });
 
@@ -120,7 +114,7 @@ describe("Email-based user fetching integration tests", () => {
       };
 
       next = sinon.spy();
-      methodStub = sinon.stub(userRepository, "getUserByEmail");
+      methodStub = sinon.stub(userRepository, "getUsersByRole");
     });
 
     afterEach(() => {
@@ -128,10 +122,10 @@ describe("Email-based user fetching integration tests", () => {
     });
 
     it("server error (500)", async () => {
-      req = { body: { email: validUserInput.email } };
+      req = { body: { role: validUserInput.role } };
       methodStub.rejects();
 
-      for (const middleware of fetchUserByEmail) {
+      for (const middleware of fetchUsersByRole) {
         await middleware(req as Request, res as Response, next);
       }
 
@@ -148,15 +142,16 @@ describe("Email-based user fetching integration tests", () => {
       );
 
       testLogger.info(
-        `Email-based user fetching -> 'server error (500)' test OK`
+        `Role-based user fetching -> 'server error (500)' test OK`
       );
     });
 
     it("not found (404)", async () => {
-      req = { body: { email: validUserInput.email } };
-      methodStub.resolves(null);
+      req = { body: { role: validUserInput.role } };
+      const mockUsers: Array<IUser> = [];
+      methodStub.resolves(mockUsers);
 
-      for (const middleware of fetchUserByEmail) {
+      for (const middleware of fetchUsersByRole) {
         await middleware(req as Request, res as Response, next);
       }
 
@@ -165,11 +160,11 @@ describe("Email-based user fetching integration tests", () => {
 
       assert.strictEqual(statusStub.calledWith(httpCodes.NOT_FOUND), true);
       assert.strictEqual(
-        jsonSpy.calledWith({ message: userServiceMessages.USER_NOT_FOUND }),
+        jsonSpy.calledWith({ message: userServiceMessages.USERS_NOT_FOUND }),
         true
       );
 
-      testLogger.info(`Email-based user fetching -> 'not found (404)' test OK`);
+      testLogger.info(`Role-based user fetching -> 'not found (404)' test OK`);
     });
   });
 });
