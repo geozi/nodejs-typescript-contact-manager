@@ -7,6 +7,7 @@ import {
   PASSWORD_REGEX,
 } from "../../../../domain/resources/validationRegExp";
 import { Role } from "../../../../domain/enums/role.enum";
+import { commonConstants } from "../../../../domain/constants/common.constant";
 
 export const userRegistrationRules = () => {
   return [
@@ -44,7 +45,10 @@ export const userProfileUpdateRules = () => {
       .withMessage(userFailedValidation.USER_ID_REQUIRED)
       .matches(ID_REGEX)
       .withMessage(userFailedValidation.USER_ID_INVALID)
-      .isLength({ min: 24, max: 24 })
+      .isLength({
+        min: commonConstants.MONGODB_ID_LENGTH,
+        max: commonConstants.MONGODB_ID_LENGTH,
+      })
       .withMessage(userFailedValidation.USER_ID_OUT_OF_LENGTH),
     check("username")
       .optional()
@@ -72,7 +76,10 @@ export const userProfileDeleteRules = () => {
       .withMessage(userFailedValidation.USER_ID_REQUIRED)
       .matches(ID_REGEX)
       .withMessage(userFailedValidation.USER_ID_INVALID)
-      .isLength({ min: 24, max: 24 })
+      .isLength({
+        min: commonConstants.MONGODB_ID_LENGTH,
+        max: commonConstants.MONGODB_ID_LENGTH,
+      })
       .withMessage(userFailedValidation.USER_ID_OUT_OF_LENGTH),
   ];
 };

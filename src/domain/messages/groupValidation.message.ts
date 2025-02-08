@@ -2,6 +2,7 @@
  * Group validation error messages.
  * @module src/domain/messages/groupValidation.message
  */
+import { commonConstants } from "../constants/common.constant";
 import { groupConstants } from "../constants/group.constant";
 
 /**
@@ -51,7 +52,7 @@ export const groupFailedValidation = {
    * Message sent when the group ID is longer or shorter than the accepted length.
    * @type {string}
    */
-  GROUP_ID_OUT_OF_LENGTH: `Group ID must be ${groupConstants.GROUP_ID_LENGTH} characters long`,
+  GROUP_ID_OUT_OF_LENGTH: `Group ID must be ${commonConstants.MONGODB_ID_LENGTH} characters long`,
 
   /**
    * Message sent when the group ID does not match the standard regex pattern.

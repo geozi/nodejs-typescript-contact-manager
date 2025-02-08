@@ -9,8 +9,6 @@
  * @type {object}
  * @property {number} DESCRIPTION_MAX_LENGTH - The maximum length required for the description field of the Group model.
  * @property {number} DESCRIPTION_MIN_LENGTH - The minimum length required for the description field of the Group model.
- * @property {number} GROUP_ID_LENGTH - The required length for the groupId field of the Contact model.
- *
  */
 export const groupConstants = {
   /**
@@ -24,10 +22,4 @@ export const groupConstants = {
    * @type {number}
    */
   DESCRIPTION_MIN_LENGTH: 5,
-
-  /**
-   * The required length for the groupId field of the Contact model.
-   * @type {number}
-   */
-  GROUP_ID_LENGTH: 24,
 };
