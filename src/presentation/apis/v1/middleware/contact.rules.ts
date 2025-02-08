@@ -12,7 +12,7 @@ import { groupFailedValidation } from "../../../../domain/messages/groupValidati
 import { commonConstants } from "../../../../domain/constants/common.constant";
 import { commonFailedValidation } from "../../../../domain/messages/commonValidation.message";
 
-export const contactRegistrationRules = () => {
+export const contactCreationRules = () => {
   return [
     check("firstName")
       .notEmpty()
