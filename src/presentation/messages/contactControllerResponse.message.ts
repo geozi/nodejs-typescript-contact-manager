@@ -1,5 +1,5 @@
 export const contactControllerResponseMessages = {
-  CONTACT_REGISTERED: "Successful contact registration",
+  CONTACT_CREATED: "Successful contact creation",
   CONTACT_UPDATED: "Successful contact update",
   CONTACT_RETRIEVED: "Successful contact retrieval",
 };
