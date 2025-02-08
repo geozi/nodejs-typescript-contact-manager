@@ -15,7 +15,7 @@ import { testLogger } from "../../logs/logger.config";
 import { commonServiceMessages } from "../../src/service/messages/commonService.message";
 import { groupServiceMessages } from "../../src/service/messages/groupService.message";
 
-describe.only("Name-based group fetching integration tests", () => {
+describe("Name-based group fetching integration tests", () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: SinonSpy;
