@@ -1,26 +1,28 @@
 /**
- * Contact group deletion integration tests.
+ * Contact deletion integration tests.
  */
 import assert from "assert";
 import sinon, { SinonSpy, SinonStub } from "sinon";
 import { Request, Response } from "express";
 import { commonResponseMessages } from "../../src/presentation/messages/commonResponse.message";
-import { groupFailedValidation } from "../../src/domain/messages/groupValidation.message";
-import { deleteContactGroup } from "../../src/presentation/apis/v1/controllers/group.controller";
-import * as groupRepository from "../../src/persistence/group.repository";
 import { httpCodes } from "../../src/presentation/codes/responseStatusCodes";
 import { testLogger } from "../../logs/logger.config";
 import { commonServiceMessages } from "../../src/service/messages/commonService.message";
-import { invalidGroupCases, validGroupInput } from "../testInputs";
-import { groupServiceMessages } from "../../src/service/messages/groupService.message";
+import { deleteContactRecord } from "../../src/presentation/apis/v1/controllers/contact.controller";
+import * as contactService from "../../src/service/contact.service";
+import * as contactRepository from "../../src/persistence/contact.repository";
+import { validContactInput, invalidGroupCases } from "../testInputs";
+import { commonFailedValidation } from "../../src/domain/messages/commonValidation.message";
+import { contactServiceMessages } from "../../src/service/messages/contactService.message";
 
-describe("Group deletion integration tests", () => {
+describe("Contact deletion integration tests", () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: SinonSpy;
 
-  describe("validation-oriented", () => {
+  describe("bad requests (400)", () => {
     beforeEach(() => {
+      sinon.replace(contactService, "deleteContactRecord", sinon.fake());
       res = {
         status: sinon.stub().callsFake(() => {
           return res;
@@ -35,10 +37,11 @@ describe("Group deletion integration tests", () => {
       sinon.restore();
     });
 
-    it("Group ID is undefined", async () => {
-      req = { body: { id: undefined } };
+    it("id is undefined", async () => {
+      req = { body: { ...validContactInput } };
+      req.body.id = undefined;
 
-      for (const middleware of deleteContactGroup) {
+      for (const middleware of deleteContactRecord) {
         await middleware(req as Request, res as Response, next);
       }
 
@@ -50,23 +53,24 @@ describe("Group deletion integration tests", () => {
         jsonSpy.calledWith({
           message: commonResponseMessages.BAD_REQUEST,
           errors: [
-            { message: groupFailedValidation.GROUP_ID_REQUIRED },
-            { message: groupFailedValidation.GROUP_ID_INVALID },
-            { message: groupFailedValidation.GROUP_ID_OUT_OF_LENGTH },
+            { message: commonFailedValidation.MONGODB_ID_REQUIRED },
+            { message: commonFailedValidation.MONGODB_ID_INVALID },
+            { message: commonFailedValidation.MONGODB_ID_OUT_OF_LENGTH },
           ],
         }),
         true
       );
 
-      testLogger.info(`groupDeletion -> 'Group ID is undefined' test OK`);
+      testLogger.info(`contactDeletion -> 'id is undefined' test OK`);
     });
 
     invalidGroupCases.GROUP_ID_LENGTH_CASES.forEach(
       ([testName, invalidGroupId]) => {
-        it(testName, async () => {
-          req = { body: { id: invalidGroupId } };
+        it("id " + testName.substring(9), async () => {
+          req = { body: { ...validContactInput } };
+          req.body.id = invalidGroupId;
 
-          for (const middleware of deleteContactGroup) {
+          for (const middleware of deleteContactRecord) {
             await middleware(req as Request, res as Response, next);
           }
 
@@ -81,23 +85,28 @@ describe("Group deletion integration tests", () => {
             jsonSpy.calledWith({
               message: commonResponseMessages.BAD_REQUEST,
               errors: [
-                { message: groupFailedValidation.GROUP_ID_OUT_OF_LENGTH },
+                {
+                  message: commonFailedValidation.MONGODB_ID_OUT_OF_LENGTH,
+                },
               ],
             }),
             true
           );
 
-          testLogger.info(`groupDeletion -> '${testName}' test OK`);
+          testLogger.info(
+            `contactDeletion -> 'id ${testName.substring(9)}' test OK`
+          );
         });
       }
     );
 
     invalidGroupCases.GROUP_ID_INVALID_CASES.forEach(
       ([testName, invalidGroupId]) => {
-        it(testName, async () => {
-          req = { body: { id: invalidGroupId } };
+        it("id " + testName.substring(9), async () => {
+          req = { body: { ...validContactInput } };
+          req.body.id = invalidGroupId;
 
-          for (const middleware of deleteContactGroup) {
+          for (const middleware of deleteContactRecord) {
             await middleware(req as Request, res as Response, next);
           }
 
@@ -111,12 +120,18 @@ describe("Group deletion integration tests", () => {
           assert.strictEqual(
             jsonSpy.calledWith({
               message: commonResponseMessages.BAD_REQUEST,
-              errors: [{ message: groupFailedValidation.GROUP_ID_INVALID }],
+              errors: [
+                {
+                  message: commonFailedValidation.MONGODB_ID_INVALID,
+                },
+              ],
             }),
             true
           );
 
-          testLogger.info(`groupDeletion -> '${testName}' test OK`);
+          testLogger.info(
+            `contactDeletion -> 'id ${testName.substring(9)}' test OK`
+          );
         });
       }
     );
@@ -129,11 +144,12 @@ describe("Group deletion integration tests", () => {
       res = {
         status: sinon.stub().callsFake(() => {
           return res;
-        }) as unknown as SinonStub,
+        }),
         json: sinon.spy(),
       };
+
       next = sinon.spy();
-      methodStub = sinon.stub(groupRepository, "deleteGroup");
+      methodStub = sinon.stub(contactRepository, "deleteContact");
     });
 
     afterEach(() => {
@@ -141,10 +157,10 @@ describe("Group deletion integration tests", () => {
     });
 
     it("server error (500)", async () => {
-      req = { body: { id: "67a5d79966dcfebc19277f4f", ...validGroupInput } };
+      req = { body: { id: "67a77bcf9d38a3c9413150fc" } };
       methodStub.rejects();
 
-      for (const middleware of deleteContactGroup) {
+      for (const middleware of deleteContactRecord) {
         await middleware(req as Request, res as Response, next);
       }
 
@@ -156,18 +172,20 @@ describe("Group deletion integration tests", () => {
         true
       );
       assert.strictEqual(
-        jsonSpy.calledWith({ message: commonServiceMessages.SERVER_ERROR }),
+        jsonSpy.calledWith({
+          message: commonServiceMessages.SERVER_ERROR,
+        }),
         true
       );
 
-      testLogger.info(`groupDeletion -> 'server error (500)' test OK`);
+      testLogger.info(`contactDeletion -> 'server error (500)' test OK`);
     });
 
     it("not found (404)", async () => {
-      req = { body: { id: "67a5d79966dcfebc19277f4f", ...validGroupInput } };
+      req = { body: { id: "67a77bcf9d38a3c9413150fc" } };
       methodStub.resolves(null);
 
-      for (const middleware of deleteContactGroup) {
+      for (const middleware of deleteContactRecord) {
         await middleware(req as Request, res as Response, next);
       }
 
@@ -176,11 +194,13 @@ describe("Group deletion integration tests", () => {
 
       assert.strictEqual(statusStub.calledWith(httpCodes.NOT_FOUND), true);
       assert.strictEqual(
-        jsonSpy.calledWith({ message: groupServiceMessages.GROUP_NOT_FOUND }),
+        jsonSpy.calledWith({
+          message: contactServiceMessages.CONTACT_NOT_FOUND,
+        }),
         true
       );
 
-      testLogger.info(`groupDeletion -> 'not found (404)' test OK`);
+      testLogger.info(`contactDeletion -> 'not found (404)' test OK`);
     });
   });
 });

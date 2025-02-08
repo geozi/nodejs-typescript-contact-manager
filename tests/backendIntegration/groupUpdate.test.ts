@@ -14,7 +14,7 @@ import { commonServiceMessages } from "../../src/service/messages/commonService.
 import { invalidGroupCases, validGroupInput } from "../testInputs";
 import { groupServiceMessages } from "../../src/service/messages/groupService.message";
 
-describe("Contact group update integration tests", () => {
+describe("Group update integration tests", () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: SinonSpy;

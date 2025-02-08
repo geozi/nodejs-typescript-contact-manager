@@ -15,7 +15,7 @@ import { validContactInput, invalidGroupCases } from "../testInputs";
 import { commonFailedValidation } from "../../src/domain/messages/commonValidation.message";
 import { contactServiceMessages } from "../../src/service/messages/contactService.message";
 
-describe.only("Contact update integration tests", () => {
+describe("Contact update integration tests", () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: SinonSpy;
@@ -38,7 +38,7 @@ describe.only("Contact update integration tests", () => {
         sinon.restore();
       });
 
-      it("Group ID is undefined", async () => {
+      it("id is undefined", async () => {
         req = { body: { ...validContactInput } };
         req.body.id = undefined;
 
@@ -62,12 +62,12 @@ describe.only("Contact update integration tests", () => {
           true
         );
 
-        testLogger.info(`contactUpdate -> 'Group ID is undefined' test OK`);
+        testLogger.info(`contactUpdate -> 'id is undefined' test OK`);
       });
 
       invalidGroupCases.GROUP_ID_LENGTH_CASES.forEach(
         ([testName, invalidGroupId]) => {
-          it(testName, async () => {
+          it("id " + testName.substring(9), async () => {
             req = { body: { ...validContactInput } };
             req.body.id = invalidGroupId;
 
@@ -94,14 +94,16 @@ describe.only("Contact update integration tests", () => {
               true
             );
 
-            testLogger.info(`contactUpdate -> '${testName}' test OK`);
+            testLogger.info(
+              `contactUpdate -> 'id ${testName.substring(9)}' test OK`
+            );
           });
         }
       );
 
       invalidGroupCases.GROUP_ID_INVALID_CASES.forEach(
         ([testName, invalidGroupId]) => {
-          it(testName, async () => {
+          it("id " + testName.substring(9), async () => {
             req = { body: { ...validContactInput } };
             req.body.id = invalidGroupId;
 
@@ -128,7 +130,9 @@ describe.only("Contact update integration tests", () => {
               true
             );
 
-            testLogger.info(`contactUpdate -> '${testName}' test OK`);
+            testLogger.info(
+              `contactUpdate -> 'id ${testName.substring(9)}' test OK`
+            );
           });
         }
       );
