@@ -1,5 +1,5 @@
 /**
- * User fetching by username integration tests.
+ * User fetching by email integration tests.
  */
 import assert from "assert";
 import sinon, { SinonSpy, SinonStub } from "sinon";
@@ -7,15 +7,15 @@ import { Request, Response } from "express";
 import { commonResponseMessages } from "../../src/presentation/messages/commonResponse.message";
 import { userFailedValidation } from "../../src/domain/messages/userValidation.message";
 import { invalidUserInputs, validUserInput } from "../testInputs";
-import { fetchUserByUsername } from "../../src/presentation/apis/v1/controllers/user.controller";
-import { retrieveUserByUsername } from "../../src/service/user.service";
+import { fetchUserByEmail } from "../../src/presentation/apis/v1/controllers/user.controller";
+import { retrieveUserByEmail } from "../../src/service/user.service";
 import * as userRepository from "../../src/persistence/user.repository";
 import { httpCodes } from "../../src/presentation/codes/responseStatusCodes";
 import { testLogger } from "../../logs/logger.config";
 import { commonServiceMessages } from "../../src/service/messages/commonService.message";
 import { userServiceMessages } from "../../src/service/messages/userService.message";
 
-describe("Username-based user fetching integration tests", () => {
+describe.only("Email-based user fetching integration tests", () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: SinonSpy;
@@ -24,8 +24,8 @@ describe("Username-based user fetching integration tests", () => {
     describe("bad requests (400)", () => {
       beforeEach(() => {
         sinon.replace(
-          { retrieveUserByUsername },
-          "retrieveUserByUsername",
+          { retrieveUserByEmail },
+          "retrieveUserByEmail",
           sinon.fake()
         );
         res = {
@@ -42,10 +42,10 @@ describe("Username-based user fetching integration tests", () => {
         sinon.restore();
       });
 
-      it("username is undefined", async () => {
-        req = { body: { username: undefined } };
+      it("email is undefined", async () => {
+        req = { body: { email: undefined } };
 
-        for (const middleware of fetchUserByUsername) {
+        for (const middleware of fetchUserByEmail) {
           await middleware(req as Request, res as Response, next);
         }
 
@@ -57,9 +57,9 @@ describe("Username-based user fetching integration tests", () => {
           jsonSpy.calledWith({
             message: commonResponseMessages.BAD_REQUEST,
             errors: [
-              { message: userFailedValidation.USERNAME_REQUIRED_MESSAGE },
+              { message: userFailedValidation.EMAIL_REQUIRED_MESSAGE },
               {
-                message: userFailedValidation.USERNAME_BELOW_MIN_LENGTH_MESSAGE,
+                message: userFailedValidation.EMAIL_INVALID_MESSAGE,
               },
             ],
           }),
@@ -67,65 +67,44 @@ describe("Username-based user fetching integration tests", () => {
         );
 
         testLogger.info(
-          `Username-based user fetching -> 'username is undefined' test OK`
+          `Email-based user fetching -> 'email is undefined' test OK`
         );
       });
 
-      it("username is too short", async () => {
-        req = { body: { username: invalidUserInputs.TOO_SHORT_USERNAME } };
+      invalidUserInputs.EMAIL_INVALID_CASES.forEach(
+        ([testName, invalidEmail]) => {
+          it(testName, async () => {
+            req = { body: { email: invalidEmail } };
 
-        for (const middleware of fetchUserByUsername) {
-          await middleware(req as Request, res as Response, next);
+            for (const middleware of fetchUserByEmail) {
+              await middleware(req as Request, res as Response, next);
+            }
+
+            const statusStub = res.status as SinonStub;
+            const jsonSpy = res.json as SinonSpy;
+
+            assert.strictEqual(
+              statusStub.calledWith(httpCodes.BAD_REQUEST),
+              true
+            );
+            assert.strictEqual(
+              jsonSpy.calledWith({
+                message: commonResponseMessages.BAD_REQUEST,
+                errors: [
+                  {
+                    message: userFailedValidation.EMAIL_INVALID_MESSAGE,
+                  },
+                ],
+              }),
+              true
+            );
+
+            testLogger.info(
+              `Email-based user fetching -> '${testName}' test OK`
+            );
+          });
         }
-
-        const statusStub = res.status as SinonStub;
-        const jsonSpy = res.json as SinonSpy;
-
-        assert.strictEqual(statusStub.calledWith(httpCodes.BAD_REQUEST), true);
-        assert.strictEqual(
-          jsonSpy.calledWith({
-            message: commonResponseMessages.BAD_REQUEST,
-            errors: [
-              {
-                message: userFailedValidation.USERNAME_BELOW_MIN_LENGTH_MESSAGE,
-              },
-            ],
-          }),
-          true
-        );
-
-        testLogger.info(
-          `Username-based user fetching -> 'username is too short' test OK`
-        );
-      });
-
-      it("username is too long", async () => {
-        req = { body: { username: invalidUserInputs.TOO_LONG_USERNAME } };
-
-        for (const middleware of fetchUserByUsername) {
-          await middleware(req as Request, res as Response, next);
-        }
-
-        const statusStub = res.status as SinonStub;
-        const jsonSpy = res.json as SinonSpy;
-
-        assert.strictEqual(statusStub.calledWith(httpCodes.BAD_REQUEST), true);
-        assert.strictEqual(
-          jsonSpy.calledWith({
-            message: commonResponseMessages.BAD_REQUEST,
-            errors: [
-              {
-                message: userFailedValidation.USERNAME_ABOVE_MAX_LENGTH_MESSAGE,
-              },
-            ],
-          }),
-          true
-        );
-
-        testLogger.info(
-          `Username-based user fetching -> 'username is too long' test OK`
-        );
-      });
+      );
     });
   });
 
@@ -141,7 +120,7 @@ describe("Username-based user fetching integration tests", () => {
       };
 
       next = sinon.spy();
-      methodStub = sinon.stub(userRepository, "getUserByUsername");
+      methodStub = sinon.stub(userRepository, "getUserByEmail");
     });
 
     afterEach(() => {
@@ -149,10 +128,10 @@ describe("Username-based user fetching integration tests", () => {
     });
 
     it("server error (500)", async () => {
-      req = { body: { username: validUserInput.username } };
+      req = { body: { email: validUserInput.email } };
       methodStub.rejects();
 
-      for (const middleware of fetchUserByUsername) {
+      for (const middleware of fetchUserByEmail) {
         await middleware(req as Request, res as Response, next);
       }
 
@@ -169,15 +148,15 @@ describe("Username-based user fetching integration tests", () => {
       );
 
       testLogger.info(
-        `Username-based user fetching -> 'server error (500)' test OK`
+        `Email-based user fetching -> 'server error (500)' test OK`
       );
     });
 
     it("not found (404)", async () => {
-      req = { body: { username: validUserInput.username } };
+      req = { body: { email: validUserInput.email } };
       methodStub.resolves(null);
 
-      for (const middleware of fetchUserByUsername) {
+      for (const middleware of fetchUserByEmail) {
         await middleware(req as Request, res as Response, next);
       }
 
@@ -190,9 +169,7 @@ describe("Username-based user fetching integration tests", () => {
         true
       );
 
-      testLogger.info(
-        `Username-based user fetching -> 'not found (404)' test OK`
-      );
+      testLogger.info(`Email-based user fetching -> 'not found (404)' test OK`);
     });
   });
 });
