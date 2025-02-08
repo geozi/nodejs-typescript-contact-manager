@@ -1,6 +1,6 @@
 # Contact Manager API test plan
 
-Document version 1.0.2
+Document version 1.0.3
 
 ## Introduction
 
@@ -102,6 +102,35 @@ Given that one of the main roles of the service layer is to catch promise-based 
         │   └── userService.message.ts
         └── user.service.ts
 ```
+
+## Integration tests
+
+### Backend integration tests
+
+Backend integration test suites:
+
+- User registration [✔],
+- User profile update [✔],
+- User profile deletion [✔],
+- User fetching by username [✔],
+- User fetching by email [✔],
+- User fetching by role [✔],
+- Contact group creation [✔],
+- Contact group update [✔],
+- Contact group deletion [✔],
+- Contact group fetching by name [✔],
+- Contact creation [✔],
+- Contact update [✔],
+- Contact deletion [✔],
+- Contact fetching by email [✔]
+
+Each test suite is divided into **validation-oriented** and **promise-oriented** tests. The validation-oriented tests trigger validation errors with specific input to check the behavior of both the express-validator middleware and that of the controllers receiving the errors.
+
+![A diagram showing the main parts of the presentation layer probed by the validation-oriented backend integration tests](img/backend_integration_testing_diagram_1.png)
+
+The promise-oriented tests generate promise rejections, which are caught by the service layer and, then, handled by the controllers in the presentation layer.
+
+![A diagram showing the application layers probed by the promise-oriented backend integration tests](img/backend_integration_testing_diagram_2.png)
 
 ## Out of scope
 
