@@ -36,13 +36,13 @@ export const retrieveContactByEmail = async (
   } catch (error: NotFoundError | ServerError | unknown) {
     if (error instanceof NotFoundError) {
       appLogger.error(
-        `Contact service: retrieveContactByEmail() -> ${error.name} detected and caught`
+        `Contact service: retrieveContactByEmail() -> ${error.name} detected and re-thrown`
       );
       throw error;
     }
 
     appLogger.error(
-      `Contact service: retrieveContactByEmail() -> ServerError detected and caught`
+      `Contact service: retrieveContactByEmail() -> ServerError detected and re-thrown`
     );
     throw new ServerError(commonServiceMessages.SERVER_ERROR);
   }
@@ -63,7 +63,7 @@ export const createContactRecord = async (
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error: ServerError | unknown) {
     appLogger.error(
-      `Contact service: createContactRecord() -> ServerError detected and caught`
+      `Contact service: createContactRecord() -> ServerError detected and re-thrown`
     );
     throw new ServerError(commonServiceMessages.SERVER_ERROR);
   }
@@ -91,13 +91,13 @@ export const updateContactRecord = async (
   } catch (error: NotFoundError | ServerError | unknown) {
     if (error instanceof NotFoundError) {
       appLogger.error(
-        `Contact service: updateContactRecord() -> ${error.name} detected and caught`
+        `Contact service: updateContactRecord() -> ${error.name} detected and re-thrown`
       );
       throw error;
     }
 
     appLogger.error(
-      `Contact service: updateContactRecord() -> ServerError detected and caught`
+      `Contact service: updateContactRecord() -> ServerError detected and re-thrown`
     );
     throw new ServerError(commonServiceMessages.SERVER_ERROR);
   }
@@ -123,13 +123,13 @@ export const deleteContactRecord = async (
   } catch (error: NotFoundError | ServerError | unknown) {
     if (error instanceof NotFoundError) {
       appLogger.error(
-        `Contact service: deleteContactRecord() -> ${error.name} detected and caught`
+        `Contact service: deleteContactRecord() -> ${error.name} detected and re-thrown`
       );
       throw error;
     }
 
     appLogger.error(
-      `Contact service: deleteContactRecord() -> ServerError detected and caught`
+      `Contact service: deleteContactRecord() -> ServerError detected and re-thrown`
     );
     throw new ServerError(commonServiceMessages.SERVER_ERROR);
   }

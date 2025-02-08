@@ -40,13 +40,13 @@ export const retrieveUserByUsername = async (
   } catch (error: NotFoundError | ServerError | unknown) {
     if (error instanceof NotFoundError) {
       appLogger.error(
-        `User service: retrieveUserByUsername() -> ${error.name} detected and caught`
+        `User service: retrieveUserByUsername() -> ${error.name} detected and re-thrown`
       );
       throw error;
     }
 
     appLogger.error(
-      `User service: retrieveUserByUsername() -> ServerError detected and caught`
+      `User service: retrieveUserByUsername() -> ServerError detected and re-thrown`
     );
     throw new ServerError(commonServiceMessages.SERVER_ERROR);
   }
@@ -70,13 +70,13 @@ export const retrieveUserByEmail = async (email: string): Promise<IUser> => {
   } catch (error: NotFoundError | ServerError | unknown) {
     if (error instanceof NotFoundError) {
       appLogger.error(
-        `User service: retrieveUserByEmail() -> ${error.name} detected and caught`
+        `User service: retrieveUserByEmail() -> ${error.name} detected and re-thrown`
       );
       throw error;
     }
 
     appLogger.error(
-      `User service: retrieveUserByEmail() -> ServerError detected and caught`
+      `User service: retrieveUserByEmail() -> ServerError detected and re-thrown`
     );
     throw new ServerError(commonServiceMessages.SERVER_ERROR);
   }
@@ -103,13 +103,13 @@ export const retrieveUsersByRole = async (
   } catch (error: NotFoundError | ServerError | unknown) {
     if (error instanceof NotFoundError) {
       appLogger.error(
-        `User service: retrieveUsersByRole() -> ${error.name} detected and caught`
+        `User service: retrieveUsersByRole() -> ${error.name} detected and re-thrown`
       );
       throw error;
     }
 
     appLogger.error(
-      `User service: retrieveUsersByRole() -> ServerError detected and caught`
+      `User service: retrieveUsersByRole() -> ServerError detected and re-thrown`
     );
     throw new ServerError(commonServiceMessages.SERVER_ERROR);
   }
@@ -129,7 +129,7 @@ export const createUserProfile = async (newUser: IUser): Promise<IUser> => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error: ServerError | unknown) {
     appLogger.error(
-      `User service: createUserProfile() -> ServerError detected and caught`
+      `User service: createUserProfile() -> ServerError detected and re-thrown`
     );
     throw new ServerError(commonServiceMessages.SERVER_ERROR);
   }
@@ -156,13 +156,13 @@ export const updateUserProfile = async (
   } catch (error: NotFoundError | ServerError | unknown) {
     if (error instanceof NotFoundError) {
       appLogger.error(
-        `User service: updateUserProfile() -> ${error.name} detected and caught`
+        `User service: updateUserProfile() -> ${error.name} detected and re-thrown`
       );
       throw error;
     }
 
     appLogger.error(
-      `User service: updateUserProfile() -> ServerError detected and caught`
+      `User service: updateUserProfile() -> ServerError detected and re-thrown`
     );
     throw new ServerError(commonServiceMessages.SERVER_ERROR);
   }
@@ -185,13 +185,13 @@ export const deleteUserProfile = async (id: Types.ObjectId): Promise<IUser> => {
   } catch (error: NotFoundError | ServerError | unknown) {
     if (error instanceof NotFoundError) {
       appLogger.error(
-        `User service: deleteUserProfile() -> ${error.name} detected and caught`
+        `User service: deleteUserProfile() -> ${error.name} detected and re-thrown`
       );
       throw error;
     }
 
     appLogger.error(
-      `User service: deleteUserProfile() -> ServerError detected and caught`
+      `User service: deleteUserProfile() -> ServerError detected and re-thrown`
     );
     throw new ServerError(commonServiceMessages.SERVER_ERROR);
   }
