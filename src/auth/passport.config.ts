@@ -51,8 +51,8 @@ export const authenticateJWT = (
   passport.authenticate(
     "jwt",
     { session: false },
-    (err: Error | null, user: IAuthUser) => {
-      if (err || !user) {
+    (error: Error | null, user: IAuthUser) => {
+      if (error || !user) {
         return res
           .status(httpCodes.UNAUTHORIZED)
           .json({ message: authResponseMessages.AUTH_FAILED });
