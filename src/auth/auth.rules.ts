@@ -1,7 +1,10 @@
 import { check, header } from "express-validator";
 import { userFailedValidation } from "../domain/messages/userValidation.message";
 import { userConstants } from "../domain/constants/user.constant";
-import { EMAIL_REGEX, TOKEN_REGEX } from "../domain/resources/validationRegExp";
+import {
+  PASSWORD_REGEX,
+  TOKEN_REGEX,
+} from "../domain/resources/validationRegExp";
 import { authResponseMessages } from "./authResponse.message";
 
 export const userLoginRules = () => {
@@ -18,7 +21,7 @@ export const userLoginRules = () => {
       .withMessage(userFailedValidation.PASSWORD_REQUIRED_MESSAGE)
       .isLength({ min: userConstants.PASSWORD_MIN_LENGTH })
       .withMessage(userFailedValidation.PASSWORD_BELOW_MIN_LENGTH_MESSAGE)
-      .matches(EMAIL_REGEX)
+      .matches(PASSWORD_REGEX)
       .withMessage(userFailedValidation.PASSWORD_MUST_HAVE_CHARACTERS_MESSAGE),
   ];
 };
