@@ -41,7 +41,7 @@ export const contactGroupUpdateRules = () => {
   ];
 };
 
-export const contactGroupDeleteRules = () => {
+export const contactGroupDeletionRules = () => {
   return [
     check("id")
       .notEmpty()

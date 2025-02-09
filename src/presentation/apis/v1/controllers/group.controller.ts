@@ -6,7 +6,7 @@ import { validationResult } from "express-validator";
 import {
   contactGroupCreationRules,
   contactGroupUpdateRules,
-  contactGroupDeleteRules,
+  contactGroupDeletionRules,
   contactGroupRetrievalByName,
 } from "../middleware/group.rules";
 import { Request, Response } from "express";
@@ -152,11 +152,11 @@ export const updateContactGroup = [
  * Middleware array that contains contact group deletion logic.
  *
  * @type {Array<object>}
- * @property {ValidationChain[]} contactGroupDeleteRules - Express validation rules for contact group deletion.
+ * @property {ValidationChain[]} contactGroupDeletionRules - Express validation rules for contact group deletion.
  * @property {Function} anonymousAsyncFunction - Handles contact group deletion requests and responses.
  */
 export const deleteContactGroup = [
-  ...contactGroupDeleteRules(),
+  ...contactGroupDeletionRules(),
 
   /**
    * Processes HTTP requests for contact group deletion.
