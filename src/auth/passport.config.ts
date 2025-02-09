@@ -54,8 +54,8 @@ export const authenticateJWT = (
     (error: Error | null, user: IAuthUser) => {
       if (error || !user) {
         return res
-          .status(httpCodes.UNAUTHORIZED)
-          .json({ message: authResponseMessages.AUTH_FAILED });
+          .status(httpCodes.FORBIDDEN)
+          .json({ message: authResponseMessages.AUTHORIZATION_FAILED });
       }
       req.body.username = user.username;
       next();
