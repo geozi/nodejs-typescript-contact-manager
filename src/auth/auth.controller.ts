@@ -28,6 +28,10 @@ export const loginUser = [
         message: err.msg,
       }));
 
+      appLogger.error(
+        `Auth controller: loginUser() -> Express validator errors detected and caught`
+      );
+
       await res.status(httpCodes.BAD_REQUEST).json({
         message: commonResponseMessages.BAD_REQUEST,
         errors: errorMessage,
@@ -56,12 +60,10 @@ export const loginUser = [
         }
       );
 
-      await res
-        .status(httpCodes.OK)
-        .json({
-          message: authResponseMessages.AUTHENTICATION_SUCCESS,
-          token: token,
-        });
+      await res.status(httpCodes.OK).json({
+        message: authResponseMessages.AUTHENTICATION_SUCCESS,
+        token: token,
+      });
     } catch (error: NotFoundError | ServerError | unknown) {
       if (error instanceof NotFoundError) {
         appLogger.error(
