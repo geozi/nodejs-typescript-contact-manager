@@ -27,8 +27,8 @@ export const headerValidationRules = () => {
   return [
     header("Authorization")
       .notEmpty()
-      .withMessage(authResponseMessages.AUTH_HEADER_REQUIRED)
+      .withMessage(authResponseMessages.AUTHORIZATION_HEADER_REQUIRED)
       .matches(TOKEN_REGEX)
-      .withMessage(authResponseMessages.AUTH_TOKEN_INVALID),
+      .withMessage(authResponseMessages.AUTHORIZATION_TOKEN_INVALID),
   ];
 };
