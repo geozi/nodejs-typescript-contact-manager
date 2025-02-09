@@ -56,7 +56,12 @@ export const loginUser = [
         }
       );
 
-      await res.status(httpCodes.OK).json({ token: token });
+      await res
+        .status(httpCodes.OK)
+        .json({
+          message: authResponseMessages.AUTHENTICATION_SUCCESS,
+          token: token,
+        });
     } catch (error: NotFoundError | ServerError | unknown) {
       if (error instanceof NotFoundError) {
         appLogger.error(

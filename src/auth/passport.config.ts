@@ -43,7 +43,7 @@ passport.use(
   })
 );
 
-export const authenticateJWT = (
+export const verifyToken = (
   req: Request,
   res: Response,
   next: NextFunction
