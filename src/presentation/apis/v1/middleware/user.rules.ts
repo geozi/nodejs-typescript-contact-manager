@@ -1,4 +1,8 @@
-import { check } from "express-validator";
+/**
+ * Express validation rules for user-related operations.
+ * @module src/presentation/apis/v1/middleware/user.rules
+ */
+import { check, ValidationChain } from "express-validator";
 import { userFailedValidation } from "../../../../domain/messages/userValidation.message";
 import { userConstants } from "../../../../domain/constants/user.constant";
 import {
@@ -9,7 +13,11 @@ import {
 import { Role } from "../../../../domain/enums/role.enum";
 import { commonConstants } from "../../../../domain/constants/common.constant";
 
-export const userRegistrationRules = () => {
+/**
+ * Returns a validation chain for user registration.
+ * @returns {ValidationChain[]} Validation chain.
+ */
+export const userRegistrationRules = (): ValidationChain[] => {
   return [
     check("username")
       .notEmpty()
@@ -38,7 +46,11 @@ export const userRegistrationRules = () => {
   ];
 };
 
-export const userProfileUpdateRules = () => {
+/**
+ * Returns a validation chain for user update.
+ * @returns {ValidationChain[]} Validation chain.
+ */
+export const userProfileUpdateRules = (): ValidationChain[] => {
   return [
     check("id")
       .notEmpty()
@@ -69,7 +81,11 @@ export const userProfileUpdateRules = () => {
   ];
 };
 
-export const userProfileDeletionRules = () => {
+/**
+ * Returns a validation chain for user profile deletion.
+ * @returns {ValidationChain[]} Validation chain.
+ */
+export const userProfileDeletionRules = (): ValidationChain[] => {
   return [
     check("id")
       .notEmpty()
@@ -84,7 +100,11 @@ export const userProfileDeletionRules = () => {
   ];
 };
 
-export const userRetrievalByUsernameRules = () => {
+/**
+ * Returns a validation chain for username-based user retrieval.
+ * @returns {ValidationChain[]} Validation chain.
+ */
+export const userRetrievalByUsernameRules = (): ValidationChain[] => {
   return [
     check("username")
       .notEmpty()
@@ -96,7 +116,11 @@ export const userRetrievalByUsernameRules = () => {
   ];
 };
 
-export const userRetrievalByEmailRules = () => {
+/**
+ * Returns a validation chain for email-based user retrieval.
+ * @returns {ValidationChain[]} Validation chain.
+ */
+export const userRetrievalByEmailRules = (): ValidationChain[] => {
   return [
     check("email")
       .notEmpty()
@@ -106,7 +130,11 @@ export const userRetrievalByEmailRules = () => {
   ];
 };
 
-export const userRetrievalByRoleRules = () => {
+/**
+ * Returns a validation chain for role-based user retrieval.
+ * @returns {ValidationChain[]} Validation chain.
+ */
+export const userRetrievalByRoleRules = (): ValidationChain[] => {
   return [
     check("role")
       .notEmpty()

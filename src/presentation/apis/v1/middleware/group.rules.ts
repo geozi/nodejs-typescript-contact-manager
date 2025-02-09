@@ -1,10 +1,18 @@
-import { check } from "express-validator";
+/**
+ * Express validation rules for group-related operations.
+ * @module src/presentation/apis/v1/middleware/group.rules
+ */
+import { check, ValidationChain } from "express-validator";
 import { groupFailedValidation } from "../../../../domain/messages/groupValidation.message";
 import { groupConstants } from "../../../../domain/constants/group.constant";
 import { ID_REGEX } from "../../../../domain/resources/validationRegExp";
 import { commonConstants } from "../../../../domain/constants/common.constant";
 
-export const contactGroupCreationRules = () => {
+/**
+ * Returns a validation chain for contact group creation.
+ * @returns {ValidationChain[]} Validation chain.
+ */
+export const contactGroupCreationRules = (): ValidationChain[] => {
   return [
     check("name")
       .notEmpty()
@@ -19,7 +27,11 @@ export const contactGroupCreationRules = () => {
   ];
 };
 
-export const contactGroupUpdateRules = () => {
+/**
+ * Returns a validation chain for contact group update.
+ * @returns {ValidationChain[]} Validation chain.
+ */
+export const contactGroupUpdateRules = (): ValidationChain[] => {
   return [
     check("id")
       .notEmpty()
@@ -41,7 +53,11 @@ export const contactGroupUpdateRules = () => {
   ];
 };
 
-export const contactGroupDeletionRules = () => {
+/**
+ * Returns a validation chain for contact group deletion.
+ * @returns {ValidationChain[]} Validation chain.
+ */
+export const contactGroupDeletionRules = (): ValidationChain[] => {
   return [
     check("id")
       .notEmpty()
@@ -56,7 +72,11 @@ export const contactGroupDeletionRules = () => {
   ];
 };
 
-export const contactGroupRetrievalByName = () => {
+/**
+ * Returns a validation chain for name-based contact group retrieval.
+ * @returns {ValidationChain[]} Validation chain.
+ */
+export const contactGroupRetrievalByName = (): ValidationChain[] => {
   return [
     check("name")
       .notEmpty()

@@ -1,4 +1,8 @@
-import { check } from "express-validator";
+/**
+ * Express validation rules for contact-related operations.
+ * @module src/presentation/apis/v1/middleware/contact.rules
+ */
+import { check, ValidationChain } from "express-validator";
 import { contactFailedValidation } from "../../../../domain/messages/contactValidation.message";
 import { contactConstants } from "../../../../domain/constants/contact.constant";
 import {
@@ -12,7 +16,11 @@ import { groupFailedValidation } from "../../../../domain/messages/groupValidati
 import { commonConstants } from "../../../../domain/constants/common.constant";
 import { commonFailedValidation } from "../../../../domain/messages/commonValidation.message";
 
-export const contactCreationRules = () => {
+/**
+ * Returns a validation chain for contact creation.
+ * @returns {ValidationChain[]} Validation chain.
+ */
+export const contactCreationRules = (): ValidationChain[] => {
   return [
     check("firstName")
       .notEmpty()
@@ -68,7 +76,11 @@ export const contactCreationRules = () => {
   ];
 };
 
-export const contactUpdateRules = () => {
+/**
+ * Returns a validation chain for contact update.
+ * @returns {ValidationChain[]} Validation chain.
+ */
+export const contactUpdateRules = (): ValidationChain[] => {
   return [
     check("id")
       .notEmpty()
@@ -129,7 +141,11 @@ export const contactUpdateRules = () => {
   ];
 };
 
-export const contactDeletionRules = () => {
+/**
+ * Returns a validation chain for contact deletion.
+ * @returns {ValidationChain[]} Validation chain.
+ */
+export const contactDeletionRules = (): ValidationChain[] => {
   return [
     check("id")
       .notEmpty()
@@ -144,7 +160,11 @@ export const contactDeletionRules = () => {
   ];
 };
 
-export const contactRetrievalByEmail = () => {
+/**
+ * Returns a validation chain for email-based contact retrieval.
+ * @returns {ValidationChain[]} Validation chain.
+ */
+export const contactRetrievalByEmail = (): ValidationChain[] => {
   return [
     check("email")
       .notEmpty()
