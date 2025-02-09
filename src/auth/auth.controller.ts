@@ -22,10 +22,12 @@ export const loginUser = [
   ...userLoginRules(),
   async (req: Request, res: Response): Promise<void> => {
     const expressErrors = validationResult(req);
+
     if (!expressErrors.isEmpty()) {
       const errorMessage = expressErrors.array().map((err) => ({
         message: err.msg,
       }));
+
       await res.status(httpCodes.BAD_REQUEST).json({
         message: commonResponseMessages.BAD_REQUEST,
         errors: errorMessage,
@@ -42,7 +44,8 @@ export const loginUser = [
       if (!passwordMatch) {
         res
           .status(httpCodes.UNAUTHORIZED)
-          .json({ message: authResponseMessages.AUTH_FAILED });
+          .json({ message: authResponseMessages.AUTHENTICATION_FAILED });
+        return;
       }
 
       const token = jwt.sign(
@@ -55,7 +58,18 @@ export const loginUser = [
 
       await res.status(httpCodes.OK).json({ token: token });
     } catch (error: NotFoundError | ServerError | unknown) {
-      if (error instanceof NotFoundError || error instanceof ServerError) {
+      if (error instanceof NotFoundError) {
+        appLogger.error(
+          `Auth controller: loginUser() -> ${error.name} detected and caught`
+        );
+
+        res
+          .status(httpCodes.UNAUTHORIZED)
+          .json({ message: authResponseMessages.AUTHENTICATION_FAILED });
+        return;
+      }
+
+      if (error instanceof ServerError) {
         appLogger.error(
           `Auth controller: loginUser() -> ${error.name} detected and caught`
         );
