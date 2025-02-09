@@ -1,3 +1,7 @@
+/**
+ * User controller.
+ * @module src/presentation/apis/v1/controllers/user.controller
+ */
 import { validationResult } from "express-validator";
 import {
   userProfileDeleteRules,
@@ -27,8 +31,23 @@ import { Types } from "mongoose";
 import { commonResponseMessages } from "../../../messages/commonResponse.message";
 import { appLogger } from "../../../../../logs/logger.config";
 
+/**
+ * Middleware array that contains user registration logic.
+ *
+ * @type {Array<object>}
+ * @property {ValidationChain[]} userRegistrationRules - Express validation rules for user registration.
+ * @property {Function} anonymousAsyncFunction - Handles HTTP requests and responses for user registration.
+ */
 export const registerUser = [
   ...userRegistrationRules(),
+
+  /**
+   * Processes HTTP requests for user registration.
+   *
+   * @param {Request} req - An HTTP request.
+   * @param {Response} res - An HTTP response.
+   * @returns {Promise<void>} A promise that resolves to void.
+   */
   async (req: Request, res: Response): Promise<void> => {
     const expressErrors = validationResult(req);
     if (!expressErrors.isEmpty()) {
@@ -75,8 +94,23 @@ export const registerUser = [
   },
 ];
 
+/**
+ * Middleware array that contains user update logic.
+ *
+ * @type {Array<object>}
+ * @property {ValidationChain[]} userProfileUpdateRules - Express validation rules for user update.
+ * @property {Function} anonymousAsyncFunction - Handles HTTP requests and responses for user update.
+ */
 export const updateUserInfo = [
   ...userProfileUpdateRules(),
+
+  /**
+   * Processes HTTP requests for user update.
+   *
+   * @param {Request} req - An HTTP request.
+   * @param {Response} res - An HTTP response.
+   * @returns {Promise<void>} A promise that resolves to void.
+   */
   async (req: Request, res: Response): Promise<void> => {
     const expressErrors = validationResult(req);
     if (!expressErrors.isEmpty()) {
@@ -122,8 +156,23 @@ export const updateUserInfo = [
   },
 ];
 
+/**
+ * Middleware array that contains user profile deletion logic.
+ *
+ * @type {Array<object>}
+ * @property {ValidationChain[]} userProfileDeleteRules - Express validation rules for user profile deletion.
+ * @property {Function} anonymousAsyncFunction - Handles HTTP requests and responses for user profile deletion.
+ */
 export const deleteUserInfo = [
   ...userProfileDeleteRules(),
+
+  /**
+   * Processes HTTP requests for user profile deletion.
+   *
+   * @param {Request} req - An HTTP request.
+   * @param {Response} res - An HTTP response.
+   * @returns {Promise<void>} A promise that resolves to void.
+   */
   async (req: Request, res: Response): Promise<void> => {
     const expressErrors = validationResult(req);
     if (!expressErrors.isEmpty()) {
@@ -160,8 +209,23 @@ export const deleteUserInfo = [
   },
 ];
 
+/**
+ * Middleware array that contains username-based user retrieval logic.
+ *
+ * @type {Array<object>}
+ * @property {ValidationChain[]} userRetrievalByUsernameRules - Express validation rules for username-based user retrieval.
+ * @property {Function} anonymousAsyncFunction - Handles HTTP requests and responses for username-based user retrieval.
+ */
 export const fetchUserByUsername = [
   ...userRetrievalByUsernameRules(),
+
+  /**
+   * Processes HTTP requests for username-based user retrieval.
+   *
+   * @param {Request} req - An HTTP request.
+   * @param {Response} res - An HTTP response.
+   * @returns {Promise<void>} A promise that resolves to void.
+   */
   async (req: Request, res: Response): Promise<void> => {
     const expressErrors = validationResult(req);
     if (!expressErrors.isEmpty()) {
@@ -200,8 +264,23 @@ export const fetchUserByUsername = [
   },
 ];
 
+/**
+ * Middleware array that contains email-based user retrieval logic.
+ *
+ * @type {Array<object>}
+ * @property {ValidationChain[]} userRetrievalByEmailRules - Express validation rules for email-based user retrieval.
+ * @property {Function} anonymousAsyncFunction - Handles HTTP requests and responses for email-based user retrieval.
+ */
 export const fetchUserByEmail = [
   ...userRetrievalByEmailRules(),
+
+  /**
+   * Processes HTTP requests for email-based user retrieval.
+   *
+   * @param {Request} req - An HTTP request.
+   * @param {Response} res - An HTTP response.
+   * @returns {Promise<void>} A promise that resolves to void.
+   */
   async (req: Request, res: Response): Promise<void> => {
     const expressErrors = validationResult(req);
     if (!expressErrors.isEmpty()) {
@@ -240,8 +319,23 @@ export const fetchUserByEmail = [
   },
 ];
 
+/**
+ * Middleware array that contains role-based user retrieval logic.
+ *
+ * @type {Array<object>}
+ * @property {ValidationChain[]} userRetrievalByRoleRules - Express validation rules for role-based user retrieval.
+ * @property {Function} anonymousAsyncFunction - Handles HTTP requests and responses for role-based user retrieval.
+ */
 export const fetchUsersByRole = [
   ...userRetrievalByRoleRules(),
+
+  /**
+   * Processes HTTP requests for role-based user retrieval.
+   *
+   * @param {Request} req - An HTTP request.
+   * @param {Response} res - An HTTP response.
+   * @returns {Promise<void>} A promise that resolves to void.
+   */
   async (req: Request, res: Response): Promise<void> => {
     const expressErrors = validationResult(req);
     if (!expressErrors.isEmpty()) {

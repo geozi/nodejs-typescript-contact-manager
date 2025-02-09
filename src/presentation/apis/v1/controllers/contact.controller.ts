@@ -1,3 +1,8 @@
+/**
+ * Contact controller.
+ * @module src/presentation/apis/v1/controllers/contact.controller
+ */
+
 import { validationResult } from "express-validator";
 import { Request, Response } from "express";
 import { contactControllerResponseMessages } from "../../../messages/contactControllerResponse.message";
@@ -18,9 +23,24 @@ import {
   contactUpdateRules,
 } from "../middleware/contact.rules";
 
+/**
+ * Middleware array that contains contact creation logic.
+ *
+ * @type {Array<object>}
+ * @property {ValidationChain[]} contactCreationRules - Express validation rules for contact creation.
+ * @property {Function} anonymousAsyncFunction - Handles contact creation requests and responses.
+ */
 export const createContactRecord = [
   ...contactCreationRules(),
-  async (req: Request, res: Response) => {
+
+  /**
+   * Processes HTTP requests for contact creation.
+   *
+   * @param {Request} req - An HTTP request.
+   * @param {Response} res - An HTTP response.
+   * @returns {Promise<void>} A promise that resolves to void.
+   */
+  async (req: Request, res: Response): Promise<void> => {
     const expressErrors = validationResult(req);
     if (!expressErrors.isEmpty()) {
       const errorMessage = expressErrors.array().map((err) => ({
@@ -83,9 +103,24 @@ export const createContactRecord = [
   },
 ];
 
+/**
+ * Middleware array that contains contact update logic.
+ *
+ * @type {Array<object>}
+ * @property {ValidationChain[]} contactUpdateRules - Express validation rules for contact update.
+ * @property {Function} anonymousAsyncFunction - Handles contact update requests and responses.
+ */
 export const updateContactRecord = [
   ...contactUpdateRules(),
-  async (req: Request, res: Response) => {
+
+  /**
+   * Processes HTTP requests for contact update.
+   *
+   * @param {Request} req - An HTTP request.
+   * @param {Response} res - An HTTP response.
+   * @returns {Promise<void>} - A promise that resolves to void.
+   */
+  async (req: Request, res: Response): Promise<void> => {
     const expressErrors = validationResult(req);
     if (!expressErrors.isEmpty()) {
       const errorMessage = expressErrors.array().map((err) => ({
@@ -151,9 +186,24 @@ export const updateContactRecord = [
   },
 ];
 
+/**
+ * Middleware array that contains contact deletion logic.
+ *
+ * @type {Array<object>}
+ * @property {ValidationChain[]} contactDeletionRules - Express validation rules for contact deletion.
+ * @property {Function} anonymousAsyncFunction - Handles contact deletion requests and responses.
+ */
 export const deleteContactRecord = [
   ...contactDeletionRules(),
-  async (req: Request, res: Response) => {
+
+  /**
+   * Processes HTTP requests for contact deletion.
+   *
+   * @param {Request} req - An HTTP request.
+   * @param {Response} res - An HTTP response.
+   * @returns {Promise<void>} A promise that resolves to void.
+   */
+  async (req: Request, res: Response): Promise<void> => {
     const expressErrors = validationResult(req);
     if (!expressErrors.isEmpty()) {
       const errorMessage = expressErrors.array().map((err) => ({
@@ -190,9 +240,24 @@ export const deleteContactRecord = [
   },
 ];
 
+/**
+ * Middleware array that contains email-based contact retrieval.
+ *
+ * @type {Array<object>}
+ * @property {ValidationChain[]} contactRetrievalByEmail - Express validation rules for email-based contact retrieval.
+ * @property {Function} anonymousAsyncFunction - Handles email-based contact retrieval requests and responses.
+ */
 export const fetchContactByEmail = [
   ...contactRetrievalByEmail(),
-  async (req: Request, res: Response) => {
+
+  /**
+   * Processes HTTP requests for email-based contact retrieval.
+   *
+   * @param {Request} req - An HTTP request.
+   * @param {Response} res - An HTTP response.
+   * @returns {Promise<void>} A promise that resolves to void.
+   */
+  async (req: Request, res: Response): Promise<void> => {
     const expressErrors = validationResult(req);
     if (!expressErrors.isEmpty()) {
       const errorMessage = expressErrors.array().map((err) => ({

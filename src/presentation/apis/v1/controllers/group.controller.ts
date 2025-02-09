@@ -1,3 +1,7 @@
+/**
+ * Group controller.
+ * @module src/presentation/apis/v1/controllers/group.controller
+ */
 import { validationResult } from "express-validator";
 import {
   contactGroupCreationRules,
@@ -18,9 +22,24 @@ import Group from "../../../../domain/models/group.model";
 import * as groupService from "../../../../service/group.service";
 import { appLogger } from "../../../../../logs/logger.config";
 
+/**
+ * Middleware array that contains contact group creation logic.
+ *
+ * @type {Array<object>}
+ * @property {ValidationChain[]} contactGroupCreationRules - Express validation rules for contact group creation.
+ * @property {Function} anonymousAsyncFunction - Handles contact group creation requests and responses.
+ */
 export const createContactGroup = [
   ...contactGroupCreationRules(),
-  async (req: Request, res: Response) => {
+
+  /**
+   * Processes HTTP requests for contact group creation.
+   *
+   * @param {Request} req - An HTTP request.
+   * @param {Response} res - An HTTP response.
+   * @returns {Promise<void>} A promise that resolves to void.
+   */
+  async (req: Request, res: Response): Promise<void> => {
     const expressErrors = validationResult(req);
     if (!expressErrors.isEmpty()) {
       const errorMessage = expressErrors.array().map((err) => ({
@@ -65,9 +84,24 @@ export const createContactGroup = [
   },
 ];
 
+/**
+ * Middleware array that contains contact group update logic.
+ *
+ * @type {Array<object>}
+ * @property {ValidationChain} contactGroupUpdateRules - Express validation rules for contact group update.
+ * @property {Function} anonymousAsyncFunction - Handles contact group update requests and responses.
+ */
 export const updateContactGroup = [
   ...contactGroupUpdateRules(),
-  async (req: Request, res: Response) => {
+
+  /**
+   * Processes HTTP requests for contact group update.
+   *
+   * @param {Request} req - An HTTP request.
+   * @param {Response} res - An HTTP response.
+   * @returns {Promise<void>} A promise that resolves to void.
+   */
+  async (req: Request, res: Response): Promise<void> => {
     const expressErrors = validationResult(req);
     if (!expressErrors.isEmpty()) {
       const errorMessage = expressErrors.array().map((err) => ({
@@ -114,9 +148,24 @@ export const updateContactGroup = [
   },
 ];
 
+/**
+ * Middleware array that contains contact group deletion logic.
+ *
+ * @type {Array<object>}
+ * @property {ValidationChain[]} contactGroupDeleteRules - Express validation rules for contact group deletion.
+ * @property {Function} anonymousAsyncFunction - Handles contact group deletion requests and responses.
+ */
 export const deleteContactGroup = [
   ...contactGroupDeleteRules(),
-  async (req: Request, res: Response) => {
+
+  /**
+   * Processes HTTP requests for contact group deletion.
+   *
+   * @param {Request} req - An HTTP request.
+   * @param {Response} res - An HTTP response.
+   * @returns {Promise<void>} A promise that resolves to void.
+   */
+  async (req: Request, res: Response): Promise<void> => {
     const expressErrors = validationResult(req);
     if (!expressErrors.isEmpty()) {
       const errorMessage = expressErrors.array().map((err) => ({
@@ -152,9 +201,24 @@ export const deleteContactGroup = [
   },
 ];
 
+/**
+ * Middleware array that contains name-based contact group retrieval logic.
+ *
+ * @type {Array<object>}
+ * @property {ValidationChain[]} contactGroupRetrievalByName - Express validation rules for name-based contact group retrieval.
+ * @property {Function} anonymousAsyncFunction - Handles name-based contact group retrieval requests and responses.
+ */
 export const fetchContactGroupByName = [
   ...contactGroupRetrievalByName(),
-  async (req: Request, res: Response) => {
+
+  /**
+   * Processes HTTP requests for name-based contact group retrieval.
+   *
+   * @param {Request} req - An HTTP request.
+   * @param {Response} res - An HTTP response.
+   * @returns {Promise<void>} A promise that resolves to void.
+   */
+  async (req: Request, res: Response): Promise<void> => {
     const expressErrors = validationResult(req);
     if (!expressErrors.isEmpty()) {
       const errorMessage = expressErrors.array().map((err) => ({
