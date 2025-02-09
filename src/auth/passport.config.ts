@@ -22,15 +22,14 @@ passport.use(
   new JwtStrategy(options, (jwtPayload, done) => {
     try {
       const token = jwtPayload.authorization;
-      if (!token) {
-        return done(null, false);
-      }
 
       const receivedToken = token.replace("Bearer ", "");
+
       const decoded = jwt.verify(
         receivedToken,
         process.env.KEY as string
       ) as IToken;
+
       const username = decoded.username;
 
       if (username) {

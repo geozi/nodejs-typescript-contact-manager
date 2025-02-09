@@ -10,7 +10,7 @@
  * @property {string} AUTH_FAILED - Message sent when authentication has failed.
  * @property {string} AUTH_SUCCESS - Message sent when authentication is successful.
  * @property {string} AUTH_HEADER_REQUIRED - Message sent when the login request does not contain an authorization header.
- * @property {string} TOKEN_INVALID - Message sent when the token in the request is invalid.
+ * @property {string} AUTH_TOKEN_INVALID - Message sent when the token in the request is invalid.
  */
 export const authResponseMessages = {
   /**
@@ -35,5 +35,5 @@ export const authResponseMessages = {
    * Message sent when the token in the request is invalid.
    * @type {string}
    */
-  TOKEN_INVALID: "Invalid token",
+  AUTH_TOKEN_INVALID: "Invalid token",
 };

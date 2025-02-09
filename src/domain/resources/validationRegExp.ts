@@ -42,3 +42,11 @@ export const PHONE_REGEX = new RegExp(/^\d+(-\d+)*$/);
  * @type {RegExp}
  */
 export const ID_REGEX = new RegExp(/^[a-f0-9]+$/);
+
+/**
+ * Regular expression used in checking token validity.
+ * @type {RegExp}
+ */
+export const TOKEN_REGEX = new RegExp(
+  /^Bearer [A-Za-z0-9-_=]+\.([A-Za-z0-9-_=]+\.)*[A-Za-z0-9-_.+/=]*$/
+);
