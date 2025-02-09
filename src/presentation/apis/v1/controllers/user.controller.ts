@@ -4,7 +4,7 @@
  */
 import { validationResult } from "express-validator";
 import {
-  userProfileDeleteRules,
+  userProfileDeletionRules,
   userProfileUpdateRules,
   userRegistrationRules,
   userRetrievalByEmailRules,
@@ -160,11 +160,11 @@ export const updateUserInfo = [
  * Middleware array that contains user profile deletion logic.
  *
  * @type {Array<object>}
- * @property {ValidationChain[]} userProfileDeleteRules - Express validation rules for user profile deletion.
+ * @property {ValidationChain[]} userProfileDeletionRules - Express validation rules for user profile deletion.
  * @property {Function} anonymousAsyncFunction - Handles HTTP requests and responses for user profile deletion.
  */
 export const deleteUserInfo = [
-  ...userProfileDeleteRules(),
+  ...userProfileDeletionRules(),
 
   /**
    * Processes HTTP requests for user profile deletion.

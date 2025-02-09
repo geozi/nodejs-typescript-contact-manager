@@ -69,7 +69,7 @@ export const userProfileUpdateRules = () => {
   ];
 };
 
-export const userProfileDeleteRules = () => {
+export const userProfileDeletionRules = () => {
   return [
     check("id")
       .notEmpty()
