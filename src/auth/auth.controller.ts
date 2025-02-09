@@ -26,7 +26,7 @@ export const loginUser = [
       const errorMessage = expressErrors.array().map((err) => ({
         message: err.msg,
       }));
-      await res.status(400).json({
+      await res.status(httpCodes.BAD_REQUEST).json({
         message: commonResponseMessages.BAD_REQUEST,
         errors: errorMessage,
       });
