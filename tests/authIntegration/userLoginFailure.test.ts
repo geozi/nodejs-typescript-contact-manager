@@ -15,7 +15,7 @@ import { testLogger } from "../../logs/logger.config";
 import { commonServiceMessages } from "../../src/service/messages/commonService.message";
 import { authResponseMessages } from "../../src/auth/authResponse.message";
 
-describe.only("User login failure integration tests ", () => {
+describe("User login failure integration tests ", () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: SinonSpy;
