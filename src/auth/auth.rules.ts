@@ -26,7 +26,7 @@ export const userLoginRules = () => {
   ];
 };
 
-export const headerValidationRules = () => {
+export const headerVerificationRules = () => {
   return [
     header("Authorization")
       .notEmpty()
