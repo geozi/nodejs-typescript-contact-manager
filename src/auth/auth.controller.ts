@@ -4,7 +4,7 @@
  */
 
 import { Request, Response, NextFunction } from "express";
-import { headerValidationRules, userLoginRules } from "./auth.rules";
+import { headerVerificationRules, userLoginRules } from "./auth.rules";
 import { validationResult } from "express-validator";
 import { commonResponseMessages } from "../presentation/messages/commonResponse.message";
 import { appLogger } from "../../logs/logger.config";
@@ -20,8 +20,24 @@ import { IToken } from "./interfaces/iToken.interface";
 import { commonServiceMessages } from "../service/messages/commonService.message";
 dotenv.config();
 
+/**
+ * Middleware array that contains user login logic.
+ *
+ * @type {Array<object>}
+ * @property {ValidationChain[]} userLoginRules - Express validation rules for user login.
+ * @property {Function} anonymousAsyncFunction - Handles user login requests and responses.
+ */
+
 export const loginUser = [
   ...userLoginRules(),
+
+  /**
+   * Processes HTTP requests for user login.
+   *
+   * @param {Request} req - An HTTP request.
+   * @param {Response} res - An HTTP response.
+   * @returns {Promise<void>} A promise that resolves to void.
+   */
   async (req: Request, res: Response): Promise<void> => {
     const expressErrors = validationResult(req);
 
@@ -90,9 +106,24 @@ export const loginUser = [
   },
 ];
 
+/**
+ * Middleware array that contains auth header verification logic.
+ *
+ * @type {Array<object>}
+ * @property {ValidationChain[]} headerVerificationRules - Express validation rules for auth header verification.
+ * @property {Function} anonymousAsyncFunction - Handles auth header verification requests and responses.
+ */
 export const verifyToken = [
-  ...headerValidationRules(),
-  async (req: Request, res: Response, next: NextFunction) => {
+  ...headerVerificationRules(),
+
+  /**
+   * Processes HTTP requests for header verification.
+   *
+   * @param {Request} req - An HTTP request.
+   * @param {Response} res - An HTTP response.
+   * @returns {Promise<void>} A promise that resolves to void.
+   */
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const expressErrors = validationResult(req);
 
     if (!expressErrors.isEmpty()) {
@@ -148,11 +179,19 @@ export const verifyToken = [
   },
 ];
 
+/**
+ * Processes HTTP requests for token authentication.
+ *
+ * @param {Request} req - An HTTP request.
+ * @param {Response} res - An HTTP response.
+ * @param {NextFunction} next - A build-in Express function to move further down the routing path.
+ * @returns {Promise<void>} A Promise that resolves to void.
+ */
 export const authenticateToken = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const username = req.body.username;
     await retrieveUserByUsername(username);

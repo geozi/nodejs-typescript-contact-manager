@@ -1,4 +1,8 @@
-import { check, header } from "express-validator";
+/**
+ * Express validation rules for authentication and authorization operations.
+ * @module src/auth/auth.rules
+ */
+import { check, header, ValidationChain } from "express-validator";
 import { userFailedValidation } from "../domain/messages/userValidation.message";
 import { userConstants } from "../domain/constants/user.constant";
 import {
@@ -7,7 +11,11 @@ import {
 } from "../domain/resources/validationRegExp";
 import { authResponseMessages } from "./authResponse.message";
 
-export const userLoginRules = () => {
+/**
+ * Returns a validation chain for user login.
+ * @returns {ValidationChain[]} Validation chain.
+ */
+export const userLoginRules = (): ValidationChain[] => {
   return [
     check("username")
       .notEmpty()
@@ -26,7 +34,11 @@ export const userLoginRules = () => {
   ];
 };
 
-export const headerVerificationRules = () => {
+/**
+ * Returns a validation chain for for header verification.
+ * @returns {ValidationChain[]} Validation chain.
+ */
+export const headerVerificationRules = (): ValidationChain[] => {
   return [
     header("Authorization")
       .notEmpty()
