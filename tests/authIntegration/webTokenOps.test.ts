@@ -5,7 +5,7 @@ import sinon, { SinonSpy, SinonStub } from "sinon";
 import assert from "assert";
 import { Request, Response } from "express";
 import { authResponseMessages } from "../../src/auth/authResponse.message";
-import { verifyToken, authenticateToken } from "../../src/auth/auth.controller";
+import { verifyToken } from "../../src/auth/auth.controller";
 import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 import { authHeaderInvalidCases, authHeaderRequiredCases } from "../testInputs";
@@ -14,11 +14,10 @@ import { testLogger } from "../../logs/logger.config";
 import { commonResponseMessages } from "../../src/presentation/messages/commonResponse.message";
 dotenv.config();
 
-describe.only("Web token integration tests", () => {
+describe("Web token integration tests", () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: SinonSpy;
-  const middlewareSequence = [...verifyToken, authenticateToken];
 
   describe("token verification", () => {
     describe("bad requests (400)", () => {
@@ -41,9 +40,10 @@ describe.only("Web token integration tests", () => {
         it(testName, async () => {
           req = {
             headers: { authorization: missingAuthHeader },
+            body: {},
           };
 
-          for (const middleware of middlewareSequence) {
+          for (const middleware of verifyToken) {
             await middleware(req as Request, res as Response, next);
           }
 
@@ -75,7 +75,7 @@ describe.only("Web token integration tests", () => {
             headers: { authorization: invalidToken },
           };
 
-          for (const middleware of middlewareSequence) {
+          for (const middleware of verifyToken) {
             await middleware(req as Request, res as Response, next);
           }
 
@@ -109,7 +109,7 @@ describe.only("Web token integration tests", () => {
 
         req = { headers: { authorization: `Bearer ${invalidToken}` } };
 
-        for (const middleware of middlewareSequence) {
+        for (const middleware of verifyToken) {
           await middleware(req as Request, res as Response, next);
         }
 
@@ -124,25 +124,8 @@ describe.only("Web token integration tests", () => {
           true
         );
 
-        testLogger.info(`webTokenOps -> 'token is not verifiable' test OK`);
+        testLogger.info(`webTokenOps -> 'token is invalid' test OK`);
       });
     });
   });
-
-  // describe("token authentication", () => {
-  //   beforeEach(() => {
-  //     res = {
-  //       status: sinon.stub().callsFake(() => {
-  //         return res;
-  //       }) as unknown as SinonStub,
-  //       json: sinon.spy(),
-  //     };
-
-  //     next = sinon.spy();
-  //   });
-
-  //   afterEach(() => {
-  //     sinon.restore();
-  //   });
-  // });
 });
