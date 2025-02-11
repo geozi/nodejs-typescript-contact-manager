@@ -1,6 +1,6 @@
 # Contact Manager API test plan
 
-Document version 1.0.3
+Document version 1.0.4
 
 ## Introduction
 
@@ -131,6 +131,28 @@ Each test suite is divided into **validation-oriented** and **promise-oriented**
 The promise-oriented tests generate promise rejections, which are caught by the service layer and, then, handled by the controllers in the presentation layer.
 
 ![A diagram showing the application layers probed by the promise-oriented backend integration tests](img/backend_integration_testing_diagram_2.png)
+
+### Auth integration tests
+
+Auth logic integration test suites:
+
+- Successful user login [✔],
+- Failed user login [✔],
+- Token verification [✔],
+- Token authentication [✔]
+
+The files tested in the auth integration tests are found in the auth dedicated folder:
+
+```text
+└── src
+    └── auth
+        ├── auth.controller.ts
+        ├── authResponse.message.ts
+        ├── auth.rules.ts
+        └── interfaces
+            ├── iAuthUser.interface.ts
+            └── iToken.interface.ts
+```
 
 ## Out of scope
 
