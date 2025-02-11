@@ -85,3 +85,18 @@ export const invalidContactCases = {
 
 export const testToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ld1VzZXIiLCJpYXQiOjE1MTYyMzkwMjJ9.6X6NKeg86aa_8fjqOnI0iGsANvBUgBDBqV4Mc6Kiigg";
+
+export const authHeaderRequiredCases = [
+  ["auth header is undefined", undefined],
+  ["auth header is null", null],
+  ["auth header is empty", ""],
+] as [string, string][];
+
+export const authHeaderInvalidCases = [
+  ["auth header token has no Bearer", testToken],
+  [
+    "auth header token has no .",
+    "Bearer " +
+      testToken.slice(testToken.indexOf(".") + 1, testToken.lastIndexOf(".")),
+  ],
+] as [string, string][];

@@ -15,7 +15,7 @@ import { httpCodes } from "../../src/presentation/codes/responseStatusCodes";
 import { authResponseMessages } from "../../src/auth/authResponse.message";
 import { testLogger } from "../../logs/logger.config";
 
-describe.only("User login success integration test(s)", () => {
+describe("User login success integration test(s)", () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: SinonSpy;

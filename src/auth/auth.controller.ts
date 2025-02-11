@@ -16,6 +16,8 @@ import { httpCodes } from "../presentation/codes/responseStatusCodes";
 import { authResponseMessages } from "./authResponse.message";
 import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
+import { IToken } from "./interfaces/iToken.interface";
+import { commonServiceMessages } from "../service/messages/commonService.message";
 dotenv.config();
 
 export const loginUser = [
@@ -32,7 +34,7 @@ export const loginUser = [
         `Auth controller: loginUser() -> Express validator errors detected and caught`
       );
 
-      await res.status(httpCodes.BAD_REQUEST).json({
+      res.status(httpCodes.BAD_REQUEST).json({
         message: commonResponseMessages.BAD_REQUEST,
         errors: errorMessage,
       });
@@ -60,7 +62,7 @@ export const loginUser = [
         }
       );
 
-      await res.status(httpCodes.OK).json({
+      res.status(httpCodes.OK).json({
         message: authResponseMessages.AUTHENTICATION_SUCCESS,
         token: token,
       });
@@ -88,7 +90,7 @@ export const loginUser = [
   },
 ];
 
-export const validateToken = [
+export const verifyToken = [
   ...headerValidationRules(),
   async (req: Request, res: Response, next: NextFunction) => {
     const expressErrors = validationResult(req);
@@ -98,13 +100,84 @@ export const validateToken = [
         message: err.msg,
       }));
 
-      await res.status(httpCodes.BAD_REQUEST).json({
+      appLogger.error(
+        `Auth controller: verifyToken() -> Express validator errors detected and caught`
+      );
+
+      res.status(httpCodes.BAD_REQUEST).json({
         message: commonResponseMessages.BAD_REQUEST,
         errors: errorMessage,
       });
       return;
     }
 
-    next();
+    try {
+      const token = req.headers.authorization;
+      if (!token) {
+        appLogger.error(`Auth controller: verifyToken() -> undefined token`);
+
+        res.status(httpCodes.BAD_REQUEST).json({
+          message: commonResponseMessages.BAD_REQUEST,
+          errors: [
+            { message: authResponseMessages.AUTHORIZATION_TOKEN_INVALID },
+          ],
+        });
+        return;
+      }
+
+      const receivedToken = token.replace("Bearer ", "");
+
+      const decoded = jwt.verify(
+        receivedToken,
+        process.env.KEY as string
+      ) as IToken;
+
+      const username = decoded.username;
+      req.body.username = username;
+
+      next();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      appLogger.error(`Auth controller: verifyToken() -> Authorization failed`);
+
+      res
+        .status(httpCodes.FORBIDDEN)
+        .json({ message: authResponseMessages.AUTHORIZATION_FAILED });
+      return;
+    }
   },
 ];
+
+export const authenticateToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const username = req.body.username;
+    await retrieveUserByUsername(username);
+    next();
+  } catch (error: NotFoundError | ServerError | unknown) {
+    if (error instanceof NotFoundError) {
+      appLogger.error(
+        `Auth controller: authenticateToken() -> Authorization failed`
+      );
+
+      res.status(httpCodes.FORBIDDEN).json({
+        message: authResponseMessages.AUTHORIZATION_FAILED,
+      });
+      return;
+    }
+
+    if (error instanceof ServerError) {
+      appLogger.error(
+        `Auth controller: authenticateToken() -> ${error.name} detected and caught`
+      );
+
+      res
+        .status(httpCodes.INTERNAL_SERVER_ERROR)
+        .json({ message: commonServiceMessages.SERVER_ERROR });
+      return;
+    }
+  }
+};
