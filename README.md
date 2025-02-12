@@ -4,11 +4,37 @@
 
 ## About the project
 
-Contains the backend implementation of a Contact Manager API.
+Contains the backend implementation of a Contact Manager API. It exposes REST APIs for contact and user profile management:
+
+- User registration,
+- User login,
+- User profile update,
+- User profile deletion,
+- User retrieval by username,
+- User retrieval by email,
+- User retrieval by role,
+- Contact group creation,
+- Contact group update,
+- Contact group deletion,
+- Contact group retrieval by name,
+- Contact creation,
+- Contact update,
+- Contact deletion,
+- Contact retrieval by email.
 
 ## Prerequisites
 
-- Nodejs (v22.13.1)
+- Nodejs (v22.13.1 or higher)
+- MongoDB.
+
+## Testing
+
+A thorough presentation of the tests conducted during development can be found in the [QA-test-plan](/QA-test-plan.md).
+
+### Security
+
+- **Authentication**: Single factor, local authentication.
+- **Authorization**: JSON Web Token (JWT)
 
 ## Differences with previous Typescript projects
 
@@ -29,6 +55,6 @@ Compared to the [Task Manager API](https://github.com/geozi/nodejs-typescript-ta
 
 <p align="center">
         <a href="https://github.com/LelouchFR/skill-icons">
-        <img src="https://go-skill-icons.vercel.app/api/icons?i=vscode,nodejs,typescript,mocha"/>
+        <img src="https://go-skill-icons.vercel.app/api/icons?i=vscode,nodejs,typescript,mocha,express,mongoose,mongo"/>
       </a>
 </p>
