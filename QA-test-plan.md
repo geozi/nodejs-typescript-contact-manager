@@ -154,6 +154,16 @@ The files tested in the auth integration tests are found in the auth dedicated f
             └── iToken.interface.ts
 ```
 
+### Database integration tests
+
+Database integration test suites:
+
+- User collection [✔],
+- Group collection [✔],
+- Contact collection [✔].
+
+Here, the focus is placed on limited operations per collection.
+
 ## Out of scope
 
 The Contact Manager API is a backend project, therefore any tests involving the frontend are excluded.
