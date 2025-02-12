@@ -143,12 +143,12 @@ export const updateUserInfo = [
           email: email,
           password: hashedPassword,
         };
+      } else {
+        userUpdateInfo = {
+          username: username,
+          email: email,
+        };
       }
-
-      userUpdateInfo = {
-        username: username,
-        email: email,
-      };
 
       const updatedUser = await updateUserProfile(idAsObjectId, userUpdateInfo);
       res.status(httpCodes.OK).json({
