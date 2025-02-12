@@ -16,6 +16,8 @@ import {
 import { commonServiceMessages } from "./messages/commonService.message";
 import { groupServiceMessages } from "./messages/groupService.message";
 import { appLogger } from "../../logs/logger.config";
+import { UniqueConstraintError } from "../errors/uniqueConstraint.error";
+import { Error } from "mongoose";
 
 /**
  * Calls on the persistence layer to retrieve a contact group with the specified name.
@@ -58,8 +60,15 @@ export const retrieveContactGroupByName = async (
 export const createContactGroup = async (newGroup: IGroup): Promise<IGroup> => {
   try {
     return await addGroup(newGroup);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error: ServerError | unknown) {
+  } catch (error: ServerError | UniqueConstraintError | unknown) {
+    if (error instanceof Error.ValidationError) {
+      appLogger.error(
+        `Group service: createContactGroup() -> ${error.name} detected and re-thrown`
+      );
+
+      throw new UniqueConstraintError(error.message);
+    }
+
     appLogger.error(
       `Group service: createContactGroup() -> ServerError detected and re-thrown`
     );

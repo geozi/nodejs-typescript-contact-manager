@@ -16,6 +16,7 @@ import { commonServiceMessages } from "./messages/commonService.message";
 import { contactServiceMessages } from "./messages/contactService.message";
 import { IContactUpdate } from "../presentation/interfaces/iContactUpdate.interface";
 import { appLogger } from "../../logs/logger.config";
+import { UniqueConstraintError } from "../errors/uniqueConstraint.error";
 
 /**
  * Calls on the persistence layer to retrieve a contact with the specified email.
@@ -60,8 +61,14 @@ export const createContactRecord = async (
 ): Promise<IContact> => {
   try {
     return await addContact(newContact);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error: ServerError | unknown) {
+  } catch (error: ServerError | UniqueConstraintError | unknown) {
+    if (error instanceof UniqueConstraintError) {
+      appLogger.error(
+        `Contact service: createContactRecord() -> ${error.name} detected and re-thrown`
+      );
+
+      throw new UniqueConstraintError(error.message);
+    }
     appLogger.error(
       `Contact service: createContactRecord() -> ServerError detected and re-thrown`
     );
