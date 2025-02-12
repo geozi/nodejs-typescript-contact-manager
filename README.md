@@ -12,15 +12,16 @@ Contains the backend implementation of a Contact Manager API.
 
 ## Differences with previous Typescript projects
 
-Compared to the [Task Manager API](https://github.com/geozi/nodejs-typescript-task-manager) project, the Contact Manager API project:
+Compared to the [Task Manager API](https://github.com/geozi/nodejs-typescript-task-manager) project, the Contact Manager API project uses:
 
-- follows a syntactical pattern for git commits similar to the one proposed in [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/):
+- a syntactical pattern for git commits similar to the one proposed in [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/):
 
-  `<type>[optional scope]: <description>`
+  `<type>[optional scope]: <description>`,
 
-- uses a [pino](https://github.com/pinojs/pino) logger to generate and save log messages, both for src and test files.
-- uses constants for storing HTTP codes to avoid the repetitive use of magic numbers across project files.
-- places all custom error classes under the same directory to take advantage of class inheritance.
+- [pino](https://github.com/pinojs/pino) for generating and saving log messages,
+- constants for storing HTTP codes to avoid the repetitive use of magic numbers across project files,
+- api versioning,
+- a common directory for all custom error classes to take advantage of class inheritance:
 
   ![Custom error class inheritance](img/custom_error_classes.png)
 
