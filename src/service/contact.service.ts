@@ -17,6 +17,7 @@ import { contactServiceMessages } from "./messages/contactService.message";
 import { IContactUpdate } from "../presentation/interfaces/iContactUpdate.interface";
 import { appLogger } from "../../logs/logger.config";
 import { UniqueConstraintError } from "../errors/uniqueConstraint.error";
+import { Error } from "mongoose";
 
 /**
  * Calls on the persistence layer to retrieve a contact with the specified email.
@@ -62,7 +63,7 @@ export const createContactRecord = async (
   try {
     return await addContact(newContact);
   } catch (error: ServerError | UniqueConstraintError | unknown) {
-    if (error instanceof UniqueConstraintError) {
+    if (error instanceof Error.ValidationError) {
       appLogger.error(
         `Contact service: createContactRecord() -> ${error.name} detected and re-thrown`
       );
