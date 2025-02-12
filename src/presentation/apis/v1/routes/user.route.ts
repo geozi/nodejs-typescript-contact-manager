@@ -2,10 +2,7 @@
  * User routes.
  * @module src/presentation/apis/v1/routes/user.route
  */
-import {
-  authenticateToken,
-  verifyToken,
-} from "../../../../auth/auth.controller";
+import { verifyToken } from "../../../../auth/auth.controller";
 import {
   registerUser,
   updateUserInfo,
@@ -18,18 +15,8 @@ import { Router } from "express";
 
 export const userRouter = Router();
 userRouter.post("/", ...registerUser);
-userRouter.put("/", ...verifyToken, authenticateToken, ...updateUserInfo);
-userRouter.delete("/", ...verifyToken, authenticateToken, ...deleteUserInfo);
-userRouter.get(
-  "/email",
-  ...verifyToken,
-  authenticateToken,
-  ...fetchUserByEmail
-);
-userRouter.get(
-  "/username",
-  ...verifyToken,
-  authenticateToken,
-  ...fetchUserByUsername
-);
-userRouter.get("/role", ...verifyToken, authenticateToken, ...fetchUsersByRole);
+userRouter.put("/", ...verifyToken, ...updateUserInfo);
+userRouter.delete("/", ...verifyToken, ...deleteUserInfo);
+userRouter.get("/email", ...verifyToken, ...fetchUserByEmail);
+userRouter.get("/username", ...verifyToken, ...fetchUserByUsername);
+userRouter.get("/role", ...verifyToken, ...fetchUsersByRole);
