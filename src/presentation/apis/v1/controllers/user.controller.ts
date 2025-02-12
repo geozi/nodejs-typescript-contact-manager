@@ -134,10 +134,20 @@ export const updateUserInfo = [
     try {
       const { id, username, email, password } = req.body;
       const idAsObjectId = new Types.ObjectId(id);
-      const userUpdateInfo: IUserUpdate = {
+
+      let userUpdateInfo: IUserUpdate = {};
+      if (password) {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        userUpdateInfo = {
+          username: username,
+          email: email,
+          password: hashedPassword,
+        };
+      }
+
+      userUpdateInfo = {
         username: username,
         email: email,
-        password: password,
       };
 
       const updatedUser = await updateUserProfile(idAsObjectId, userUpdateInfo);
