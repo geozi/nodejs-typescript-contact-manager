@@ -9,7 +9,7 @@ import { userFailedValidation } from "../../src/domain/messages/userValidation.m
 import { invalidUserInputs, validUserInput } from "../testInputs";
 import { registerUser } from "../../src/presentation/apis/v1/controllers/user.controller";
 import { createUserProfile } from "../../src/service/user.service";
-import { addUser } from "../../src/persistence/user.repository";
+import * as userRepository from "../../src/persistence/user.repository";
 import { httpCodes } from "../../src/presentation/codes/responseStatusCodes";
 import { testLogger } from "../../logs/logger.config";
 import { commonServiceMessages } from "../../src/service/messages/commonService.message";
@@ -285,7 +285,7 @@ describe("User registration integration tests", () => {
       };
 
       next = sinon.spy();
-      methodStub = sinon.stub({ addUser }, "addUser");
+      methodStub = sinon.stub(userRepository, "addUser");
     });
 
     afterEach(() => {
