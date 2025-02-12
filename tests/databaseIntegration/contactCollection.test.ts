@@ -1,25 +1,24 @@
 /**
- * Group collection integration tests.
+ * Contact collection integration tests.
  */
-
 import mongoose, { ConnectOptions } from "mongoose";
 import assert from "assert";
 import { Request, Response } from "express";
 import sinon, { SinonStub, SinonSpy } from "sinon";
 import { httpCodes } from "../../src/presentation/codes/responseStatusCodes";
 import { testLogger } from "../../logs/logger.config";
-import Group from "../../src/domain/models/group.model";
-import { validGroupInput } from "../testInputs";
-import { groupControllerResponseMessages } from "../../src/presentation/messages/groupControllerResponse.message";
+import Contact from "../../src/domain/models/contact.model";
+import { validContactInput } from "../testInputs";
+import { contactControllerResponseMessages } from "../../src/presentation/messages/contactControllerResponse.message";
 import {
-  createContactGroup,
-  updateContactGroup,
-  deleteContactGroup,
-} from "../../src/presentation/apis/v1/controllers/group.controller";
+  createContactRecord,
+  deleteContactRecord,
+  updateContactRecord,
+} from "../../src/presentation/apis/v1/controllers/contact.controller";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-describe("Group collection integration tests", () => {
+describe("Contact collection integration tests", () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: SinonSpy;
@@ -47,14 +46,14 @@ describe("Group collection integration tests", () => {
   });
 
   afterEach(async () => {
-    await Group.deleteMany({});
+    await Contact.deleteMany({});
     sinon.restore();
   });
 
-  it("new group created (201)", async () => {
-    req = { body: validGroupInput };
+  it("new contact created (201)", async () => {
+    req = { body: validContactInput };
 
-    for (const middleware of createContactGroup) {
+    for (const middleware of createContactRecord) {
       await middleware(req as Request, res as Response, next);
     }
 
@@ -64,26 +63,23 @@ describe("Group collection integration tests", () => {
     assert.strictEqual(statusStub.calledWith(httpCodes.CREATED), true);
     assert.strictEqual(
       jsonSpy.calledWith({
-        message: groupControllerResponseMessages.CONTACT_GROUP_CREATED,
+        message: contactControllerResponseMessages.CONTACT_CREATED,
       }),
       true
     );
 
-    testLogger.info(`groupCollection -> 'new group created (201)' test OK`);
+    testLogger.info(`contactCollection -> 'new contact created (201)' test OK`);
   });
 
-  it("group updated (200)", async () => {
-    const group = new Group(validGroupInput);
-    const savedContactGroup = await group.save();
+  it("contact updated (200)", async () => {
+    const contact = new Contact(validContactInput);
+    const savedContact = await contact.save();
 
     req = {
-      body: {
-        id: savedContactGroup._id,
-        name: "The name of the contact group is updated",
-      },
+      body: { id: savedContact._id, city: "Athens" },
     };
 
-    for (const middleware of updateContactGroup) {
+    for (const middleware of updateContactRecord) {
       await middleware(req as Request, res as Response, next);
     }
 
@@ -91,16 +87,16 @@ describe("Group collection integration tests", () => {
 
     assert.strictEqual(statusStub.calledWith(httpCodes.OK), true);
 
-    testLogger.info(`groupCollection -> 'group updated (200)' test OK`);
+    testLogger.info(`contactCollection -> 'contact updated (200)' test OK`);
   });
 
-  it("group deleted (204)", async () => {
-    const group = new Group(validGroupInput);
-    const savedContactGroup = await group.save();
+  it("contact deleted (204)", async () => {
+    const contact = new Contact(validContactInput);
+    const savedContact = await contact.save();
 
-    req = { body: { id: savedContactGroup._id } };
+    req = { body: { id: savedContact._id } };
 
-    for (const middleware of deleteContactGroup) {
+    for (const middleware of deleteContactRecord) {
       await middleware(req as Request, res as Response, next);
     }
 
@@ -108,6 +104,6 @@ describe("Group collection integration tests", () => {
 
     assert.strictEqual(statusStub.calledWith(httpCodes.NO_CONTENT), true);
 
-    testLogger.info(`groupCollection -> 'group deleted (204)' test OK`);
+    testLogger.info(`contactCollection -> 'contact deleted (204)' test OK`);
   });
 });
