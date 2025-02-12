@@ -19,6 +19,8 @@ import { IUserUpdate } from "../presentation/interfaces/iUserUpdate.interface";
 import { commonServiceMessages } from "./messages/commonService.message";
 import { userServiceMessages } from "./messages/userService.message";
 import { appLogger } from "../../logs/logger.config";
+import { UniqueConstraintError } from "../errors/uniqueConstraint.error";
+import { Error } from "mongoose";
 
 /**
  * Calls on the persistence layer to retrieve the user with the specified username.
@@ -125,9 +127,14 @@ export const retrieveUsersByRole = async (
 export const createUserProfile = async (newUser: IUser): Promise<IUser> => {
   try {
     return await addUser(newUser);
+  } catch (error: ServerError | UniqueConstraintError | unknown) {
+    if (error instanceof Error.ValidationError) {
+      appLogger.error(
+        `User service: createUserProfile() -> ${error.name} detected and re-thrown`
+      );
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error: ServerError | unknown) {
+      throw new UniqueConstraintError(error.message);
+    }
     appLogger.error(
       `User service: createUserProfile() -> ServerError detected and re-thrown`
     );

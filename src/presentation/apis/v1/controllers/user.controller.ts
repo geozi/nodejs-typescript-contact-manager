@@ -30,6 +30,7 @@ import { IUserUpdate } from "../../../interfaces/iUserUpdate.interface";
 import { Types } from "mongoose";
 import { commonResponseMessages } from "../../../messages/commonResponse.message";
 import { appLogger } from "../../../../../logs/logger.config";
+import bcrypt from "bcryptjs";
 
 /**
  * Middleware array that contains user registration logic.
@@ -68,10 +69,11 @@ export const registerUser = [
 
     try {
       const { username, email, password, role } = req.body;
+      const hashedPassword = await bcrypt.hash(password, 10);
       const newUser = new User({
         username: username,
         email: email,
-        password: password,
+        password: hashedPassword,
         role: role,
       });
       await createUserProfile(newUser);

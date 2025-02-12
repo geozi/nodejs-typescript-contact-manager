@@ -82,7 +82,7 @@ export const userFailedValidation = {
    *  Message sent when the provided role does not match the standard regex pattern.
    * @type {string}
    */
-  ROLE_INVALID_MESSAGE: "Role must be either Admin or user",
+  ROLE_INVALID_MESSAGE: "Role must be either Admin or User",
 
   /**
    * Message sent when the user ID is not provided.
