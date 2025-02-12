@@ -164,7 +164,7 @@ export const verifyToken = [
       ) as IToken;
 
       const username = decoded.username;
-      req.body.username = username;
+      req.body.loggedInUsername = username;
 
       next();
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -193,8 +193,8 @@ export const authenticateToken = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const username = req.body.username;
-    await retrieveUserByUsername(username);
+    const loggedInUsername = req.body.loggedInUsername;
+    await retrieveUserByUsername(loggedInUsername);
     next();
   } catch (error: NotFoundError | ServerError | unknown) {
     if (error instanceof NotFoundError) {
