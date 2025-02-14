@@ -2,7 +2,6 @@
  * Auth controller.
  * @module src/auth/auth.controller
  */
-
 import { Request, Response, NextFunction } from "express";
 import { headerVerificationRules, userLoginRules } from "./auth.rules";
 import { validationResult } from "express-validator";
@@ -71,7 +70,7 @@ export const loginUser = [
       }
 
       const token = jwt.sign(
-        { username: user.username },
+        { loggedInUser: user.username },
         process.env.KEY as string,
         {
           expiresIn: "1h",
@@ -124,8 +123,9 @@ export const verifyToken = [
    * @returns {Promise<void>} A promise that resolves to void.
    */
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const expressErrors = validationResult(req);
+    req.body.skipAuthenticateToken = true;
 
+    const expressErrors = validationResult(req);
     if (!expressErrors.isEmpty()) {
       const errorMessage = expressErrors.array().map((err) => ({
         message: err.msg,
@@ -163,9 +163,9 @@ export const verifyToken = [
         process.env.KEY as string
       ) as IToken;
 
-      const username = decoded.username;
-      req.body.loggedInUsername = username;
-
+      const username = decoded.loggedInUser;
+      req.body.loggedInUser = username;
+      req.body.skipAuthenticateToken = false;
       next();
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
@@ -192,9 +192,13 @@ export const authenticateToken = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
+  if (req.body.skipAuthenticateToken) {
+    return;
+  }
+
   try {
-    const loggedInUsername = req.body.loggedInUsername;
-    await retrieveUserByUsername(loggedInUsername);
+    const username = req.body.loggedInUsername;
+    await retrieveUserByUsername(username);
     next();
   } catch (error: NotFoundError | ServerError | unknown) {
     if (error instanceof NotFoundError) {

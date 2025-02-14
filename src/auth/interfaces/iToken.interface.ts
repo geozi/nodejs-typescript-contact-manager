@@ -7,12 +7,12 @@
  * Represents a json web token.
  *
  * @interface
- * @property {string} username - The username of the logged in user.
+ * @property {string} loggedInUser - The username of the logged in user.
  */
 export interface IToken {
   /**
    *  The username of the logged in user.
    * @type {string}
    */
-  username: string;
+  loggedInUser: string;
 }
