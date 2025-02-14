@@ -197,7 +197,8 @@ export const authenticateToken = async (
   }
 
   try {
-    const username = req.body.loggedInUsername;
+    const username = req.body.loggedInUser;
+
     await retrieveUserByUsername(username);
     next();
   } catch (error: NotFoundError | ServerError | unknown) {
@@ -206,8 +207,8 @@ export const authenticateToken = async (
         `Auth controller: authenticateToken() -> Authorization failed`
       );
 
-      res.status(httpCodes.FORBIDDEN).json({
-        message: authResponseMessages.AUTHORIZATION_FAILED,
+      res.status(httpCodes.UNAUTHORIZED).json({
+        message: authResponseMessages.AUTHENTICATION_FAILED,
       });
       return;
     }

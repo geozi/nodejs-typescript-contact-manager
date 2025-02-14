@@ -70,10 +70,10 @@ describe("Token authentication integration tests", () => {
     const statusStub = res.status as SinonStub;
     const jsonSpy = res.json as SinonSpy;
 
-    assert.strictEqual(statusStub.calledWith(httpCodes.FORBIDDEN), true);
+    assert.strictEqual(statusStub.calledWith(httpCodes.UNAUTHORIZED), true);
     assert.strictEqual(
       jsonSpy.calledWith({
-        message: authResponseMessages.AUTHORIZATION_FAILED,
+        message: authResponseMessages.AUTHENTICATION_FAILED,
       }),
       true
     );
