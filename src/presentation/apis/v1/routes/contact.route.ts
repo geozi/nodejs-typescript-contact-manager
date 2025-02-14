@@ -3,7 +3,10 @@
  * @module src/presentation/apis/v1/routes/contact.route
  */
 
-import { verifyToken } from "../../../../auth/auth.controller";
+import {
+  authenticateToken,
+  verifyToken,
+} from "../../../../auth/auth.controller";
 import {
   createContactRecord,
   updateContactRecord,
@@ -13,7 +16,27 @@ import {
 import { Router } from "express";
 
 export const contactRouter = Router();
-contactRouter.post("/", ...verifyToken, ...createContactRecord);
-contactRouter.put("/", ...verifyToken, ...updateContactRecord);
-contactRouter.delete("/", ...verifyToken, ...deleteContactRecord);
-contactRouter.get("/email", ...verifyToken, ...fetchContactByEmail);
+contactRouter.post(
+  "/",
+  ...verifyToken,
+  authenticateToken,
+  ...createContactRecord
+);
+contactRouter.put(
+  "/",
+  ...verifyToken,
+  authenticateToken,
+  ...updateContactRecord
+);
+contactRouter.delete(
+  "/",
+  ...verifyToken,
+  authenticateToken,
+  ...deleteContactRecord
+);
+contactRouter.get(
+  "/email",
+  ...verifyToken,
+  authenticateToken,
+  ...fetchContactByEmail
+);
