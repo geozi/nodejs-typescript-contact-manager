@@ -69,6 +69,7 @@ describe("Token verification integration tests", () => {
       it(testName, async () => {
         req = {
           headers: { authorization: invalidToken },
+          body: {},
         };
 
         for (const middleware of verifyToken) {
@@ -95,12 +96,12 @@ describe("Token verification integration tests", () => {
 
     it("token is invalid", async () => {
       const invalidToken = jwt.sign(
-        { username: "testUser" },
+        { loggedInUser: "testUser" },
         process.env.TEST_KEY as string,
         { expiresIn: "1h" }
       );
 
-      req = { headers: { authorization: `Bearer ${invalidToken}` } };
+      req = { headers: { authorization: `Bearer ${invalidToken}` }, body: {} };
 
       for (const middleware of verifyToken) {
         await middleware(req as Request, res as Response, next);
