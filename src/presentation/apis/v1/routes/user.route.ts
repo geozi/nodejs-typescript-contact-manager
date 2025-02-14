@@ -6,7 +6,6 @@ import { verifyToken } from "../../../../auth/auth.controller";
 import {
   registerUser,
   updateUserInfo,
-  deleteUserInfo,
   fetchUserByEmail,
   fetchUserByUsername,
   fetchUsersByRole,
@@ -16,7 +15,6 @@ import { Router } from "express";
 export const userRouter = Router();
 userRouter.post("/", ...registerUser);
 userRouter.put("/", ...verifyToken, ...updateUserInfo);
-userRouter.delete("/", ...verifyToken, ...deleteUserInfo);
 userRouter.get("/email", ...verifyToken, ...fetchUserByEmail);
 userRouter.get("/username", ...verifyToken, ...fetchUserByUsername);
 userRouter.get("/role", ...verifyToken, ...fetchUsersByRole);
