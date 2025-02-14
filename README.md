@@ -9,7 +9,6 @@ Contains the backend implementation of a Contact Manager API. It exposes REST AP
 - User registration,
 - User login,
 - User profile update,
-- User profile deletion,
 - User retrieval by username,
 - User retrieval by email,
 - User retrieval by role,
@@ -24,7 +23,7 @@ Contains the backend implementation of a Contact Manager API. It exposes REST AP
 
 ## Prerequisites
 
-- Nodejs (v22.13.1 or higher)
+- Nodejs (v22.13.1)
 - MongoDB.
 
 ## Testing
@@ -45,7 +44,6 @@ Compared to the [Task Manager API](https://github.com/geozi/nodejs-typescript-ta
   `<type>[optional scope]: <description>`,
 
 - [pino](https://github.com/pinojs/pino) for generating and saving log messages,
-- constants for storing HTTP codes to avoid the repetitive use of magic numbers across project files,
 - api versioning,
 - a common directory for all custom error classes to take advantage of class inheritance:
 
