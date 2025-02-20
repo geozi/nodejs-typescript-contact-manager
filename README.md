@@ -30,7 +30,7 @@ Contains the backend implementation of a Contact Manager API. It exposes REST AP
 
 A thorough presentation of the tests conducted during development can be found in the [QA-test-plan](/QA-test-plan.md).
 
-### Security
+## Security
 
 - **Authentication**: Single factor, local authentication.
 - **Authorization**: JSON Web Token (JWT)
